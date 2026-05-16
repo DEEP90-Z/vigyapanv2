@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const layersData = [
@@ -39,6 +39,28 @@ const Card = ({ i, layer, progress, range, targetScale }) => {
   )
 }
 
+const MobileCard = ({ layer, i }) => {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-12%" }}
+      transition={{ duration: 0.55, delay: i * 0.04, ease: [0.25, 1, 0.5, 1] }}
+      className="overflow-hidden rounded-[1.35rem] border border-luxury-black/8 bg-luxury-black shadow-[0_18px_45px_rgba(26,26,26,0.1)]"
+    >
+      <div className="bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.12),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-2.5">
+        <img
+          src={layer.src}
+          alt={layer.title}
+          loading={i === 0 ? "eager" : "lazy"}
+          decoding="async"
+          className="block h-auto w-full rounded-[1rem] object-contain"
+        />
+      </div>
+    </motion.article>
+  );
+};
+
 const LayerCards = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -47,14 +69,14 @@ const LayerCards = () => {
   });
 
   return (
-    <section id="work" ref={containerRef} className="relative w-full bg-luxury-cream pb-32">
+    <section id="work" ref={containerRef} className="relative w-full bg-luxury-cream pb-20 lg:pb-32">
       {/* Background gradients */}
       <div className="absolute inset-0 pointer-events-none">
          <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-luxury-white to-transparent" />
       </div>
 
-      <div className="container-wide px-4 md:px-12 lg:px-24 relative z-10 pt-32">
-        <div className="text-center mb-16 md:mb-24">
+      <div className="container-wide px-5 md:px-8 lg:px-24 relative z-10 pt-20 md:pt-24 lg:pt-32">
+        <div className="text-center mb-10 md:mb-14 lg:mb-24">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -68,7 +90,13 @@ const LayerCards = () => {
         </div>
       </div>
 
-      <div className="relative w-full z-10">
+      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 md:px-8 lg:hidden">
+        {layersData.map((layer, i) => (
+          <MobileCard key={layer.id} layer={layer} i={i} />
+        ))}
+      </div>
+
+      <div className="relative z-10 hidden w-full lg:block">
         {layersData.map((layer, i) => {
            const targetScale = 1 - ((layersData.length - i) * 0.04);
            const range = [i * (1 / layersData.length), 1];

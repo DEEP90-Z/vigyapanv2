@@ -41,24 +41,24 @@ const Hero = () => {
 
       {/* Cinematic Overlays */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
-        <div className="absolute bottom-0 right-0 h-[58%] w-full bg-gradient-to-tl from-black/70 via-black/24 to-transparent md:w-[62%]" />
+        <div className="absolute inset-0 bg-black/12" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/24" />
+        <div className="absolute bottom-0 right-0 h-[56%] w-full bg-gradient-to-tl from-black/58 via-black/16 to-transparent md:w-[58%]" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjIiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgibm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjAxNSIvPjwvc3ZnPg==')] opacity-[0.018] mix-blend-soft-light" />
       </div>
 
       {/* Content - Bottom Right Aligned */}
-      <div className="container-wide w-full px-8 md:px-16 pb-20 md:pb-24 relative z-10 flex flex-col items-end text-right">
+      <div className="container-wide w-full px-8 md:px-16 pb-24 md:pb-28 relative z-10 flex flex-col items-end text-right">
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
           style={{ willChange: "transform, opacity" }}
-          className="mb-4"
+          className="mb-5"
         >
-          <p className="text-xs uppercase tracking-[0.4em] text-white/70 font-medium">
-            Creative Production Studio
+          <p className="text-[0.7rem] uppercase tracking-[0.42em] text-white/72 font-medium">
+            Cinematic Real-Estate Storytelling
           </p>
         </motion.div>
         
@@ -67,30 +67,20 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.25, 1, 0.5, 1], delay: 0.1 }}
           style={{ willChange: "transform, opacity" }}
-          className="text-4xl md:text-6xl lg:text-[5.5rem] font-display font-bold leading-[1.05] tracking-tight text-white max-w-4xl mb-6"
+          className="text-5xl md:text-7xl lg:text-[6.5rem] font-display font-bold leading-[0.98] tracking-tight text-white max-w-4xl mb-10"
         >
-          Cinematic Campaigns <br />
-          Built To <span className="italic font-serif font-light opacity-90">Dominate Attention.</span>
+          Built For <br />
+          <span className="italic font-serif font-light opacity-90">Attention.</span>
         </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
-          style={{ willChange: "transform, opacity" }}
-          className="text-base md:text-lg text-white/80 max-w-xl font-sans font-light leading-relaxed mb-8"
-        >
-          Luxury real-estate storytelling through cinematic content, branding, and modern digital experiences.
-        </motion.p>
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1], delay: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
           style={{ willChange: "transform, opacity" }}
         >
-          <button className="px-10 py-4 bg-transparent border border-white/30 text-white rounded-full hover:bg-white hover:text-luxury-black transition-all duration-500 uppercase tracking-[0.2em] text-xs font-bold hover:scale-105 active:scale-95">
-            Explore Campaigns
+          <button className="px-9 py-4 bg-white/8 border border-white/32 text-white rounded-full backdrop-blur-sm hover:bg-white hover:text-luxury-black transition-all duration-500 uppercase tracking-[0.22em] text-xs font-bold hover:scale-105 active:scale-95">
+            View Work
           </button>
         </motion.div>
       </div>
