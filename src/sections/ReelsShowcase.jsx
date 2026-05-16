@@ -2,12 +2,12 @@ import React, { useRef } from 'react';
 import { motion, useAnimationFrame } from 'framer-motion';
 
 const reelVideos = [
-  { id: 1, src: '/reels/Video-145.mp4' },
-  { id: 2, src: '/reels/Video-158.mp4' },
-  { id: 3, src: '/reels/Video-314.mp4' },
-  { id: 4, src: '/reels/Video-331.mp4' },
-  { id: 5, src: '/reels/Video-404.mp4' },
-  { id: 6, src: '/reels/Video-536.mp4' }
+  { id: 1, src: '/reels/Video-145_opt.mp4' },
+  { id: 2, src: '/reels/Video-158_opt.mp4' },
+  { id: 3, src: '/reels/Video-314_opt.mp4' },
+  { id: 4, src: '/reels/Video-331_opt.mp4' },
+  { id: 5, src: '/reels/Video-404_opt.mp4' },
+  { id: 6, src: '/reels/Video-536_opt.mp4' }
 ];
 
 const ReelVideo = ({ src }) => {
@@ -16,22 +16,24 @@ const ReelVideo = ({ src }) => {
   
   // Use a standard IntersectionObserver for better performance than framer-motion's useInView for many elements
   React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (videoRef.current) {
-              videoRef.current.play().catch(() => {});
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (videoRef.current) {
+                // Play only when partially visible
+                videoRef.current.play().catch(() => {});
+              }
+            } else {
+              if (videoRef.current) {
+                videoRef.current.pause();
+                // Optionally reset time to save memory/processing
+              }
             }
-          } else {
-            if (videoRef.current) {
-              videoRef.current.pause();
-            }
-          }
-        });
-      },
-      { rootMargin: "200px" } // Preload/play slightly before entering viewport
-    );
+          });
+        },
+        { rootMargin: "50px", threshold: 0.1 } // Load just before, play when visible
+      );
 
     if (containerRef.current) {
       observer.observe(containerRef.current);
@@ -45,9 +47,9 @@ const ReelVideo = ({ src }) => {
   return (
     <motion.div 
       ref={containerRef}
-      whileHover={{ y: -15, scale: 1.02 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="relative w-[220px] md:w-[260px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.12)] shrink-0 group cursor-pointer"
+      whileHover={{ y: -10, scale: 1.02 }}
+      transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+      className="relative w-[220px] md:w-[260px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm shrink-0 group cursor-pointer"
       style={{ willChange: "transform" }}
     >
       <video 
@@ -56,12 +58,12 @@ const ReelVideo = ({ src }) => {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         className="absolute inset-0 w-full h-full object-cover"
       />
-      {/* Premium cinematic shadow on hover */}
-      <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
-      <div className="absolute inset-0 shadow-[inset_0_-50px_50px_rgba(0,0,0,0.4)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+      {/* Refined shadow to be less heavy */}
+      <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
+      <div className="absolute inset-0 shadow-[inset_0_-40px_40px_rgba(0,0,0,0.2)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
     </motion.div>
   );
 };
@@ -93,8 +95,8 @@ const ReelsShowcase = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: [0.25, 1, 0.5, 1] }}
           className="max-w-3xl"
         >
           <span className="text-sm font-bold tracking-[0.2em] uppercase text-luxury-gold mb-6 block">The UGC Story Wall</span>

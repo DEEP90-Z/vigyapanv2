@@ -2,11 +2,11 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const layersData = [
-  { id: 1, src: '/layers/3 Layers.png', title: "Jhansi Empire" },
-  { id: 2, src: '/layers/Ganesh 3 Layers.png', title: "Ganesh Enclave Visuals" },
-  { id: 3, src: '/layers/Rashail 3 layer.png', title: "Rashail Grandeur" },
-  { id: 4, src: '/layers/3 Layers (4).png', title: "Elevated Living" },
-  { id: 5, src: '/layers/Banner .jpg.jpeg', title: "Signature Estates" },
+  { id: 1, src: '/layers/3 Layers.webp', title: "Jhansi Empire" },
+  { id: 2, src: '/layers/Ganesh 3 Layers.webp', title: "Ganesh Enclave Visuals" },
+  { id: 3, src: '/layers/Rashail 3 layer.webp', title: "Rashail Grandeur" },
+  { id: 4, src: '/layers/3 Layers (4).webp', title: "Elevated Living" },
+  { id: 5, src: '/layers/Banner .jpg.webp', title: "Signature Estates" },
 ];
 
 const Card = ({ i, layer, progress, range, targetScale }) => {
@@ -23,14 +23,14 @@ const Card = ({ i, layer, progress, range, targetScale }) => {
         className="relative w-full h-full max-w-[1400px] mx-auto overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] bg-luxury-black"
       >
         <motion.img 
-          initial={{ scale: 1.1 }}
+          initial={{ scale: 1.05 }}
           whileInView={{ scale: 1 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 1, ease: [0.25, 1, 0.5, 1] }}
+          viewport={{ once: true, margin: "-5%" }}
           style={{ willChange: "transform" }}
           src={layer.src} 
           alt={layer.title}
-          loading="lazy"
+          loading={i === 0 ? "eager" : "lazy"}
           decoding="async"
           className="w-full h-full object-cover"
         />
@@ -58,8 +58,8 @@ const LayerCards = () => {
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.25, 1, 0.5, 1] }}
             style={{ willChange: "transform, opacity" }}
             className="text-4xl md:text-6xl lg:text-[5rem] font-display font-bold text-luxury-black tracking-tight"
           >

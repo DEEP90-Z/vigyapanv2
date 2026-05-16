@@ -13,10 +13,10 @@ const Reviews = () => {
           {/* Left: Immersive Campaign Visual */}
           <div className="relative w-full md:w-1/2 h-2/5 md:h-full overflow-hidden">
             <motion.div
-              initial={{ scale: 1.1 }}
+              initial={{ scale: 1.05 }}
               whileInView={{ scale: 1 }}
-              transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-              viewport={{ once: false, margin: "-20%" }}
+              transition={{ duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
+              viewport={{ once: false, margin: "-10%" }}
               style={{ willChange: "transform" }}
               className="w-full h-full"
             >
@@ -27,26 +27,28 @@ const Reviews = () => {
                 decoding="async"
                 className="w-full h-full object-cover"
               />
-              {/* Subtle cinematic gradient over the image */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40 mix-blend-multiply" />
+              {/* Cinematic gradient over the image (optimized) */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/30 mix-blend-multiply" />
             </motion.div>
           </div>
 
           {/* Right: Editorial Content */}
           <div className="relative w-full md:w-1/2 h-3/5 md:h-full flex flex-col justify-center px-8 md:px-20 lg:px-32 bg-luxury-cream">
 
-            {/* Cinematic Blur & Grain Overlays */}
+            {/* Cinematic Blur & Grain Overlays (Optimized) */}
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute inset-0 bg-gradient-to-br from-luxury-white/80 to-transparent" />
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgibm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+')] opacity-[0.03]" />
-              <div className="absolute top-0 right-0 w-64 h-64 bg-luxury-gold/5 blur-3xl rounded-full" />
+              <div className="absolute inset-0 bg-gradient-to-br from-luxury-white/90 to-transparent" />
+              {/* Reduced grain size/opacity */}
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgibm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjAyIi8+PC9zdmc+')] opacity-[0.02]" />
+              {/* Replaced heavy blur with simpler gradient for performance */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.03)_0%,transparent_70%)]" />
             </div>
 
             <div className="relative z-10 w-full max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 1, 0.5, 1] }}
                 viewport={{ once: true, margin: "-10%" }}
                 style={{ willChange: "transform, opacity" }}
               >
@@ -70,7 +72,7 @@ const Reviews = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
                 viewport={{ once: true, margin: "-10%" }}
                 style={{ willChange: "transform, opacity" }}
               >
