@@ -1,13 +1,29 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const Hero = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 1024);
+    };
+    
+    // Initial check
+    checkMobile();
+    
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <section id="home" className="relative h-screen w-full flex items-end justify-end overflow-hidden bg-luxury-black">
       
       {/* Cinematic Video Background */}
       <div className="absolute inset-0 h-full w-full">
         <video 
-          src="/videos/banner-video-6-2_opt.mp4" 
+          key={isMobile ? 'mobile' : 'desktop'}
+          src={isMobile ? "/videos/mobile.mp4" : "/videos/banner-video-6-2_opt.mp4"}
           autoPlay 
           loop 
           muted 
@@ -16,7 +32,7 @@ const Hero = () => {
           aria-hidden="true"
           className="h-full w-full min-h-full min-w-full object-cover"
           style={{
-            objectPosition: "50% 48%",
+            objectPosition: isMobile ? "center" : "50% 48%",
             backfaceVisibility: "hidden",
             transform: "translateZ(0)",
           }}
