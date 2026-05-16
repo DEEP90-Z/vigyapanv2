@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
 const Hero = () => {
@@ -6,7 +5,7 @@ const Hero = () => {
     <section id="home" className="relative h-screen w-full flex items-end justify-end overflow-hidden bg-luxury-black">
       
       {/* Cinematic Video Background */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 h-full w-full">
         <video 
           src="/videos/banner-video-6-2_opt.mp4" 
           autoPlay 
@@ -14,17 +13,22 @@ const Hero = () => {
           muted 
           playsInline
           preload="auto"
-          className="w-full h-full object-cover"
+          aria-hidden="true"
+          className="h-full w-full min-h-full min-w-full object-cover"
+          style={{
+            objectPosition: "50% 48%",
+            backfaceVisibility: "hidden",
+            transform: "translateZ(0)",
+          }}
         />
       </div>
 
-      {/* Cinematic Overlays (Optimized) */}
+      {/* Cinematic Overlays */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-black/30" />
-        {/* Grain texture simulation (Lighter) */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgibm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjAyIi8+PC9zdmc+')] opacity-[0.03]" />
-        {/* Simplified gradient shadow for text readability */}
-        <div className="absolute bottom-0 right-0 w-full md:w-1/2 h-1/2 bg-gradient-to-tl from-black/80 to-transparent" />
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
+        <div className="absolute bottom-0 right-0 h-[58%] w-full bg-gradient-to-tl from-black/70 via-black/24 to-transparent md:w-[62%]" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjIiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgibm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjAxNSIvPjwvc3ZnPg==')] opacity-[0.018] mix-blend-soft-light" />
       </div>
 
       {/* Content - Bottom Right Aligned */}

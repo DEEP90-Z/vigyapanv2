@@ -70,17 +70,27 @@ function optimizeVideos() {
       console.log(`Compressing ${path.basename(fullPath)}...`);
       
       const isReel = fullPath.includes('reels');
-      const crf = isReel ? 30 : 28; // higher crf for smaller size
+      const isHeroVideo = path.basename(fullPath) === 'banner-video-6-2.mp4';
+      const crf = isHeroVideo ? 16 : (isReel ? 30 : 24);
+      const videoOptions = [
+        '-vcodec libx264',
+        `-crf ${crf}`,
+        `-preset ${isHeroVideo ? 'slow' : 'fast'}`,
+        '-profile:v high',
+        '-pix_fmt yuv420p',
+        '-movflags +faststart',
+      ];
+
+      if (isHeroVideo) {
+        videoOptions.push('-an');
+      } else {
+        videoOptions.push('-vf scale=-2:720');
+        videoOptions.push('-acodec aac');
+        videoOptions.push('-b:a 128k');
+      }
 
       ffmpeg(fullPath)
-        .outputOptions([
-          `-vcodec libx264`,
-          `-crf ${crf}`,
-          `-preset fast`,
-          `-vf scale=-2:720`, // scale to 720p height, keep aspect ratio
-          `-acodec aac`,
-          `-b:a 128k`
-        ])
+        .outputOptions(videoOptions)
         .save(newPath)
         .on('end', () => {
           console.log(`Success: ${newPath}`);
