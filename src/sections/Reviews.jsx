@@ -11,24 +11,26 @@ const Reviews = () => {
           className="sticky top-0 h-screen w-full flex flex-col md:flex-row overflow-hidden bg-luxury-white origin-top shadow-[0_-20px_50px_rgba(0,0,0,0.1)]"
         >
           {/* Left: Immersive Campaign Visual */}
-          <div className="relative w-full md:w-1/2 h-2/5 md:h-full overflow-hidden">
+          <div className="relative w-full md:w-1/2 h-2/5 md:h-full overflow-hidden bg-luxury-black p-4 sm:p-6 md:p-10 lg:p-14">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(212,175,55,0.13),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_38%,rgba(0,0,0,0.24))]" />
             <motion.div
-              initial={{ scale: 1.05 }}
-              whileInView={{ scale: 1 }}
-              transition={{ duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
+              initial={{ opacity: 0, y: 24, scale: 0.985 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1.1, ease: [0.25, 1, 0.5, 1] }}
               viewport={{ once: false, margin: "-10%" }}
               style={{ willChange: "transform" }}
-              className="w-full h-full"
+              className="relative w-full h-full overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 bg-luxury-black shadow-[0_28px_80px_rgba(0,0,0,0.36)]"
             >
               <img
                 src={item.image}
-                alt={`${item.company} campaign`}
-                loading="lazy"
+                alt={`${item.company} property elevation`}
+                loading={index === 0 ? "eager" : "lazy"}
                 decoding="async"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain md:object-cover"
               />
               {/* Cinematic gradient over the image (optimized) */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/30 mix-blend-multiply" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/16 via-transparent to-black/24 mix-blend-multiply" />
+              <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent" />
             </motion.div>
           </div>
 
