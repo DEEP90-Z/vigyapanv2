@@ -1,4 +1,3 @@
-import React from 'react';
 import { clientLogos } from '../data/clientLogos';
 
 const ClientLogos = () => {

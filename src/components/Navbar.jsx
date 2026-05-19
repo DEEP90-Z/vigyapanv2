@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { cn } from '../utils/cn';
 
@@ -29,20 +29,25 @@ const Navbar = () => {
       </div>
       
       <div className="hidden md:flex items-center space-x-10 text-xs uppercase tracking-[0.2em] font-medium">
-        {['Home', 'Reviews', 'Work', 'Reels'].map((item) => (
-          <a key={item} href={`#${item.toLowerCase()}`} className="relative group overflow-hidden">
-            <span className="block transition-transform duration-500 group-hover:-translate-y-full">{item}</span>
-            <span className="absolute inset-0 transition-transform duration-500 translate-y-full group-hover:translate-y-0 text-luxury-gold/80">{item}</span>
+        {[
+          { label: 'Home', href: '#home' },
+          { label: 'Solutions', href: '#solutions' },
+          { label: 'Work', href: '#work' },
+          { label: 'Reels', href: '#reels' },
+        ].map((item) => (
+          <a key={item.label} href={item.href} className="relative group overflow-hidden">
+            <span className="block transition-transform duration-500 group-hover:-translate-y-full">{item.label}</span>
+            <span className="absolute inset-0 transition-transform duration-500 translate-y-full group-hover:translate-y-0 text-luxury-gold/80">{item.label}</span>
           </a>
         ))}
       </div>
-      
-      <button className={cn(
+
+      <a href="#contact" className={cn(
         "text-xs uppercase tracking-[0.2em] font-medium px-6 py-3 rounded-full transition-all duration-500",
         scrolled ? "bg-luxury-black text-white hover:bg-black/80" : "bg-white text-luxury-black hover:bg-white/90"
       )}>
         Let's Talk
-      </button>
+      </a>
     </motion.nav>
   );
 };

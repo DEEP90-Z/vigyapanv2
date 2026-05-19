@@ -1,9 +1,8 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
 const Contact = () => {
   return (
-    <section className="relative w-full py-32 md:py-48 bg-luxury-black text-luxury-white overflow-hidden">
+    <section id="contact" className="relative w-full py-32 md:py-48 bg-luxury-black text-luxury-white overflow-hidden">
       
       {/* Subtle Cinematic Background Glow (Optimized) */}
       <div className="absolute inset-0 pointer-events-none">

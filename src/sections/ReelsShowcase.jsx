@@ -16,6 +16,7 @@ const ReelVideo = ({ src }) => {
   
   // Use a standard IntersectionObserver for better performance than framer-motion's useInView for many elements
   React.useEffect(() => {
+      const container = containerRef.current;
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -35,12 +36,12 @@ const ReelVideo = ({ src }) => {
         { rootMargin: "50px", threshold: 0.1 } // Load just before, play when visible
       );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+    if (container) {
+      observer.observe(container);
     }
 
     return () => {
-      if (containerRef.current) observer.unobserve(containerRef.current);
+      if (container) observer.unobserve(container);
     };
   }, []);
 
@@ -71,22 +72,22 @@ const ReelVideo = ({ src }) => {
 const ReelsShowcase = () => {
   const containerRef = useRef(null);
   const scrollerRef = useRef(null);
+  const positionRef = useRef(0);
 
   // Infinite scroll effect
   const speed = 0.8; // Smooth, elegant speed
-  let position = 0;
 
   useAnimationFrame(() => {
     if (!scrollerRef.current) return;
-    position -= speed;
+    positionRef.current -= speed;
     
     // Reset when half the content has scrolled 
     const scrollerWidth = scrollerRef.current.scrollWidth / 2;
-    if (Math.abs(position) >= scrollerWidth) {
-      position = 0;
+    if (Math.abs(positionRef.current) >= scrollerWidth) {
+      positionRef.current = 0;
     }
     
-    scrollerRef.current.style.transform = `translate3d(${position}px, 0, 0)`;
+    scrollerRef.current.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
   });
 
   return (

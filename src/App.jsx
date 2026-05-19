@@ -1,12 +1,11 @@
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 
 // Lazy load below-the-fold components
-const ClientLogos = lazy(() => import('./sections/ClientLogos'));
+const CreativeSolutions = lazy(() => import('./sections/CreativeSolutions'));
 const LayerCards = lazy(() => import('./sections/LayerCards'));
 const ReelsShowcase = lazy(() => import('./sections/ReelsShowcase'));
-const Reviews = lazy(() => import('./sections/Reviews'));
 const Contact = lazy(() => import('./sections/Contact'));
 const Footer = lazy(() => import('./sections/Footer'));
 
@@ -26,7 +25,7 @@ function App() {
         <Navbar />
         <Hero />
         <Suspense fallback={<Fallback />}>
-          <Reviews />
+          <CreativeSolutions />
           <LayerCards />
           <ReelsShowcase />
           <Contact />
