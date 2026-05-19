@@ -4,29 +4,36 @@ import { cn } from '../utils/cn';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 50) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
+    const previous = scrollY.getPrevious() ?? 0;
+    const isScrollingDown = latest > previous;
+
+    setScrolled(latest > 50);
+    setHidden(isScrollingDown && latest > 90);
   });
 
   return (
     <motion.nav 
       initial={{ y: -100 }}
-      animate={{ y: 0 }}
+      animate={{ y: hidden ? -110 : 0 }}
       transition={{ duration: 0.8, ease: [0.6, 0.05, 0.01, 0.9] }}
       className={cn(
         "fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 md:px-12 py-3 md:py-4 transition-all duration-500",
         scrolled ? "bg-luxury-white/80 backdrop-blur-lg border-b border-luxury-black/5 text-luxury-black shadow-sm" : "bg-transparent text-white"
       )}
     >
-      <div className="text-2xl md:text-3xl font-display font-bold tracking-tighter cursor-pointer">
-        VIGYAPAN<span className="font-light">360</span>
-      </div>
+      <a href="#home" className="block w-[150px] shrink-0 md:w-[190px]" aria-label="Vigyapan360 home">
+        <img
+          src={scrolled ? "/vigyapan-logo-nav.png" : "/vigyapan-logo-nav-light.png"}
+          alt="Vigyapan360"
+          className="block h-auto w-full object-contain"
+          width="520"
+          height="85"
+        />
+      </a>
       
       <div className="hidden md:flex items-center space-x-10 text-xs uppercase tracking-[0.2em] font-medium">
         {[
