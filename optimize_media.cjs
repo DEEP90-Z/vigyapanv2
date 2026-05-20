@@ -10,7 +10,8 @@ const dirsToScan = [
   path.join(__dirname, 'public/layers'),
   path.join(__dirname, 'public/reels'),
   path.join(__dirname, 'public/videos'),
-  path.join(__dirname, 'public/logos')
+  path.join(__dirname, 'public/logos'),
+  path.join(__dirname, 'public/solutions')
 ];
 
 async function optimizeImages() {
@@ -38,14 +39,29 @@ async function optimizeImages() {
   }
 }
 
-function optimizeVideos() {
+function runFfmpeg(input, output, options) {
+  return new Promise((resolve) => {
+    ffmpeg(input)
+      .outputOptions(options)
+      .save(output)
+      .on('end', () => {
+        console.log(`Success: ${output}`);
+        resolve(true);
+      })
+      .on('error', (err) => {
+        console.error(`Error generating ${output}:`, err.message);
+        resolve(false);
+      });
+  });
+}
+
+async function optimizeVideos() {
   const videoFiles = [];
   for (const dir of dirsToScan) {
     if (!fs.existsSync(dir)) continue;
     const files = fs.readdirSync(dir);
     for (const file of files) {
       if (path.extname(file).toLowerCase() === '.mp4') {
-        // we append _opt to the compressed video
         if (!file.endsWith('_opt.mp4')) {
            videoFiles.push(path.join(dir, file));
         }
@@ -53,56 +69,88 @@ function optimizeVideos() {
     }
   }
 
-  return new Promise((resolve) => {
-    let index = 0;
-    function processNext() {
-      if (index >= videoFiles.length) {
-        resolve();
-        return;
-      }
-      const fullPath = videoFiles[index++];
-      const newPath = path.join(path.dirname(fullPath), path.basename(fullPath, '.mp4') + '_opt.mp4');
-      if (fs.existsSync(newPath)) {
-        console.log(`Skipping existing ${newPath}`);
-        processNext();
-        return;
-      }
-      console.log(`Compressing ${path.basename(fullPath)}...`);
-      
-      const isReel = fullPath.includes('reels');
-      const isHeroVideo = path.basename(fullPath) === 'banner-video-6-2.mp4';
-      const crf = isHeroVideo ? 16 : (isReel ? 30 : 24);
-      const videoOptions = [
-        '-vcodec libx264',
-        `-crf ${crf}`,
-        `-preset ${isHeroVideo ? 'slow' : 'fast'}`,
-        '-profile:v high',
-        '-pix_fmt yuv420p',
-        '-movflags +faststart',
-      ];
+  console.log(`Found ${videoFiles.length} videos to process.`);
 
-      if (isHeroVideo) {
-        videoOptions.push('-an');
-      } else {
-        videoOptions.push('-vf scale=-2:720');
-        videoOptions.push('-acodec aac');
-        videoOptions.push('-b:a 128k');
-      }
+  for (const fullPath of videoFiles) {
+    const filename = path.basename(fullPath);
+    const dir = path.dirname(fullPath);
+    const baseName = path.basename(fullPath, '.mp4');
+    
+    const newPathMp4 = path.join(dir, `${baseName}_opt.mp4`);
+    const newPathWebm = path.join(dir, `${baseName}_opt.webm`);
 
-      ffmpeg(fullPath)
-        .outputOptions(videoOptions)
-        .save(newPath)
-        .on('end', () => {
-          console.log(`Success: ${newPath}`);
-          processNext();
-        })
-        .on('error', (err) => {
-          console.error(`Error compressing ${fullPath}:`, err);
-          processNext();
-        });
+    const isReel = fullPath.includes('reels');
+    const isHeroVideo = filename === 'banner-video-6-2.mp4';
+    const isMobileVideo = filename === 'mobile.mp4';
+    const isSolution = fullPath.includes('solutions');
+
+    // MP4 Configuration
+    const crfMp4 = isHeroVideo ? 22 : (isMobileVideo ? 26 : (isReel ? 32 : 28));
+    const presetMp4 = (isHeroVideo || isMobileVideo) ? 'medium' : 'fast';
+    
+    const mp4Options = [
+      '-vcodec libx264',
+      `-crf ${crfMp4}`,
+      `-preset ${presetMp4}`,
+      '-profile:v high',
+      '-pix_fmt yuv420p',
+      '-movflags +faststart',
+      '-an' // Strip audio for all since they are muted background loops
+    ];
+
+    if (isReel) {
+      mp4Options.push('-vf scale=-2:540');
+    } else if (isSolution) {
+      mp4Options.push('-vf scale=-2:720');
+    } else if (isMobileVideo) {
+      // Keep mobile video at high compression scale (height 720)
+      mp4Options.push('-vf scale=-2:720');
     }
-    processNext();
-  });
+
+    // WebM Configuration (VP9)
+    const crfWebm = isHeroVideo ? 30 : (isMobileVideo ? 34 : (isReel ? 38 : 34));
+    const webmOptions = [
+      '-vcodec libvpx-vp9',
+      `-crf ${crfWebm}`,
+      '-b:v 0',
+      '-deadline realtime',
+      '-cpu-used 8',
+      '-an' // Strip audio
+    ];
+
+    if (isReel) {
+      webmOptions.push('-vf scale=-2:540');
+    } else if (isSolution) {
+      webmOptions.push('-vf scale=-2:720');
+    } else if (isMobileVideo) {
+      webmOptions.push('-vf scale=-2:720');
+    }
+
+    const forceOverwrite = true;
+
+    // Process MP4
+    if (forceOverwrite || !fs.existsSync(newPathMp4)) {
+      console.log(`Compressing ${filename} to MP4 (CRF ${crfMp4}, force=${forceOverwrite})...`);
+      // Delete old file if exists to prevent ffmpeg prompt or block issues
+      if (fs.existsSync(newPathMp4)) {
+        try { fs.unlinkSync(newPathMp4); } catch (_) {}
+      }
+      await runFfmpeg(fullPath, newPathMp4, mp4Options);
+    } else {
+      console.log(`Skipping existing MP4: ${path.basename(newPathMp4)}`);
+    }
+
+    // Process WebM
+    if (forceOverwrite || !fs.existsSync(newPathWebm)) {
+      console.log(`Compressing ${filename} to WebM (CRF ${crfWebm}, force=${forceOverwrite})...`);
+      if (fs.existsSync(newPathWebm)) {
+        try { fs.unlinkSync(newPathWebm); } catch (_) {}
+      }
+      await runFfmpeg(fullPath, newPathWebm, webmOptions);
+    } else {
+      console.log(`Skipping existing WebM: ${path.basename(newPathWebm)}`);
+    }
+  }
 }
 
 async function run() {

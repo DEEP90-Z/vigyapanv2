@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useAnimationFrame } from 'framer-motion';
 
 const reelVideos = [
@@ -15,7 +15,7 @@ const ReelVideo = ({ src }) => {
   const containerRef = useRef(null);
   
   // Use a standard IntersectionObserver for better performance than framer-motion's useInView for many elements
-  React.useEffect(() => {
+  useEffect(() => {
       const container = containerRef.current;
       const observer = new IntersectionObserver(
         (entries) => {
@@ -28,12 +28,15 @@ const ReelVideo = ({ src }) => {
             } else {
               if (videoRef.current) {
                 videoRef.current.pause();
-                // Optionally reset time to save memory/processing
+                // Reset playhead to release memory/processing overhead
+                try {
+                  videoRef.current.currentTime = 0;
+                } catch (_) {}
               }
             }
           });
         },
-        { rootMargin: "50px", threshold: 0.1 } // Load just before, play when visible
+        { rootMargin: "100px", threshold: 0.1 } // Load just before, play when visible
       );
 
     if (container) {
@@ -55,13 +58,15 @@ const ReelVideo = ({ src }) => {
     >
       <video 
         ref={videoRef}
-        src={src}
         muted
         loop
         playsInline
         preload="none"
         className="absolute inset-0 w-full h-full object-cover"
-      />
+      >
+        <source src={src.replace('.mp4', '.webm')} type="video/webm" />
+        <source src={src} type="video/mp4" />
+      </video>
       {/* Refined shadow to be less heavy */}
       <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
       <div className="absolute inset-0 shadow-[inset_0_-40px_40px_rgba(0,0,0,0.2)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -73,12 +78,29 @@ const ReelsShowcase = () => {
   const containerRef = useRef(null);
   const scrollerRef = useRef(null);
   const positionRef = useRef(0);
+  const isInViewRef = useRef(false);
+
+  // Monitor visibility of the ReelsShowcase component
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isInViewRef.current = entry.isIntersecting;
+      },
+      { rootMargin: '300px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Infinite scroll effect
   const speed = 0.8; // Smooth, elegant speed
 
   useAnimationFrame(() => {
-    if (!scrollerRef.current) return;
+    if (!isInViewRef.current || !scrollerRef.current) return;
     positionRef.current -= speed;
     
     // Reset when half the content has scrolled 
@@ -91,7 +113,7 @@ const ReelsShowcase = () => {
   });
 
   return (
-    <section id="reels" className="py-24 md:py-40 bg-luxury-cream overflow-hidden relative border-t border-luxury-black/5">
+    <section id="reels" ref={containerRef} className="py-24 md:py-40 bg-luxury-cream overflow-hidden relative border-t border-luxury-black/5">
       <div className="container-wide mb-16 px-4 md:px-12 lg:px-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -107,7 +129,7 @@ const ReelsShowcase = () => {
         </motion.div>
       </div>
 
-      <div className="relative w-full flex items-center overflow-hidden py-12" ref={containerRef}>
+      <div className="relative w-full flex items-center overflow-hidden py-12">
         {/* Floating gradient overlays for depth */}
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-luxury-cream to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-luxury-cream to-transparent z-10 pointer-events-none" />

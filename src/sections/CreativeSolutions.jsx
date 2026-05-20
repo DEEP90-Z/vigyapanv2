@@ -1,5 +1,51 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+
+// Performance-optimized Video Component with viewport-aware play/pause
+const SolutionVideo = ({ baseName, fallbackSrc }) => {
+  const videoRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (videoRef.current) {
+            videoRef.current.play().catch(() => {});
+          }
+        } else {
+          if (videoRef.current) {
+            videoRef.current.pause();
+          }
+        }
+      },
+      { threshold: 0.05, rootMargin: '150px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="absolute inset-0 w-full h-full bg-luxury-black">
+      <video
+        ref={videoRef}
+        muted
+        loop
+        playsInline
+        preload="none"
+        className="absolute inset-0 w-full h-full object-cover opacity-85"
+      >
+        <source src={`/solutions/${baseName}_opt.webm`} type="video/webm" />
+        <source src={`/solutions/${baseName}_opt.mp4`} type="video/mp4" />
+        <source src={fallbackSrc} type="video/mp4" />
+      </video>
+    </div>
+  );
+};
 
 const CreativeSolutions = () => {
   const containerRef = useRef(null);
@@ -61,13 +107,13 @@ const CreativeSolutions = () => {
           className="absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-10"
         >
           <motion.div
-            style={{ x: card1X, y: card1Y }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_30px_90px_rgba(26,26,26,0.12)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
+            style={{ x: card1X, y: card1Y, willChange: 'transform' }}
+            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
-              <video src="/solutions/360 marketing.mp4" autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-85" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40" />
-              <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg">
+              <SolutionVideo baseName="360 marketing" fallbackSrc="/solutions/360 marketing.mp4" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40 pointer-events-none" />
+              <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg z-10">
                 Meta Ads / Growth
               </div>
             </div>
@@ -97,13 +143,13 @@ const CreativeSolutions = () => {
           className="absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-20"
         >
           <motion.div
-            style={{ x: card2X }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_30px_90px_rgba(26,26,26,0.12)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10"
+            style={{ x: card2X, willChange: 'transform' }}
+            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
-              <video src="/solutions/branding.mp4" autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-85" />
-              <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-black/40" />
-              <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg">
+              <SolutionVideo baseName="branding" fallbackSrc="/solutions/branding.mp4" />
+              <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-black/40 pointer-events-none" />
+              <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg z-10">
                 Identity Systems
               </div>
             </div>
@@ -133,20 +179,13 @@ const CreativeSolutions = () => {
           className="absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-30"
         >
           <motion.div
-            style={{ x: card3X }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_30px_90px_rgba(26,26,26,0.12)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
+            style={{ x: card3X, willChange: 'transform' }}
+            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
-              <video
-                src="/solutions/audio-video-production.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-85"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40" />
-              <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg">
+              <SolutionVideo baseName="audio-video-production" fallbackSrc="/solutions/audio-video-production.mp4" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40 pointer-events-none" />
+              <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg z-10">
                 Production / Reels
               </div>
             </div>

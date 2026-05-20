@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
+import LazySection from './components/LazySection';
 
 // Lazy load below-the-fold components
 const CreativeSolutions = lazy(() => import('./sections/CreativeSolutions'));
@@ -21,17 +22,31 @@ const Fallback = () => (
 
 function App() {
   return (
-    <ReactLenis root autoRaf={false} options={{ lerp: 0.08, duration: 1.5, smoothWheel: true, syncTouch: true, wheelMultiplier: 1 }}>
+    <ReactLenis root autoRaf={false} options={{ lerp: 0.08, duration: 1.5, smoothWheel: true, syncTouch: false, wheelMultiplier: 1 }}>
       <LenisMotionSync />
       <main className="relative">
         <Navbar />
         <Hero />
         <Suspense fallback={<Fallback />}>
-          <CreativeSolutions />
-          <LayerCards />
-          <ReelsShowcase />
-          <Contact />
-          <Footer />
+          <LazySection placeholderHeight="450vh" rootMargin="1000px">
+            <CreativeSolutions />
+          </LazySection>
+          
+          <LazySection placeholderHeight="300vh" rootMargin="1000px">
+            <LayerCards />
+          </LazySection>
+          
+          <LazySection placeholderHeight="100vh" rootMargin="1000px">
+            <ReelsShowcase />
+          </LazySection>
+          
+          <LazySection placeholderHeight="80vh" rootMargin="1000px">
+            <Contact />
+          </LazySection>
+          
+          <LazySection placeholderHeight="40vh" rootMargin="1000px">
+            <Footer />
+          </LazySection>
         </Suspense>
       </main>
     </ReactLenis>

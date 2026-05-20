@@ -2,15 +2,12 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const Hero = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 1024 : false);
 
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 1024);
     };
-    
-    // Initial check
-    checkMobile();
     
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -23,7 +20,6 @@ const Hero = () => {
       <div className="absolute inset-0 h-full w-full">
         <video 
           key={isMobile ? 'mobile' : 'desktop'}
-          src={isMobile ? "/videos/mobile.mp4" : "/videos/banner-video-6-2_opt.mp4"}
           autoPlay 
           loop 
           muted 
@@ -36,7 +32,20 @@ const Hero = () => {
             backfaceVisibility: "hidden",
             transform: "translateZ(0)",
           }}
-        />
+        >
+          {isMobile ? (
+            <>
+              <source src="/videos/mobile_opt.webm" type="video/webm" />
+              <source src="/videos/mobile_opt.mp4" type="video/mp4" />
+              <source src="/videos/mobile.mp4" type="video/mp4" />
+            </>
+          ) : (
+            <>
+              <source src="/videos/banner-video-6-2_opt.webm" type="video/webm" />
+              <source src="/videos/banner-video-6-2_opt.mp4" type="video/mp4" />
+            </>
+          )}
+        </video>
       </div>
 
       {/* Cinematic Overlays */}

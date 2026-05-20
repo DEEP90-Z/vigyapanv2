@@ -20,7 +20,7 @@ const Card = ({ i, layer, progress, range, targetScale }) => {
     >
       <motion.div 
         style={{ scale, transformOrigin: "top center", willChange: "transform" }}
-        className="relative w-full h-full max-w-[1400px] mx-auto overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] bg-luxury-black"
+        className="relative w-full h-full max-w-[1400px] mx-auto overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-[0_15px_45px_rgba(0,0,0,0.1)] bg-luxury-black"
       >
         <motion.img 
           initial={{ scale: 1.05 }}
@@ -46,7 +46,8 @@ const MobileCard = ({ layer, i }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-12%" }}
       transition={{ duration: 0.55, delay: i * 0.04, ease: [0.25, 1, 0.5, 1] }}
-      className="overflow-hidden rounded-[1.35rem] border border-luxury-black/8 bg-luxury-black shadow-[0_18px_45px_rgba(26,26,26,0.1)]"
+      style={{ willChange: "transform, opacity" }}
+      className="overflow-hidden rounded-[1.35rem] border border-luxury-black/8 bg-luxury-black shadow-[0_12px_30px_rgba(26,26,26,0.06)]"
     >
       <div className="bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.12),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-2.5">
         <img
