@@ -1,7 +1,5 @@
 export const clientLogos = [
-  { id: 1, name: "Vogue", logo: "/logos/vogue.svg" },
-  { id: 2, name: "Tesla", logo: "/logos/tesla.svg" },
-  { id: 3, name: "Rolex", logo: "/logos/rolex.svg" },
-  { id: 4, name: "Apple", logo: "/logos/apple.svg" },
-  { id: 5, name: "Prada", logo: "/logos/prada.svg" },
+  { id: 1, name: "Dev Ashok", logo: "/logos/Dev ashok.webp" },
+  { id: 2, name: "Ganesh Enclave", logo: "/logos/Ganesh Enclave.webp" },
+  { id: 3, name: "Jhansi Empire", logo: "/logos/jhansiempire.webp" },
 ];

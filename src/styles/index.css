@@ -17,14 +17,21 @@
   --spacing-30: 7.5rem;
 
   --animate-slow-pan: pan 20s linear infinite;
+  --animate-marquee-right: marquee-right 40s linear infinite;
   
   @keyframes pan {
     0% { transform: translate3d(0, 0, 0); }
     100% { transform: translate3d(-50%, 0, 0); }
   }
+
+  @keyframes marquee-right {
+    0% { transform: translate3d(-50%, 0, 0); }
+    100% { transform: translate3d(0%, 0, 0); }
+  }
 }
 
-.animate-slow-pan {
+.animate-slow-pan,
+.animate-marquee-right {
   will-change: transform;
 }
 

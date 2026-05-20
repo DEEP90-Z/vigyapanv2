@@ -57,26 +57,26 @@ const CreativeSolutions = () => {
   });
 
   // Card 1 — settles in, then slides out to the left
-  const card1Y = useTransform(scrollYProgress, [0, 0.12], ['5vh', '0vh']);
-  const card1X = useTransform(scrollYProgress, [0.22, 0.36], ['0%', '-108%']);
-  const card1Visibility = useTransform(scrollYProgress, (p) => (p < 0.38 ? 'visible' : 'hidden'));
+  const card1Y = useTransform(scrollYProgress, [0, 0.08], ['3vh', '0vh']);
+  const card1X = useTransform(scrollYProgress, [0.10, 0.35], ['0%', '-108%']);
+  const card1Visibility = useTransform(scrollYProgress, (p) => (p < 0.37 ? 'visible' : 'hidden'));
 
   // Card 2 — enters from right, holds, exits left
   const card2X = useTransform(
     scrollYProgress,
-    [0.22, 0.36, 0.56, 0.70],
+    [0.10, 0.35, 0.55, 0.80],
     ['108%', '0%', '0%', '-108%'],
   );
   const card2Visibility = useTransform(scrollYProgress, (p) =>
-    p >= 0.20 && p < 0.72 ? 'visible' : 'hidden',
+    p >= 0.08 && p < 0.82 ? 'visible' : 'hidden',
   );
 
   // Card 3 — enters from right (same slide pattern as cards 1 & 2)
-  const card3X = useTransform(scrollYProgress, [0.56, 0.70], ['108%', '0%']);
-  const card3Visibility = useTransform(scrollYProgress, (p) => (p >= 0.54 ? 'visible' : 'hidden'));
+  const card3X = useTransform(scrollYProgress, [0.55, 0.80], ['108%', '0%']);
+  const card3Visibility = useTransform(scrollYProgress, (p) => (p >= 0.50 ? 'visible' : 'hidden'));
 
   return (
-    <section ref={containerRef} id="solutions" className="relative h-[450vh] bg-luxury-cream">
+    <section ref={containerRef} id="solutions" className="relative h-[300vh] bg-luxury-cream">
       <div
         className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center"
       >

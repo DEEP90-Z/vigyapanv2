@@ -70,7 +70,7 @@ const LayerCards = () => {
   });
 
   return (
-    <section id="work" ref={containerRef} className="relative w-full bg-luxury-cream pb-20 lg:pb-32">
+    <section id="work" ref={containerRef} className="relative w-full bg-luxury-cream pb-4 lg:pb-6">
       {/* Background gradients */}
       <div className="absolute inset-0 pointer-events-none">
          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-luxury-white/40 to-transparent" />
