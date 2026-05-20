@@ -6,6 +6,7 @@ import LazySection from './components/LazySection';
 import CreativeSolutions from './sections/CreativeSolutions';
 import LayerCards from './sections/LayerCards';
 import ClientLogos from './sections/ClientLogos';
+import Industries from './sections/Industries';
 import ReelsShowcase from './sections/ReelsShowcase';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
@@ -40,6 +41,10 @@ function App() {
 
         <LazySection placeholderHeight="40vh" rootMargin="1000px">
           <ClientLogos />
+        </LazySection>
+
+        <LazySection placeholderHeight="300vh" rootMargin="1000px">
+          <Industries />
         </LazySection>
 
         <LazySection placeholderHeight="100vh" rootMargin="1000px">
