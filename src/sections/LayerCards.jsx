@@ -19,7 +19,7 @@ const Card = ({ i, layer, progress, range, targetScale }) => {
       style={{ top: 0, height: '100vh' }}
     >
       <motion.div 
-        style={{ scale, transformOrigin: "top center", willChange: "transform" }}
+        style={{ scale, transformOrigin: "top center", willChange: "transform", backfaceVisibility: "hidden" }}
         className="relative w-full h-full max-w-[1400px] mx-auto overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-[0_15px_45px_rgba(0,0,0,0.1)] bg-luxury-black"
       >
         <motion.img 
@@ -49,7 +49,7 @@ const MobileCard = ({ layer, i }) => {
       style={{ willChange: "transform, opacity" }}
       className="overflow-hidden rounded-[1.35rem] border border-luxury-black/8 bg-luxury-black shadow-[0_12px_30px_rgba(26,26,26,0.06)]"
     >
-      <div className="bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.12),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-2.5">
+      <div className="bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.06),transparent_34%)] p-2.5">
         <img
           src={layer.src}
           alt={layer.title}
@@ -73,7 +73,7 @@ const LayerCards = () => {
     <section id="work" ref={containerRef} className="relative w-full bg-luxury-cream pb-20 lg:pb-32">
       {/* Background gradients */}
       <div className="absolute inset-0 pointer-events-none">
-         <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-luxury-white to-transparent" />
+         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-luxury-white/40 to-transparent" />
       </div>
 
       <div className="container-wide px-5 md:px-8 lg:px-24 relative z-10 pt-20 md:pt-24 lg:pt-32">

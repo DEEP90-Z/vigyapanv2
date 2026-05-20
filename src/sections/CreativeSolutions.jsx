@@ -37,7 +37,7 @@ const SolutionVideo = ({ baseName, fallbackSrc }) => {
         loop
         playsInline
         preload="none"
-        className="absolute inset-0 w-full h-full object-cover opacity-85"
+        className="absolute inset-0 w-full h-full object-cover opacity-100"
       >
         <source src={`/solutions/${baseName}_opt.webm`} type="video/webm" />
         <source src={`/solutions/${baseName}_opt.mp4`} type="video/mp4" />
@@ -77,20 +77,18 @@ const CreativeSolutions = () => {
 
   return (
     <section ref={containerRef} id="solutions" className="relative h-[450vh] bg-luxury-cream">
-      <motion.div
-        style={{ opacity: useTransform(scrollYProgress, [0, 0.08], [0, 1]) }}
+      <div
         className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center"
       >
 
         {/* Background gradient/glow for the section */}
-        <motion.div
-          style={{ opacity: useTransform(scrollYProgress, [0, 0.08], [0, 1]) }}
+        <div
           className="absolute inset-0 pointer-events-none"
         >
-          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-luxury-white to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-luxury-cream to-transparent" />
-          <div className="absolute left-1/2 top-24 h-[520px] w-[82vw] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.08),transparent_66%)]" />
-        </motion.div>
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-luxury-white/40 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-luxury-cream/50 to-transparent pointer-events-none" />
+          <div className="absolute left-1/2 top-24 h-[520px] w-[82vw] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05),transparent_66%)] pointer-events-none" />
+        </div>
 
         {/* Section Header */}
         <div className="absolute top-8 md:top-12 left-0 w-full px-5 md:px-12 lg:px-24 z-50 pointer-events-none">
@@ -107,7 +105,7 @@ const CreativeSolutions = () => {
           className="absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-10"
         >
           <motion.div
-            style={{ x: card1X, y: card1Y, willChange: 'transform' }}
+            style={{ x: card1X, y: card1Y, willChange: 'transform', backfaceVisibility: 'hidden' }}
             className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
@@ -143,7 +141,7 @@ const CreativeSolutions = () => {
           className="absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-20"
         >
           <motion.div
-            style={{ x: card2X, willChange: 'transform' }}
+            style={{ x: card2X, willChange: 'transform', backfaceVisibility: 'hidden' }}
             className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
@@ -179,7 +177,7 @@ const CreativeSolutions = () => {
           className="absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-30"
         >
           <motion.div
-            style={{ x: card3X, willChange: 'transform' }}
+            style={{ x: card3X, willChange: 'transform', backfaceVisibility: 'hidden' }}
             className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
@@ -209,7 +207,7 @@ const CreativeSolutions = () => {
           </motion.div>
         </motion.div>
 
-      </motion.div>
+      </div>
     </section>
   );
 };

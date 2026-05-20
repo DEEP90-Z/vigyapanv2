@@ -11,7 +11,6 @@ const Contact = lazy(() => import('./sections/Contact'));
 const Footer = lazy(() => import('./sections/Footer'));
 
 import { ReactLenis } from 'lenis/react';
-import LenisMotionSync from './components/LenisMotionSync';
 
 // A cinematic premium loading fallback
 const Fallback = () => (
@@ -22,8 +21,18 @@ const Fallback = () => (
 
 function App() {
   return (
-    <ReactLenis root autoRaf={false} options={{ lerp: 0.08, duration: 1.5, smoothWheel: true, syncTouch: false, wheelMultiplier: 1 }}>
-      <LenisMotionSync />
+    <ReactLenis 
+      root 
+      autoRaf={true} 
+      options={{ 
+        duration: 1.2, 
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+        smoothWheel: true, 
+        syncTouch: false, 
+        wheelMultiplier: 1.1,
+        touchMultiplier: 1.5
+      }}
+    >
       <main className="relative">
         <Navbar />
         <Hero />
