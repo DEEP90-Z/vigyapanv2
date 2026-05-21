@@ -18,8 +18,8 @@ const LongFormShowcase = () => {
     offset: ['start end', 'end start'],
   });
 
-  // Scale: starts compact (0.72) and expands to fill the container nicely (0.97)
-  const scale = useTransform(scrollYProgress, [0.15, 0.50], [0.72, 0.97], { clamp: true });
+  // Scale: starts larger (0.85) and expands to fill the container (1.0)
+  const scale = useTransform(scrollYProgress, [0.15, 0.50], [0.85, 1.0], { clamp: true });
   // Border Radius: starts rounded, gets slightly sharper as it expands
   const borderRadius = useTransform(scrollYProgress, [0.15, 0.50], ['2.5rem', '1.25rem'], { clamp: true });
   // Opacity: fade in section content
@@ -168,7 +168,7 @@ const LongFormShowcase = () => {
         </motion.div>
 
         {/* Video Frame Canvas */}
-        <div className="w-full flex items-center justify-center px-4 md:px-0 relative z-20">
+        <div className="w-full flex items-center justify-center px-3 md:px-8 relative z-20">
           <motion.div
             style={{ 
               scale, 
@@ -181,7 +181,7 @@ const LongFormShowcase = () => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={toggleSound}
-            className="relative w-full max-w-[min(85rem,130vh)] aspect-[16/9] overflow-hidden bg-black shadow-[0_40px_100px_rgba(0,0,0,0.15)] ring-1 ring-black/5 md:cursor-none cursor-pointer group transition-shadow duration-700 hover:shadow-[0_40px_100px_rgba(212,175,55,0.15)]"
+            className="relative w-full max-w-[1800px] h-[65vh] md:h-[72vh] overflow-hidden bg-black shadow-[0_40px_100px_rgba(0,0,0,0.15)] ring-1 ring-black/5 md:cursor-none cursor-pointer group transition-shadow duration-700 hover:shadow-[0_40px_100px_rgba(212,175,55,0.15)]"
           >
             {/* Elegant inner border for depth */}
             <div className="absolute inset-0 border-[1px] border-white/20 rounded-[inherit] pointer-events-none z-30 mix-blend-overlay" />
@@ -207,7 +207,7 @@ const LongFormShowcase = () => {
                 ) : (
                   <>
                     <Volume2 size={14} className="text-luxury-gold" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Muted</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Disable Sound</span>
                   </>
                 )}
               </motion.div>
