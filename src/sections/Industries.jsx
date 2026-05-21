@@ -102,44 +102,43 @@ const IndustryScene = ({ industry, mediaY, shineX }) => (
   </motion.div>
 );
 
-const IndustryCard = ({ industry, index, progress, range, targetScale }) => {
+const IndustryCard = ({ industry, index }) => {
   const cardRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ['start end', 'end start']
   });
 
-  const mediaY = useTransform(scrollYProgress, [0, 1], [24 + index * 4, -30 - index * 4]);
+  const mediaY = useTransform(scrollYProgress, [0, 1], [24, -30]);
   const shineX = useTransform(scrollYProgress, [0.08, 0.86], ['-35%', '125%']);
   
-  // Stacking scale effect matching the parent progress range
-  const scale = useTransform(progress, [range[0], 1], [1, targetScale]);
+  // Center card is pushed down for a creative staggered look
+  const yOffset = index === 1 ? 64 : 0;
 
   return (
-    <div 
-      className="sticky flex items-center justify-center w-full px-4"
-      style={{ top: '100px', height: '70vh' }}
+    <motion.article
+      ref={cardRef}
+      initial={{ opacity: 0, y: 80 + yOffset }}
+      whileInView={{ opacity: 1, y: yOffset }}
+      viewport={{ once: true, margin: '-10%' }}
+      transition={{ duration: 0.9, delay: index * 0.15, ease: [0.25, 1, 0.5, 1] }}
+      style={{ '--industry-accent': industry.accent, willChange: 'transform, opacity' }}
+      className="industry-card group w-full max-w-[460px] mx-auto"
     >
-      <motion.article
-        ref={cardRef}
-        style={{ scale, '--industry-accent': industry.accent, transformOrigin: 'top center', willChange: 'transform' }}
-        className="industry-card group w-full max-w-[460px] md:max-w-[490px]"
-      >
-        <div className="industry-card-frame">
-          <div className="industry-card-top">
-            <span>{industry.eyebrow}</span>
-            <span>{industry.metric}</span>
-          </div>
-
-          <IndustryScene industry={industry} mediaY={mediaY} shineX={shineX} />
-
-          <div className="industry-card-copy">
-            <h3>{industry.title}</h3>
-            <p>{industry.copy}</p>
-          </div>
+      <div className="industry-card-frame">
+        <div className="industry-card-top">
+          <span>{industry.eyebrow}</span>
+          <span>{industry.metric}</span>
         </div>
-      </motion.article>
-    </div>
+
+        <IndustryScene industry={industry} mediaY={mediaY} shineX={shineX} />
+
+        <div className="industry-card-copy">
+          <h3>{industry.title}</h3>
+          <p>{industry.copy}</p>
+        </div>
+      </div>
+    </motion.article>
   );
 };
 
@@ -203,10 +202,6 @@ const IndustryCardMobile = ({ industry }) => {
 
 const Industries = () => {
   const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end']
-  });
 
   return (
     <section
@@ -237,22 +232,15 @@ const Industries = () => {
         ))}
       </div>
 
-      {/* Desktop Sticky Stack layout */}
-      <div className="relative z-10 hidden w-full lg:block">
-        {industries.map((industry, i) => {
-          const targetScale = 1 - ((industries.length - i) * 0.04);
-          const range = [i * (1 / industries.length), 1];
-          return (
-            <IndustryCard
-              key={industry.id}
-              industry={industry}
-              index={i}
-              progress={scrollYProgress}
-              range={range}
-              targetScale={targetScale}
-            />
-          );
-        })}
+      {/* Desktop Grid Layout */}
+      <div className="relative z-10 hidden w-full lg:grid lg:grid-cols-3 gap-6 lg:gap-8 max-w-[1400px] mx-auto px-6 lg:px-12 items-start pb-32">
+        {industries.map((industry, i) => (
+          <IndustryCard
+            key={industry.id}
+            industry={industry}
+            index={i}
+          />
+        ))}
       </div>
     </section>
   );

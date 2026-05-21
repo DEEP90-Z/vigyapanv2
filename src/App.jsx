@@ -1,15 +1,17 @@
+import React, { Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import LazySection from './components/LazySection';
 
-// Import below-the-fold components statically to prevent Suspense layout collapses on scroll
-import CreativeSolutions from './sections/CreativeSolutions';
-import LayerCards from './sections/LayerCards';
-import ClientLogos from './sections/ClientLogos';
-import Industries from './sections/Industries';
-import ReelsShowcase from './sections/ReelsShowcase';
-import Contact from './sections/Contact';
-import Footer from './sections/Footer';
+// Implement React.lazy to enable JS code-splitting and drastically reduce initial bundle size
+const CreativeSolutions = React.lazy(() => import('./sections/CreativeSolutions'));
+const LayerCards = React.lazy(() => import('./sections/LayerCards'));
+const ClientLogos = React.lazy(() => import('./sections/ClientLogos'));
+const Industries = React.lazy(() => import('./sections/Industries'));
+const ReelsShowcase = React.lazy(() => import('./sections/ReelsShowcase'));
+const LongFormShowcase = React.lazy(() => import('./sections/LongFormShowcase'));
+const Contact = React.lazy(() => import('./sections/Contact'));
+const Footer = React.lazy(() => import('./sections/Footer'));
 
 import { ReactLenis } from 'lenis/react';
 
@@ -32,31 +34,51 @@ function App() {
         <Hero />
 
         <LazySection placeholderHeight="300vh" rootMargin="1000px">
-          <CreativeSolutions />
+          <Suspense fallback={<div style={{ minHeight: '300vh' }} />}>
+            <CreativeSolutions />
+          </Suspense>
         </LazySection>
 
         <LazySection placeholderHeight="300vh" rootMargin="1000px">
-          <LayerCards />
+          <Suspense fallback={<div style={{ minHeight: '300vh' }} />}>
+            <LayerCards />
+          </Suspense>
         </LazySection>
 
         <LazySection placeholderHeight="40vh" rootMargin="1000px">
-          <ClientLogos />
+          <Suspense fallback={<div style={{ minHeight: '40vh' }} />}>
+            <ClientLogos />
+          </Suspense>
         </LazySection>
 
         <LazySection placeholderHeight="300vh" rootMargin="1000px">
-          <Industries />
+          <Suspense fallback={<div style={{ minHeight: '300vh' }} />}>
+            <Industries />
+          </Suspense>
         </LazySection>
 
         <LazySection placeholderHeight="100vh" rootMargin="1000px">
-          <ReelsShowcase />
+          <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+            <ReelsShowcase />
+          </Suspense>
+        </LazySection>
+
+        <LazySection placeholderHeight="150vh" rootMargin="1000px">
+          <Suspense fallback={<div style={{ minHeight: '150vh' }} />}>
+            <LongFormShowcase />
+          </Suspense>
         </LazySection>
 
         <LazySection placeholderHeight="80vh" rootMargin="1000px">
-          <Contact />
+          <Suspense fallback={<div style={{ minHeight: '80vh' }} />}>
+            <Contact />
+          </Suspense>
         </LazySection>
 
         <LazySection placeholderHeight="40vh" rootMargin="1000px">
-          <Footer />
+          <Suspense fallback={<div style={{ minHeight: '40vh' }} />}>
+            <Footer />
+          </Suspense>
         </LazySection>
       </main>
     </ReactLenis>
