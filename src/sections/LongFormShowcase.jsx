@@ -9,7 +9,6 @@ const LongFormShowcase = () => {
 
   const [isHovered, setIsHovered] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   // Scroll animations for scaling the video frame
@@ -25,7 +24,7 @@ const LongFormShowcase = () => {
   // Opacity: fade in section content
   const opacity = useTransform(scrollYProgress, [0.05, 0.20], [0, 1], { clamp: true });
   // Parallax translation
-  const videoY = useTransform(scrollYProgress, [0.15, 0.60], ['50px', '0px'], { clamp: true });
+  const videoY = useTransform(scrollYProgress, [0.15, 0.60], ['20px', '0px'], { clamp: true });
 
   // Monitor play/pause on window/tab visibility and viewport intersection
   useEffect(() => {
@@ -34,12 +33,6 @@ const LongFormShowcase = () => {
 
     video.volume = 0;
     video.muted = true;
-
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -56,8 +49,6 @@ const LongFormShowcase = () => {
 
     return () => {
       observer.disconnect();
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('pause', handlePause);
       if (volumeFadeRef.current) cancelAnimationFrame(volumeFadeRef.current);
     };
   }, []);
@@ -130,7 +121,7 @@ const LongFormShowcase = () => {
     <section 
       ref={containerRef} 
       id="long-form" 
-      className="relative w-full h-[150vh] bg-luxury-cream text-luxury-black overflow-hidden select-none"
+      className="relative w-full bg-luxury-cream py-20 text-luxury-black overflow-hidden select-none md:py-28"
     >
       {/* Immersive Background Elements */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
@@ -143,26 +134,25 @@ const LongFormShowcase = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70rem] h-[40rem] bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.06),transparent_60%)] blur-[100px] rounded-full" />
       </div>
 
-      {/* Sticky container for smooth zoom reveal */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-hidden z-10">
+      <div className="relative z-10 flex w-full flex-col items-center">
         
         {/* Section Heading */}
         <motion.div 
           style={{ opacity }}
-          className="text-center mb-6 md:mb-8 max-w-4xl px-5 pointer-events-none z-10 flex flex-col items-center"
+          className="text-center mb-5 md:mb-8 max-w-4xl px-5 pointer-events-none z-10 flex flex-col items-center shrink-0"
         >
-          <div className="flex items-center gap-4 mb-4 md:mb-5">
+          <div className="flex items-center gap-4 mb-3 md:mb-4">
             <div className="w-8 md:w-12 h-[1px] bg-luxury-gold/60"></div>
             <span className="text-[0.65rem] md:text-xs font-bold tracking-[0.45em] uppercase text-luxury-gold">
               FEATURED FILM
             </span>
             <div className="w-8 md:w-12 h-[1px] bg-luxury-gold/60"></div>
           </div>
-          <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-display font-bold leading-[1.1] text-luxury-black tracking-tight drop-shadow-sm">
+          <h2 className="text-3xl md:text-5xl lg:text-[clamp(3rem,4.4vw,4rem)] font-display font-bold leading-[1.1] text-luxury-black tracking-tight drop-shadow-sm">
             Stories That Deserve <br className="hidden md:block" />
             More Than <span className="font-serif italic font-light text-luxury-gold">30 Seconds.</span>
           </h2>
-          <p className="mt-4 md:mt-5 text-xs md:text-sm text-luxury-black/60 max-w-lg mx-auto font-light leading-relaxed">
+          <p className="mt-3 md:mt-4 text-xs md:text-sm text-luxury-black/60 max-w-lg mx-auto font-light leading-relaxed">
             A cinematic showcase of our storytelling, production quality, and creative direction tailored for high-intent audiences.
           </p>
         </motion.div>
@@ -181,7 +171,7 @@ const LongFormShowcase = () => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={toggleSound}
-            className="relative w-full max-w-[1800px] h-[65vh] md:h-[72vh] overflow-hidden bg-black shadow-[0_40px_100px_rgba(0,0,0,0.15)] ring-1 ring-black/5 md:cursor-none cursor-pointer group transition-shadow duration-700 hover:shadow-[0_40px_100px_rgba(212,175,55,0.15)]"
+            className="relative aspect-video w-full max-w-[1500px] overflow-hidden bg-black shadow-[0_40px_100px_rgba(0,0,0,0.15)] ring-1 ring-black/5 md:cursor-none cursor-pointer group transition-shadow duration-700 hover:shadow-[0_40px_100px_rgba(212,175,55,0.15)]"
           >
             {/* Elegant inner border for depth */}
             <div className="absolute inset-0 border-[1px] border-white/20 rounded-[inherit] pointer-events-none z-30 mix-blend-overlay" />
@@ -226,7 +216,7 @@ const LongFormShowcase = () => {
               autoPlay
               playsInline
               preload="metadata"
-              className="w-full h-full object-cover pointer-events-none transition-transform duration-[1200ms] ease-out group-hover:scale-[1.015]"
+              className="w-full h-full object-cover pointer-events-none transition-transform duration-[1200ms] ease-out group-hover:scale-[1.01]"
             >
               <source src="/long form/Final Ganesh New com pressed.webm" type="video/webm" />
             </video>

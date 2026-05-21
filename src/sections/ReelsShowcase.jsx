@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useAnimationFrame } from 'framer-motion';
 
 const reelVideos = [
@@ -31,7 +31,9 @@ const ReelVideo = ({ src }) => {
                 // Reset playhead to release memory/processing overhead
                 try {
                   videoRef.current.currentTime = 0;
-                } catch (_) {}
+                } catch {
+                  // Ignore browsers that reject seeking before metadata is ready.
+                }
               }
             }
           });

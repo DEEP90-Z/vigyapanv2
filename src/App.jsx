@@ -5,6 +5,7 @@ import LazySection from './components/LazySection';
 
 // Implement React.lazy to enable JS code-splitting and drastically reduce initial bundle size
 const CreativeSolutions = React.lazy(() => import('./sections/CreativeSolutions'));
+const BrandManifesto = React.lazy(() => import('./sections/BrandManifesto'));
 const LayerCards = React.lazy(() => import('./sections/LayerCards'));
 const ClientLogos = React.lazy(() => import('./sections/ClientLogos'));
 const Industries = React.lazy(() => import('./sections/Industries'));
@@ -66,6 +67,12 @@ function App() {
         <LazySection placeholderHeight="150vh" rootMargin="1000px">
           <Suspense fallback={<div style={{ minHeight: '150vh' }} />}>
             <LongFormShowcase />
+          </Suspense>
+        </LazySection>
+
+        <LazySection placeholderHeight="140vh" rootMargin="1000px">
+          <Suspense fallback={<div style={{ minHeight: '140vh' }} />}>
+            <BrandManifesto />
           </Suspense>
         </LazySection>
 
