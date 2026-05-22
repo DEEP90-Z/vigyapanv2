@@ -90,14 +90,7 @@ const CreativeSolutions = () => {
           <div className="absolute left-1/2 top-24 h-[520px] w-[82vw] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05),transparent_66%)] pointer-events-none" />
         </div>
 
-        {/* Section Header */}
-        <div className="absolute top-8 md:top-12 left-0 w-full px-5 md:px-12 lg:px-24 z-50 pointer-events-none">
-          <div className="max-w-5xl">
-            <h2 className="text-4xl font-display font-bold leading-[0.95] tracking-tight text-luxury-black md:text-6xl lg:text-[6rem]">
-              Solutions.
-            </h2>
-          </div>
-        </div>
+        {/* Section Header removed */}
 
         {/* --- CARD 1 --- */}
         <motion.div
@@ -106,7 +99,7 @@ const CreativeSolutions = () => {
         >
           <motion.div
             style={{ x: card1X, y: card1Y, willChange: 'transform', backfaceVisibility: 'hidden' }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
+            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="360 marketing" fallbackSrc="/solutions/360 marketing.mp4" />
@@ -142,7 +135,7 @@ const CreativeSolutions = () => {
         >
           <motion.div
             style={{ x: card2X, willChange: 'transform', backfaceVisibility: 'hidden' }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10"
+            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="branding" fallbackSrc="/solutions/branding.mp4" />
@@ -178,7 +171,7 @@ const CreativeSolutions = () => {
         >
           <motion.div
             style={{ x: card3X, willChange: 'transform', backfaceVisibility: 'hidden' }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] mt-16 md:mt-24 rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
+            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="audio-video-production" fallbackSrc="/solutions/audio-video-production.mp4" />
