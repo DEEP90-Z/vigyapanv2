@@ -60,12 +60,12 @@ const ClientLogos = () => {
                 borderColor: "rgba(212, 175, 55, 0.18)"
               }}
               transition={{ duration: 0.55, ease: [0.25, 1, 0.5, 1] }}
-              className="flex items-center justify-center w-60 h-28 md:w-80 md:h-36 px-5 py-4 rounded-2xl md:rounded-3xl border border-white/60 bg-white/40 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.015)] shrink-0 transition-colors duration-500 cursor-pointer group"
+              className="flex items-center justify-center w-60 h-28 md:w-80 md:h-36 px-3 py-2 rounded-2xl md:rounded-3xl border border-white/60 bg-white/40 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.015)] shrink-0 transition-colors duration-500 cursor-pointer group"
             >
               <img 
                 src={client.logo} 
                 alt={client.name} 
-                className="w-[90%] h-[90%] object-contain opacity-75 group-hover:opacity-100 transition-all duration-700" 
+                className="w-[96%] h-[96%] object-contain opacity-75 group-hover:opacity-100 transition-all duration-700" 
               />
             </motion.div>
           ))}
