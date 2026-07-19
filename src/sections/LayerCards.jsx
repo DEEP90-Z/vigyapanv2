@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 
 const layersData = [
   { id: 1, src: '/layers/3 Layers.webp', title: "Jhansi Empire" },
@@ -39,29 +39,6 @@ const Card = ({ i, layer, progress, range, targetScale }) => {
   )
 }
 
-const MobileCard = ({ layer, i }) => {
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-12%" }}
-      transition={{ duration: 0.55, delay: i * 0.04, ease: [0.25, 1, 0.5, 1] }}
-      style={{ willChange: "transform, opacity" }}
-      className="overflow-hidden rounded-[1.35rem] border border-luxury-black/8 bg-luxury-black shadow-[0_12px_30px_rgba(26,26,26,0.06)]"
-    >
-      <div className="bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.06),transparent_34%)] p-2.5">
-        <img
-          src={layer.src}
-          alt={layer.title}
-          loading={i === 0 ? "eager" : "lazy"}
-          decoding="async"
-          className="block h-auto w-full rounded-[1rem] object-contain"
-        />
-      </div>
-    </motion.article>
-  );
-};
-
 const LayerCards = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -69,8 +46,55 @@ const LayerCards = () => {
     offset: ["start start", "end end"]
   });
 
+  const [currentMobileIndex, setCurrentMobileIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  // Auto-slide on mobile every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentMobileIndex((prev) => (prev + 1) % layersData.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentMobileIndex((prev) => (prev + 1) % layersData.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentMobileIndex((prev) => (prev - 1 + layersData.length) % layersData.length);
+  };
+
+  const goToSlide = (dotIdx) => {
+    setCurrentMobileIndex(dotIdx);
+  };
+
+  // Swipe handlers for mobile touch
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const minSwipeDistance = 50;
+    if (distance > minSwipeDistance) {
+      nextSlide();
+    } else if (distance < -minSwipeDistance) {
+      prevSlide();
+    }
+  };
+
+  const activeLayer = layersData[currentMobileIndex];
+
   return (
-    <section id="work" ref={containerRef} className="relative w-full bg-luxury-cream pb-4 lg:pb-6">
+    <section id="work" ref={containerRef} className="relative w-full bg-luxury-cream pb-12 lg:pb-6">
       {/* Background gradients */}
       <div className="absolute inset-0 pointer-events-none">
          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-luxury-white/40 to-transparent" />
@@ -91,12 +115,49 @@ const LayerCards = () => {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 md:px-8 lg:hidden">
-        {layersData.map((layer, i) => (
-          <MobileCard key={layer.id} layer={layer} i={i} />
-        ))}
+      {/* Mobile view auto-playing single image carousel */}
+      <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-col px-5 lg:hidden">
+        <div
+          className="relative w-full aspect-[3200/1417] overflow-hidden rounded-[1.35rem] shadow-[0_12px_35px_rgba(0,0,0,0.06)] border border-gray-100 bg-luxury-black"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <AnimatePresence initial={false}>
+            <motion.img
+              key={activeLayer.id}
+              src={activeLayer.src}
+              alt={activeLayer.title}
+              loading="eager"
+              decoding="async"
+              initial={{ opacity: 0, x: -24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 24 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              style={{ willChange: "transform, opacity" }}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </AnimatePresence>
+        </div>
+
+        {/* Pagination Indicators / Gold Active Pill */}
+        <div className="flex items-center justify-center gap-2 mt-6">
+          {layersData.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => goToSlide(idx)}
+              className={`transition-all duration-500 rounded-full cursor-pointer h-2 ${
+                currentMobileIndex === idx 
+                  ? 'w-6 bg-luxury-gold' 
+                  : 'w-2 bg-gray-300 hover:bg-gray-400'
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
       </div>
 
+      {/* Desktop view stacked sticky cards */}
       <div className="relative z-10 hidden w-full lg:block">
         {layersData.map((layer, i) => {
            const targetScale = 1 - ((layersData.length - i) * 0.04);

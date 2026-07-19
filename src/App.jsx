@@ -7,10 +7,8 @@ import LazySection from './components/LazySection';
 const CreativeSolutions = React.lazy(() => import('./sections/CreativeSolutions'));
 const BrandManifesto = React.lazy(() => import('./sections/BrandManifesto'));
 const LayerCards = React.lazy(() => import('./sections/LayerCards'));
-const ClientLogos = React.lazy(() => import('./sections/ClientLogos'));
-const Industries = React.lazy(() => import('./sections/Industries'));
+const BrandSpeaks = React.lazy(() => import('./sections/BrandSpeaks'));
 const ReelsShowcase = React.lazy(() => import('./sections/ReelsShowcase'));
-const LongFormShowcase = React.lazy(() => import('./sections/LongFormShowcase'));
 const Contact = React.lazy(() => import('./sections/Contact'));
 const Footer = React.lazy(() => import('./sections/Footer'));
 
@@ -46,27 +44,15 @@ function App() {
           </Suspense>
         </LazySection>
 
-        <LazySection placeholderHeight="40vh" rootMargin="1000px">
-          <Suspense fallback={<div style={{ minHeight: '40vh' }} />}>
-            <ClientLogos />
-          </Suspense>
-        </LazySection>
-
-        <LazySection placeholderHeight="300vh" rootMargin="1000px">
-          <Suspense fallback={<div style={{ minHeight: '300vh' }} />}>
-            <Industries />
+        <LazySection placeholderHeight="60vh" rootMargin="1000px">
+          <Suspense fallback={<div style={{ minHeight: '60vh' }} />}>
+            <BrandSpeaks />
           </Suspense>
         </LazySection>
 
         <LazySection placeholderHeight="100vh" rootMargin="1000px">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <ReelsShowcase />
-          </Suspense>
-        </LazySection>
-
-        <LazySection placeholderHeight="150vh" rootMargin="1000px">
-          <Suspense fallback={<div style={{ minHeight: '150vh' }} />}>
-            <LongFormShowcase />
           </Suspense>
         </LazySection>
 
