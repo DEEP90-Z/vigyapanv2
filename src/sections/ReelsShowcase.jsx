@@ -5,21 +5,21 @@ import { Play, X } from 'lucide-react';
 const featuredWorks = [
   {
     id: 1,
-    title: 'Hiranandani Communities',
+    title: 'Jhansi Empire',
     image: '/slideshow/Jhansi Empire.webp',
     youtubeUrl: 'https://www.youtube.com/watch?v=JsKF_hFid3I'
   },
   {
     id: 2,
-    title: 'Luxury Address Story',
+    title: 'Ganesh Enclave',
     image: '/slideshow/Ganesh.webp',
-    youtubeUrl: 'https://www.youtube.com/watch?v=wTDuwNMnC8A'
+    youtubeUrl: 'https://youtu.be/NWUPmKVGlr8?si=PfJClPN0dLwknUo5'
   },
   {
     id: 3,
-    title: 'Real Estate Campaign Film',
+    title: 'East Valley',
     image: '/slideshow/East valley.webp',
-    youtubeUrl: 'https://www.youtube.com/watch?v=F4YwZxJOsWs'
+    youtubeUrl: 'https://youtu.be/d_wU6OPDhG4?si=AnrHtN55rcVnqjGm'
   }
 ];
 
@@ -80,7 +80,7 @@ const FeaturedWorkStage = ({ work, onPlay }) => {
       <div className="absolute inset-0 bg-luxury-cream/38 mix-blend-screen transition-opacity duration-700 group-hover:opacity-70" />
       <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/35 via-luxury-black/0 to-transparent opacity-70" />
       <span
-        className="pointer-events-none absolute hidden h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/12 text-white backdrop-blur-[2px] transition-[left,top,transform,background-color] duration-500 ease-out group-hover:scale-110 group-hover:bg-white/22 md:flex"
+        className="pointer-events-none absolute hidden h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/12 text-white backdrop-blur-[2px] transition-[transform,background-color] duration-300 ease-out group-hover:scale-110 group-hover:bg-white/22 md:flex"
         style={{ left: `${cursor.x}%`, top: `${cursor.y}%` }}
       >
         <Play className="h-9 w-9 translate-x-0.5" fill="currentColor" strokeWidth={1.5} />
