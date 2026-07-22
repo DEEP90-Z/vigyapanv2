@@ -5,39 +5,27 @@ import { useMotionValue, useSpring } from 'framer-motion';
  * useMagnetic Hook
  * Returns motion values x & y, a ref, and handlers to apply a physics-based magnetic pull
  * to any button or media card on cursor hover.
- * 
- * @param {number} range - Active radius around the element (in pixels)
- * @param {number} strength - Attraction strength (0 to 1)
  */
 export function useMagnetic(range = 100, strength = 0.4) {
   const ref = useRef(null);
-
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
-  // Config springs for a smooth organic elastic behavior
   const springConfig = { stiffness: 120, damping: 12, mass: 0.2 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
   const handleMouseMove = (e) => {
     if (!ref.current) return;
-
     const { clientX, clientY } = e;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
-
-    // Center point of the element
     const centerX = left + width / 2;
     const centerY = top + height / 2;
-
-    // Distances
     const distanceX = clientX - centerX;
     const distanceY = clientY - centerY;
     const distance = Math.hypot(distanceX, distanceY);
 
     if (distance < range) {
-      // Scale attraction based on how close the cursor is
-      const ratio = 1 - distance / range; // 1 at center, 0 at boundary
+      const ratio = 1 - distance / range;
       x.set(distanceX * strength * ratio);
       y.set(distanceY * strength * ratio);
     } else {
