@@ -7,7 +7,7 @@ const featuredWorks = [
     id: 1,
     title: 'Jhansi Empire',
     image: '/slideshow/Jhansi Empire.webp',
-    youtubeUrl: 'https://www.youtube.com/watch?v=JsKF_hFid3I'
+    youtubeUrl: 'https://youtu.be/mvfu6mRI10E'
   },
   {
     id: 2,
@@ -277,10 +277,7 @@ const ReelsShowcase = () => {
           transition={{ duration: 1, ease: [0.25, 1, 0.5, 1] }}
           className="mx-auto max-w-3xl text-center"
         >
-          <span className="text-sm font-bold tracking-[0.2em] uppercase text-luxury-gold mb-6 block">Our Work</span>
-          <h2 className="text-4xl md:text-5xl lg:text-[4.5rem] font-serif italic text-luxury-black tracking-tight leading-[1.1]">
-            See What We <br/><span className="font-display font-bold not-italic">Create.</span>
-          </h2>
+          <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-luxury-gold mb-2 block">Our Work</h2>
         </motion.div>
       </div>
 
@@ -294,14 +291,6 @@ const ReelsShowcase = () => {
           work={currentFeaturedWork}
           onPlay={setActiveWork}
         />
-        <button
-          type="button"
-          onClick={() => setActiveWork(currentFeaturedWork)}
-          className="mx-auto mt-7 flex items-center gap-3 text-sm md:text-base font-display font-semibold uppercase tracking-[0.12em] text-luxury-black transition-colors hover:text-luxury-gold"
-        >
-          See What We Do
-          <span className="text-2xl leading-none">{'->'}</span>
-        </button>
       </div>
 
       <div className="container-wide mb-8 px-4 md:px-12 lg:px-24">
