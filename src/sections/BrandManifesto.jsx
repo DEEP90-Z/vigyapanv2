@@ -1,10 +1,24 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useMagnetic } from '../hooks/useMagnetic';
 
-const MediaCard = ({ src, type, label, coordinates, yOffset }) => {
-  // Config range and strength for fluid attraction physics
-  const { ref, x, y, handleMouseMove, handleMouseLeave } = useMagnetic(150, 0.35);
+const manifestoMedia = [
+  {
+    id: 1,
+    src: "/images/manifesto_lens.png",
+    label: "OPTICS_CALIBRATED",
+    coordinates: "left-[4%] top-[14%] w-[28vw] max-w-[125px] sm:max-w-[150px] lg:max-w-[240px] lg:w-[240px]"
+  },
+  {
+    id: 2,
+    src: "/images/manifesto_craft.png",
+    label: "CRAFT_WORKSPACE",
+    coordinates: "right-[4%] bottom-[14%] w-[30vw] max-w-[135px] sm:max-w-[160px] lg:max-w-[260px] lg:w-[260px]"
+  }
+];
+
+const MediaCard = ({ src, label, coordinates, yOffset }) => {
+  const { ref, x, y, handleMouseMove, handleMouseLeave } = useMagnetic(100, 0.3);
 
   return (
     <motion.div
@@ -16,38 +30,21 @@ const MediaCard = ({ src, type, label, coordinates, yOffset }) => {
         style={{ x, y }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="w-full h-full rounded-2xl overflow-hidden group shadow-[0_25px_60px_rgba(0,0,0,0.85)] border border-white/10 cursor-pointer bg-neutral-950 transition-shadow duration-500 hover:shadow-[0_20px_50px_rgba(212,175,55,0.15)] hover:border-luxury-gold/30 aspect-[3/4]"
+        className="w-full h-full rounded-2xl overflow-hidden group shadow-[0_15px_40px_rgba(0,0,0,0.75)] border border-white/10 cursor-pointer bg-neutral-950 transition-shadow duration-500 hover:shadow-[0_15px_40px_rgba(212,175,55,0.15)] hover:border-luxury-gold/30 aspect-[3/4]"
       >
         <div className="relative w-full h-full">
-          {type === 'video' ? (
-            <video
-              src={src}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 brightness-75 group-hover:brightness-100 ease-out"
-            />
-          ) : (
-            <img
-              src={src}
-              alt={label}
-              className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 brightness-75 group-hover:brightness-100 ease-out"
-            />
-          )}
+          <img
+            src={src}
+            alt={label}
+            className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 brightness-75 group-hover:brightness-100 ease-out"
+          />
 
-          {/* Luxury gold glow effect on hover */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-          
           <div className="absolute inset-0 border border-luxury-gold/0 group-hover:border-luxury-gold/25 rounded-2xl transition-colors duration-500" />
 
-          {/* Monospace annotation overlay */}
-          <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 flex flex-col pointer-events-none">
-            <span className="font-mono text-[9px] tracking-[0.25em] text-luxury-gold uppercase font-bold">
+          <div className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-1 group-hover:translate-y-0 flex flex-col pointer-events-none">
+            <span className="font-mono text-[8px] tracking-[0.2em] text-luxury-gold uppercase font-bold">
               {label}
-            </span>
-            <span className="font-mono text-[7px] text-white/50 tracking-wider mt-0.5 uppercase">
-              [ Vigyapan360 // Raw Frame ]
             </span>
           </div>
         </div>
@@ -58,28 +55,50 @@ const MediaCard = ({ src, type, label, coordinates, yOffset }) => {
 
 const BrandManifesto = () => {
   const containerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
-  // Dynamic X transitions for split row parallax marquee
-  const xLeft1 = useTransform(scrollYProgress, [0, 1], [-180, 180]);
-  const xRight = useTransform(scrollYProgress, [0, 1], [150, -150]);
-  const xLeft2 = useTransform(scrollYProgress, [0, 1], [-120, 120]);
+  // Desktop translations
+  const xLeft1Desktop = useTransform(scrollYProgress, [0, 1], [-180, 180]);
+  const xRightDesktop = useTransform(scrollYProgress, [0, 1], [150, -150]);
+  const xLeft2Desktop = useTransform(scrollYProgress, [0, 1], [-120, 120]);
 
-  // Parallax speeds for floating cards mapping scroll progress to coordinates
-  const yCard1 = useTransform(scrollYProgress, [0, 1], [-200, 200]);
-  const yCard2 = useTransform(scrollYProgress, [0, 1], [150, -150]);
-  const yCard3 = useTransform(scrollYProgress, [0, 1], [-90, 90]);
-  const yCard4 = useTransform(scrollYProgress, [0, 1], [250, -250]);
-  const yCard5 = useTransform(scrollYProgress, [0, 1], [-160, 160]);
+  // Mobile translations (scaled down to avoid out-of-screen clipping)
+  const xLeft1Mobile = useTransform(scrollYProgress, [0, 1], [-45, 45]);
+  const xRightMobile = useTransform(scrollYProgress, [0, 1], [35, -35]);
+  const xLeft2Mobile = useTransform(scrollYProgress, [0, 1], [-25, 25]);
+
+  const xLeft1 = isMobile ? xLeft1Mobile : xLeft1Desktop;
+  const xRight = isMobile ? xRightMobile : xRightDesktop;
+  const xLeft2 = isMobile ? xLeft2Mobile : xLeft2Desktop;
+
+  // Parallax speeds for floating cards (scaled down slightly on mobile to look smooth)
+  const yCard1Desktop = useTransform(scrollYProgress, [0, 1], [-150, 150]);
+  const yCard2Desktop = useTransform(scrollYProgress, [0, 1], [120, -120]);
+  const yCard1Mobile = useTransform(scrollYProgress, [0, 1], [-60, 60]);
+  const yCard2Mobile = useTransform(scrollYProgress, [0, 1], [50, -50]);
+
+  const yCard1 = isMobile ? yCard1Mobile : yCard1Desktop;
+  const yCard2 = isMobile ? yCard2Mobile : yCard2Desktop;
 
   return (
     <section
       ref={containerRef}
       id="brand-manifesto"
-      className="relative w-full min-h-[170vh] bg-luxury-dark text-white overflow-hidden py-36 flex flex-col justify-center select-none"
+      className="relative w-full min-h-[90vh] lg:min-h-[150vh] bg-luxury-dark text-white overflow-hidden py-24 lg:py-36 flex flex-col justify-center select-none"
     >
       {/* Editorial Grid Lines */}
       <div className="absolute inset-0 pointer-events-none z-0 flex justify-between px-6 md:px-12 lg:px-24 opacity-20">
@@ -92,42 +111,19 @@ const BrandManifesto = () => {
       {/* Floating Radial Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80rem] h-[50rem] bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.025),transparent_75%)] blur-3xl pointer-events-none z-0" />
 
-      {/* Background Floating Video and Image Cards */}
+      {/* Floating Image Cards on PC and Mobile */}
       <div className="absolute inset-0 z-10 pointer-events-none container-wide">
         <MediaCard
-          src="/reels/Video-145_opt.mp4"
-          type="video"
-          label="REEL_EDIT_#145"
-          coordinates="left-[3%] top-[12%] w-[18vw] md:w-[220px]"
+          src={manifestoMedia[0].src}
+          label={manifestoMedia[0].label}
+          coordinates={manifestoMedia[0].coordinates}
           yOffset={yCard1}
         />
         <MediaCard
-          src="/images/manifesto_lens.png"
-          type="image"
-          label="OPTICS_CALIBRATED"
-          coordinates="right-[6%] top-[8%] w-[19vw] md:w-[240px]"
+          src={manifestoMedia[1].src}
+          label={manifestoMedia[1].label}
+          coordinates={manifestoMedia[1].coordinates}
           yOffset={yCard2}
-        />
-        <MediaCard
-          src="/reels/Video-314_opt.mp4"
-          type="video"
-          label="CREATIVE_REFRACTION"
-          coordinates="left-[32%] top-[24%] w-[15vw] md:w-[190px]"
-          yOffset={yCard3}
-        />
-        <MediaCard
-          src="/images/manifesto_craft.png"
-          type="image"
-          label="CRAFT_WORKSPACE"
-          coordinates="left-[8%] bottom-[12%] w-[21vw] md:w-[260px]"
-          yOffset={yCard4}
-        />
-        <MediaCard
-          src="/reels/Video-404_opt.mp4"
-          type="video"
-          label="VIBRANT_GRADIENT"
-          coordinates="right-[4%] bottom-[10%] w-[18vw] md:w-[220px]"
-          yOffset={yCard5}
         />
       </div>
 
@@ -140,7 +136,7 @@ const BrandManifesto = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="flex items-center gap-3 mb-16 md:mb-24 justify-center"
+          className="flex items-center gap-3 mb-16 lg:mb-24 justify-center"
         >
           <span className="w-8 h-[1px] bg-luxury-gold/50" />
           <span className="text-[0.6rem] md:text-[0.7rem] font-bold tracking-[0.5em] uppercase text-luxury-gold">
@@ -156,7 +152,7 @@ const BrandManifesto = () => {
             style={{ x: xLeft1 }}
             className="text-[9vw] lg:text-[7.5rem] uppercase leading-[0.9] flex justify-center whitespace-nowrap"
           >
-            <span style={{ WebkitTextStroke: '1.5px rgba(255,255,255,0.25)', color: 'transparent' }}>
+            <span style={{ WebkitTextStroke: '1px rgba(255,255,255,0.25)', color: 'transparent' }}>
               EVERY STORY
             </span>
           </motion.div>
@@ -179,13 +175,13 @@ const BrandManifesto = () => {
         </div>
 
         {/* Brand details underneath the layout */}
-        <div className="mt-32 md:mt-48 flex flex-col md:flex-row md:items-end justify-between border-t border-white/10 pt-12 gap-8 pointer-events-auto">
+        <div className="mt-24 lg:mt-48 flex flex-col md:flex-row md:items-end justify-between border-t border-white/10 pt-12 gap-8 pointer-events-auto">
           <p className="max-w-md text-sm md:text-base text-white/50 font-light leading-relaxed">
             In an era of fleeting feeds, genuine connection is the ultimate luxury. 
             We craft visual narratives that transcend the scroll—designing calibrated, 
             cinematic ecosystems that capture modern curiosity and turn it into lasting brand legacy.
           </p>
-          <div className="flex gap-16">
+          <div className="flex gap-12 sm:gap-16">
             <div>
               <p className="text-[10px] font-bold tracking-widest text-luxury-gold uppercase">THE METRIC</p>
               <p className="text-lg font-display font-bold text-white mt-1">High Intent</p>

@@ -98,3 +98,13 @@ html.lenis, html.lenis body {
 ::-webkit-scrollbar-thumb:hover {
   background: #BBB;
 }
+
+/* Hide scrollbars for chrome/safari/firefox */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
