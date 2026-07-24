@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { AnimatePresence, motion, useAnimationFrame } from 'framer-motion';
-import { Play, X } from 'lucide-react';
+import { Play, X, Sparkles } from 'lucide-react';
 
 const featuredWorks = [
   {
@@ -23,47 +23,13 @@ const featuredWorks = [
   }
 ];
 
+// 4 active reel videos from public/reels
 const reelVideos = [
   { id: 1, src: '/reels/Video-145_opt.webm' },
   { id: 2, src: '/reels/Video-158_opt.webm' },
   { id: 3, src: '/reels/Video-331_opt.webm' },
   { id: 4, src: '/reels/Video-404_opt.webm' }
 ];
-
-const activeReelPlayers = new Map();
-
-const resetReelVideo = (video) => {
-  try {
-    video.currentTime = 0;
-  } catch {
-    // Ignore browsers that reject seeking before metadata is ready.
-  }
-};
-
-const claimReelPlayback = (src, video) => {
-  const activeVideo = activeReelPlayers.get(src);
-
-  if (activeVideo && activeVideo !== video) {
-    activeVideo.pause();
-    resetReelVideo(activeVideo);
-  }
-
-  activeReelPlayers.set(src, video);
-  video.play().catch(() => {
-    if (activeReelPlayers.get(src) === video) {
-      activeReelPlayers.delete(src);
-    }
-  });
-};
-
-const releaseReelPlayback = (src, video) => {
-  if (activeReelPlayers.get(src) === video) {
-    activeReelPlayers.delete(src);
-  }
-
-  video.pause();
-  resetReelVideo(video);
-};
 
 const getYoutubeEmbedUrl = (url) => {
   try {
@@ -133,11 +99,11 @@ const VideoModal = ({ work, onClose }) => {
     };
 
     document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [work, onClose]);
 
@@ -162,7 +128,7 @@ const VideoModal = ({ work, onClose }) => {
         <button
           type="button"
           onClick={onClose}
-          className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center text-white/90 transition-colors hover:text-white"
+          className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center text-white/90 transition-colors hover:text-white cursor-pointer"
           aria-label="Close video"
         >
           <X className="h-7 w-7" strokeWidth={1.5} />
@@ -181,71 +147,87 @@ const VideoModal = ({ work, onClose }) => {
   );
 };
 
-const ReelVideo = ({ src }) => {
-  const videoRef = useRef(null);
-  const containerRef = useRef(null);
-  
-  // Use a standard IntersectionObserver for better performance than framer-motion's useInView for many elements
-  useEffect(() => {
-      const container = containerRef.current;
-      const video = videoRef.current;
+// Responsive Reels Component: Frozen 4-Card Grid on Desktop, Auto-Sliding Marquee on Mobile
+const ResponsiveReelsShowcase = ({ isInView }) => {
+  const scrollerRef = useRef(null);
+  const positionRef = useRef(0);
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!video) return;
+  // Smooth sliding speed for mobile marquee
+  const speed = 1.0;
 
-            if (entry.isIntersecting) {
-              claimReelPlayback(src, video);
-            } else {
-              releaseReelPlayback(src, video);
-            }
-          });
-        },
-        { rootMargin: "100px", threshold: 0.1 } // Load just before, play when visible
-      );
+  useAnimationFrame(() => {
+    if (!isInView || !scrollerRef.current) return;
+    positionRef.current -= speed;
 
-    if (container) {
-      observer.observe(container);
+    const scrollerWidth = scrollerRef.current.scrollWidth / 2;
+    if (Math.abs(positionRef.current) >= scrollerWidth) {
+      positionRef.current = 0;
     }
 
-    return () => {
-      if (container) observer.unobserve(container);
-      if (video) {
-        releaseReelPlayback(src, video);
-      }
-    };
-  }, [src]);
+    scrollerRef.current.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
+  });
 
   return (
-    <motion.div 
-      ref={containerRef}
-      whileHover={{ y: -10, scale: 1.02 }}
-      transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
-      className="relative w-[220px] md:w-[260px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm shrink-0 group cursor-pointer"
-      style={{ willChange: "transform" }}
-    >
-      <video 
-        ref={videoRef}
-        muted
-        loop
-        playsInline
-        preload="none"
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src={src} type="video/webm" />
-      </video>
-      {/* Refined shadow to be less heavy */}
-      <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
-      <div className="absolute inset-0 shadow-[inset_0_-40px_40px_rgba(0,0,0,0.2)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-    </motion.div>
+    <div className="w-full py-8">
+      {/* DESKTOP VIEW: Frozen 4-Column Creative Grid */}
+      <div className="hidden md:grid md:grid-cols-4 gap-6 max-w-[1320px] mx-auto px-6">
+        {reelVideos.map((reel) => (
+          <motion.div
+            key={reel.id}
+            whileHover={{ y: -10, scale: 1.02 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="group relative aspect-[9/16] rounded-3xl overflow-hidden shadow-xl bg-black border border-luxury-black/10 hover:border-luxury-gold/40 transition-colors duration-500 cursor-pointer"
+          >
+            <video
+              src={reel.src}
+              muted
+              autoPlay
+              loop
+              playsInline
+              preload="metadata"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            {/* Ambient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity" />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* MOBILE VIEW: Auto-Sliding Reels Marquee */}
+      <div className="md:hidden relative w-full overflow-hidden py-4">
+        {/* Side Fade Gradients */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-luxury-cream to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-luxury-cream to-transparent z-10" />
+
+        <div
+          ref={scrollerRef}
+          className="flex gap-4 px-4"
+          style={{ width: 'max-content', willChange: 'transform' }}
+        >
+          {[...reelVideos, ...reelVideos].map((reel, idx) => (
+            <div
+              key={`${reel.id}-${idx}`}
+              className="relative w-[210px] aspect-[9/16] rounded-2xl overflow-hidden shadow-md shrink-0 bg-black"
+            >
+              <video
+                src={reel.src}
+                muted
+                autoPlay
+                loop
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
 const ReelsShowcase = () => {
   const containerRef = useRef(null);
-  const scrollerRef = useRef(null);
-  const positionRef = useRef(0);
   const isInViewRef = useRef(false);
   const [activeWork, setActiveWork] = useState(null);
   const [featuredIndex, setFeaturedIndex] = useState(0);
@@ -260,7 +242,7 @@ const ReelsShowcase = () => {
     return () => window.clearInterval(timer);
   }, []);
 
-  // Monitor visibility of the ReelsShowcase component
+  // IntersectionObserver for visibility
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -276,26 +258,11 @@ const ReelsShowcase = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Infinite scroll effect
-  const speed = 0.8; // Smooth, elegant speed
-
-  useAnimationFrame(() => {
-    if (!isInViewRef.current || !scrollerRef.current) return;
-    positionRef.current -= speed;
-    
-    // Reset when half the content has scrolled 
-    const scrollerWidth = scrollerRef.current.scrollWidth / 2;
-    if (Math.abs(positionRef.current) >= scrollerWidth) {
-      positionRef.current = 0;
-    }
-    
-    scrollerRef.current.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
-  });
-
   return (
-    <section id="reels" ref={containerRef} className="py-24 md:py-40 bg-luxury-cream overflow-hidden relative border-t border-luxury-black/5">
+    <section id="reels" ref={containerRef} className="py-24 md:py-36 bg-luxury-cream overflow-hidden relative border-t border-luxury-black/5">
       <VideoModal work={activeWork} onClose={() => setActiveWork(null)} />
 
+      {/* Main Section Tag Header */}
       <div className="container-wide mb-14 px-4 md:px-12 lg:px-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -308,7 +275,8 @@ const ReelsShowcase = () => {
         </motion.div>
       </div>
 
-      <div className="mb-24 md:mb-32">
+      {/* Featured Long Slideshow Stage */}
+      <div className="mb-16 md:mb-20">
         <div className="relative mb-8 flex justify-center px-4">
           <span className="text-sm md:text-base font-display font-semibold uppercase tracking-[0.16em] text-luxury-black">
             Featured Content
@@ -320,25 +288,27 @@ const ReelsShowcase = () => {
         />
       </div>
 
-      <div className="container-wide mb-8 px-4 md:px-12 lg:px-24">
-        <div className="max-w-3xl">
-          <span className="text-sm font-bold tracking-[0.2em] uppercase text-luxury-gold mb-5 block">The UGC Story Wall</span>
-          <h3 className="text-3xl md:text-5xl font-serif italic text-luxury-black tracking-tight leading-[1.1]">
-            Stories Built For <span className="font-display font-bold not-italic">Attention.</span>
+      {/* Creative Heading for Short-Form Reels */}
+      <div className="container-wide px-4 md:px-12 lg:px-24 mt-16 md:mt-24 mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-luxury-gold/30 bg-luxury-gold/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-luxury-gold mb-3">
+            <Sparkles className="h-3.5 w-3.5 text-luxury-gold" />
+            <span>Short-Form Visuals</span>
+          </div>
+          <h3 className="text-2xl md:text-4xl lg:text-5xl font-serif italic text-luxury-black tracking-tight leading-[1.15]">
+            Reels Built To <span className="font-display font-bold not-italic text-luxury-black">Stop The Scroll.</span>
           </h3>
-        </div>
+        </motion.div>
       </div>
-      <div className="relative w-full flex items-center overflow-hidden py-12">
-        {/* Floating gradient overlays for depth */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-luxury-cream to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-luxury-cream to-transparent z-10 pointer-events-none" />
 
-        <div className="flex gap-6 md:gap-10 px-4" ref={scrollerRef} style={{ width: 'max-content', willChange: 'transform' }}>
-          {[...reelVideos, ...reelVideos].map((reel, idx) => (
-            <ReelVideo key={`${reel.id}-${idx}`} src={reel.src} />
-          ))}
-        </div>
-      </div>
+      {/* Responsive 4-Reel Display: Frozen Grid on Desktop, Smooth Auto-Sliding Marquee on Mobile */}
+      <ResponsiveReelsShowcase isInView={isInViewRef.current} />
     </section>
   );
 };
