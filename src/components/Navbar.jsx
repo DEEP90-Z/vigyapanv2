@@ -39,7 +39,12 @@ const Navbar = () => {
         initial={{ y: -120, x: 0 }}
         animate={{ y: hidden ? -130 : 0, x: 0 }}
         transition={{ duration: 0.8, ease: [0.6, 0.05, 0.01, 0.9] }}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500 bg-luxury-white/80 backdrop-blur-md border-b border-luxury-black/5 text-luxury-black shadow-[0_4px_25px_rgba(0,0,0,0.03)] w-full py-3.5 md:py-4 px-6 md:px-16"
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500 text-luxury-black w-full py-3.5 md:py-4 px-6 md:px-16",
+          showGlass 
+            ? "bg-luxury-white/90 backdrop-blur-md border-b border-luxury-black/5 shadow-[0_4px_25px_rgba(0,0,0,0.04)]" 
+            : "bg-luxury-white/60 backdrop-blur-sm border-b border-transparent"
+        )}
       >
         <a 
           href="#home" 

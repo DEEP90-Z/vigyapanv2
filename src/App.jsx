@@ -32,37 +32,37 @@ function App() {
         <Navbar />
         <Hero />
 
-        <LazySection placeholderHeight="300vh" rootMargin="1000px">
+        <LazySection id="solutions" placeholderHeight="300vh" rootMargin="1000px">
           <Suspense fallback={<div style={{ minHeight: '300vh' }} />}>
             <CreativeSolutions />
           </Suspense>
         </LazySection>
 
-        <LazySection placeholderHeight="300vh" rootMargin="1000px">
+        <LazySection id="work" placeholderHeight="300vh" rootMargin="1000px">
           <Suspense fallback={<div style={{ minHeight: '300vh' }} />}>
             <LayerCards />
           </Suspense>
         </LazySection>
 
-        <LazySection placeholderHeight="60vh" rootMargin="1000px">
+        <LazySection id="testimonials" placeholderHeight="60vh" rootMargin="1000px">
           <Suspense fallback={<div style={{ minHeight: '60vh' }} />}>
             <BrandSpeaks />
           </Suspense>
         </LazySection>
 
-        <LazySection placeholderHeight="100vh" rootMargin="1000px">
+        <LazySection id="reels" placeholderHeight="100vh" rootMargin="1000px">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <ReelsShowcase />
           </Suspense>
         </LazySection>
 
-        <LazySection placeholderHeight="140vh" rootMargin="1000px">
+        <LazySection id="brand-manifesto" placeholderHeight="140vh" rootMargin="1000px">
           <Suspense fallback={<div style={{ minHeight: '140vh' }} />}>
             <BrandManifesto />
           </Suspense>
         </LazySection>
 
-        <LazySection placeholderHeight="80vh" rootMargin="1000px">
+        <LazySection id="contact" placeholderHeight="80vh" rootMargin="1000px">
           <Suspense fallback={<div style={{ minHeight: '80vh' }} />}>
             <Contact />
           </Suspense>

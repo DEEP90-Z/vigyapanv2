@@ -43,7 +43,7 @@ const Footer = () => {
       
       <div className="w-full overflow-hidden py-10 md:py-14 bg-luxury-black select-none relative z-10 border-t border-white/5">
         <div 
-          className="flex gap-16 text-5xl md:text-7xl font-serif italic text-white/95 uppercase tracking-widest whitespace-nowrap animate-marquee-right"
+          className="flex gap-16 text-5xl md:text-7xl font-serif italic text-white/95 uppercase tracking-widest whitespace-nowrap animate-marquee-left"
           style={{ width: 'max-content' }}
         >
           {[0, 1, 2].map((i) => (

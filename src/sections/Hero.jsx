@@ -69,40 +69,42 @@ const Hero = () => {
       </div>
 
       {/* Content - Bottom Right Aligned */}
-      <div className="container-wide px-8 md:px-16 pb-12 lg:pb-20 relative z-10 flex flex-col items-end text-right w-[90vw] lg:w-[620px] max-w-full">
-        
-        <motion.h1 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.25, 1, 0.5, 1], delay: 0.1 }}
-          style={{ willChange: "transform, opacity" }}
-          className="flex flex-col gap-0 w-full items-end"
-        >
-          <span className="text-[34px] lg:text-[52px] font-extrabold leading-[1.08] text-white">
-            Most projects are launched,
-          </span>
-          <span className="text-[29px] lg:text-[45px] font-semibold leading-[1.08]" style={{ color: 'rgba(255, 255, 255, 0.82)' }}>
-            few are remembered,
-          </span>
-          <span className="text-[23px] lg:text-[35px] text-luxury-gold italic font-serif font-light drop-shadow-[0_3px_10px_rgba(212,175,55,0.15)] leading-[1.08] mt-[14px]">
-            but legends are designed.
-          </span>
-        </motion.h1>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
-          style={{ willChange: "transform, opacity" }}
-          className="mt-10"
-        >
-          <button 
-            onClick={() => handleScroll('#reels')}
-            className="px-12 py-4 bg-white/8 border border-white/20 text-white rounded-full backdrop-blur-sm hover:bg-white hover:text-luxury-black transition-all duration-500 uppercase tracking-[0.2em] text-[11px] font-bold hover:scale-105 active:scale-95 cursor-pointer"
+      <div className="w-full relative z-10 px-6 sm:px-10 md:px-16 lg:px-24 pb-10 sm:pb-14 lg:pb-20 flex justify-end">
+        <div className="flex flex-col items-end text-right w-[90vw] sm:w-[540px] lg:w-[640px] max-w-full">
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.25, 1, 0.5, 1], delay: 0.1 }}
+            style={{ willChange: "transform, opacity" }}
+            className="flex flex-col gap-0 w-full items-end"
           >
-            Our Work
-          </button>
-        </motion.div>
+            <span className="text-[32px] sm:text-[40px] lg:text-[52px] font-extrabold leading-[1.08] text-white">
+              Most projects are launched,
+            </span>
+            <span className="text-[27px] sm:text-[34px] lg:text-[45px] font-semibold leading-[1.08]" style={{ color: 'rgba(255, 255, 255, 0.82)' }}>
+              few are remembered,
+            </span>
+            <span className="text-[22px] sm:text-[28px] lg:text-[35px] text-luxury-gold italic font-serif font-light drop-shadow-[0_3px_10px_rgba(212,175,55,0.15)] leading-[1.08] mt-[14px]">
+              but legends are designed.
+            </span>
+          </motion.h1>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
+            style={{ willChange: "transform, opacity" }}
+            className="mt-8 lg:mt-10"
+          >
+            <button 
+              onClick={() => handleScroll('#reels')}
+              className="px-10 lg:px-12 py-3.5 lg:py-4 bg-white/8 border border-white/20 text-white rounded-full backdrop-blur-sm hover:bg-white hover:text-luxury-black transition-all duration-500 uppercase tracking-[0.2em] text-[10px] lg:text-[11px] font-bold hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              Our Work
+            </button>
+          </motion.div>
+        </div>
       </div>
 
     </section>

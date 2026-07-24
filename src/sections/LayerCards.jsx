@@ -130,9 +130,9 @@ const LayerCards = () => {
               alt={activeLayer.title}
               loading="eager"
               decoding="async"
-              initial={{ opacity: 0, x: -24 }}
+              initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 24 }}
+              exit={{ opacity: 0, x: -24 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               style={{ willChange: "transform, opacity" }}
               className="absolute inset-0 h-full w-full object-cover"

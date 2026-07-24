@@ -76,13 +76,14 @@ const Contact = () => {
               onMouseLeave={btnLeave}
               className="relative z-20"
             >
-              <a href="mailto:contact@vigyapan360.com" className="inline-block cursor-pointer">
-                <button className="px-10 py-4 bg-luxury-white text-luxury-black rounded-full hover:shadow-[0_15px_45px_rgba(212,175,55,0.25)] transition-all duration-500 uppercase tracking-[0.25em] text-[9px] font-black group relative overflow-hidden">
-                  <span className="absolute inset-0 bg-luxury-gold translate-y-full group-hover:translate-y-0 transition-transform duration-600 ease-[0.16,1,0.3,1] z-0" />
-                  <span className="relative z-10 group-hover:text-luxury-dark transition-colors duration-500">
-                    Start A Project
-                  </span>
-                </button>
+              <a 
+                href="mailto:contact@vigyapan360.com" 
+                className="inline-block px-10 py-4 bg-luxury-white text-luxury-black rounded-full hover:shadow-[0_15px_45px_rgba(212,175,55,0.25)] transition-all duration-500 uppercase tracking-[0.25em] text-[9px] font-black group relative overflow-hidden cursor-pointer"
+              >
+                <span className="absolute inset-0 bg-luxury-gold translate-y-full group-hover:translate-y-0 transition-transform duration-600 ease-[0.16,1,0.3,1] z-0" />
+                <span className="relative z-10 group-hover:text-luxury-dark transition-colors duration-500">
+                  Start A Project
+                </span>
               </a>
             </motion.div>
           </div>
@@ -103,8 +104,7 @@ const Contact = () => {
                   className="w-full h-full border-0 opacity-100 z-10"
                   allowFullScreen={true} 
                   loading="lazy" 
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  sandbox="allow-scripts allow-same-origin allow-popups"
+                  referrerPolicy="no-referrer-when-downgrade"
                 />
                 
                 <div className="absolute bottom-4 right-4 z-20">

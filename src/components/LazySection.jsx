@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
  * This prevents the browser from loading heavy video/image assets and executing
  * Framer Motion scripts for sections that are not yet visible.
  */
-const LazySection = ({ children, threshold = 0.01, rootMargin = '600px', placeholderHeight = '50vh', className = '' }) => {
+const LazySection = ({ id, children, threshold = 0.01, rootMargin = '600px', placeholderHeight = '50vh', className = '' }) => {
   const [isInView, setIsInView] = useState(false);
   const ref = useRef(null);
 
@@ -31,7 +31,7 @@ const LazySection = ({ children, threshold = 0.01, rootMargin = '600px', placeho
   }, [threshold, rootMargin]);
 
   return (
-    <div ref={ref} className={className} style={!isInView ? { minHeight: placeholderHeight } : {}}>
+    <div id={id} ref={ref} className={className} style={!isInView ? { minHeight: placeholderHeight } : {}}>
       {isInView ? children : null}
     </div>
   );
