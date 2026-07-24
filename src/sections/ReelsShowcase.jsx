@@ -24,13 +24,46 @@ const featuredWorks = [
 ];
 
 const reelVideos = [
-  { id: 1, src: '/reels/Video-145_opt.mp4' },
-  { id: 2, src: '/reels/Video-158_opt.mp4' },
-  { id: 3, src: '/reels/Video-314_opt.mp4' },
-  { id: 4, src: '/reels/Video-331_opt.mp4' },
-  { id: 5, src: '/reels/Video-404_opt.mp4' },
-  { id: 6, src: '/reels/Video-536_opt.mp4' }
+  { id: 1, src: '/reels/Video-145_opt.webm' },
+  { id: 2, src: '/reels/Video-158_opt.webm' },
+  { id: 3, src: '/reels/Video-331_opt.webm' },
+  { id: 4, src: '/reels/Video-404_opt.webm' }
 ];
+
+const activeReelPlayers = new Map();
+
+const resetReelVideo = (video) => {
+  try {
+    video.currentTime = 0;
+  } catch {
+    // Ignore browsers that reject seeking before metadata is ready.
+  }
+};
+
+const claimReelPlayback = (src, video) => {
+  const activeVideo = activeReelPlayers.get(src);
+
+  if (activeVideo && activeVideo !== video) {
+    activeVideo.pause();
+    resetReelVideo(activeVideo);
+  }
+
+  activeReelPlayers.set(src, video);
+  video.play().catch(() => {
+    if (activeReelPlayers.get(src) === video) {
+      activeReelPlayers.delete(src);
+    }
+  });
+};
+
+const releaseReelPlayback = (src, video) => {
+  if (activeReelPlayers.get(src) === video) {
+    activeReelPlayers.delete(src);
+  }
+
+  video.pause();
+  resetReelVideo(video);
+};
 
 const getYoutubeEmbedUrl = (url) => {
   try {
@@ -155,24 +188,17 @@ const ReelVideo = ({ src }) => {
   // Use a standard IntersectionObserver for better performance than framer-motion's useInView for many elements
   useEffect(() => {
       const container = containerRef.current;
+      const video = videoRef.current;
+
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
+            if (!video) return;
+
             if (entry.isIntersecting) {
-              if (videoRef.current) {
-                // Play only when partially visible
-                videoRef.current.play().catch(() => {});
-              }
+              claimReelPlayback(src, video);
             } else {
-              if (videoRef.current) {
-                videoRef.current.pause();
-                // Reset playhead to release memory/processing overhead
-                try {
-                  videoRef.current.currentTime = 0;
-                } catch {
-                  // Ignore browsers that reject seeking before metadata is ready.
-                }
-              }
+              releaseReelPlayback(src, video);
             }
           });
         },
@@ -185,8 +211,11 @@ const ReelVideo = ({ src }) => {
 
     return () => {
       if (container) observer.unobserve(container);
+      if (video) {
+        releaseReelPlayback(src, video);
+      }
     };
-  }, []);
+  }, [src]);
 
   return (
     <motion.div 
@@ -204,8 +233,7 @@ const ReelVideo = ({ src }) => {
         preload="none"
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source src={src.replace('.mp4', '.webm')} type="video/webm" />
-        <source src={src} type="video/mp4" />
+        <source src={src} type="video/webm" />
       </video>
       {/* Refined shadow to be less heavy */}
       <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
