@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 // Performance-optimized Video Component with viewport-aware play/pause
-const SolutionVideo = ({ baseName, fallbackSrc }) => {
+const SolutionVideo = ({ baseName }) => {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -41,7 +41,6 @@ const SolutionVideo = ({ baseName, fallbackSrc }) => {
       >
         <source src={`/solutions/${baseName}_opt.webm`} type="video/webm" />
         <source src={`/solutions/${baseName}_opt.mp4`} type="video/mp4" />
-        <source src={fallbackSrc} type="video/mp4" />
       </video>
     </div>
   );
@@ -102,7 +101,7 @@ const CreativeSolutions = () => {
             className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
-              <SolutionVideo baseName="360 marketing" fallbackSrc="/solutions/360 marketing.mp4" />
+              <SolutionVideo baseName="360 marketing" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40 pointer-events-none" />
               <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg z-10">
                 Meta Ads / Growth
@@ -138,7 +137,7 @@ const CreativeSolutions = () => {
             className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
-              <SolutionVideo baseName="branding" fallbackSrc="/solutions/branding.mp4" />
+              <SolutionVideo baseName="branding" />
               <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-black/40 pointer-events-none" />
               <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg z-10">
                 Identity Systems
@@ -174,7 +173,7 @@ const CreativeSolutions = () => {
             className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
             <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
-              <SolutionVideo baseName="audio-video-production" fallbackSrc="/solutions/audio-video-production.mp4" />
+              <SolutionVideo baseName="audio-video-production" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40 pointer-events-none" />
               <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg z-10">
                 Production / Reels

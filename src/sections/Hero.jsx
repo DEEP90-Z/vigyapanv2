@@ -1,8 +1,21 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useLenis } from 'lenis/react';
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 1024 : false);
+  const lenis = useLenis();
+
+  const handleScroll = (href) => {
+    if (lenis) {
+      lenis.scrollTo(href, { offset: -20, duration: 1.2 });
+    } else {
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -37,7 +50,6 @@ const Hero = () => {
             <>
               <source src="/videos/mobile_opt.webm" type="video/webm" />
               <source src="/videos/mobile_opt.mp4" type="video/mp4" />
-              <source src="/videos/mobile.mp4" type="video/mp4" />
             </>
           ) : (
             <>
@@ -57,30 +69,24 @@ const Hero = () => {
       </div>
 
       {/* Content - Bottom Right Aligned */}
-      <div className="container-wide w-full px-8 md:px-16 pb-16 md:pb-20 relative z-10 flex flex-col items-end text-right">
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
-          style={{ willChange: "transform, opacity" }}
-          className="mb-4"
-        >
-          <p className="text-[0.65rem] sm:text-[0.7rem] uppercase tracking-[0.42em] text-white/60 font-bold">
-            Cinematic Real-Estate Storytelling
-          </p>
-        </motion.div>
+      <div className="container-wide px-8 md:px-16 pb-12 lg:pb-20 relative z-10 flex flex-col items-end text-right w-[90vw] lg:w-[620px] max-w-full">
         
         <motion.h1 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.25, 1, 0.5, 1], delay: 0.1 }}
           style={{ willChange: "transform, opacity" }}
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-[3.3rem] font-display font-black leading-[1.12] tracking-tight text-white max-w-3xl mb-8"
+          className="flex flex-col gap-0 w-full items-end"
         >
-          Most projects are launched.<br />
-          <span className="text-white/60 font-light">Few are remembered,</span><br />
-          <span className="text-luxury-gold italic font-serif font-light drop-shadow-[0_3px_10px_rgba(212,175,55,0.15)]">but legends are designed.</span>
+          <span className="text-[34px] lg:text-[52px] font-extrabold leading-[1.08] text-white">
+            Most projects are launched,
+          </span>
+          <span className="text-[29px] lg:text-[45px] font-semibold leading-[1.08]" style={{ color: 'rgba(255, 255, 255, 0.82)' }}>
+            few are remembered,
+          </span>
+          <span className="text-[23px] lg:text-[35px] text-luxury-gold italic font-serif font-light drop-shadow-[0_3px_10px_rgba(212,175,55,0.15)] leading-[1.08] mt-[14px]">
+            but legends are designed.
+          </span>
         </motion.h1>
         
         <motion.div
@@ -88,9 +94,13 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
           style={{ willChange: "transform, opacity" }}
+          className="mt-10"
         >
-          <button className="px-8 py-3.5 bg-white/8 border border-white/20 text-white rounded-full backdrop-blur-sm hover:bg-white hover:text-luxury-black transition-all duration-500 uppercase tracking-[0.2em] text-[11px] font-bold hover:scale-105 active:scale-95">
-            View Work
+          <button 
+            onClick={() => handleScroll('#reels')}
+            className="px-12 py-4 bg-white/8 border border-white/20 text-white rounded-full backdrop-blur-sm hover:bg-white hover:text-luxury-black transition-all duration-500 uppercase tracking-[0.2em] text-[11px] font-bold hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            Our Work
           </button>
         </motion.div>
       </div>

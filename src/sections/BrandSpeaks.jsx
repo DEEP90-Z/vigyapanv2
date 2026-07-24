@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { testimonials } from '../data/testimonials';
+import { cn } from '../utils/cn';
 
 const StarIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-[18px] h-[18px] text-[#FBBF24]">
@@ -224,18 +225,21 @@ const BrandSpeaks = () => {
                   {/* Testimonial Card */}
                   <div className="bg-white rounded-[2rem] border border-gray-100 p-8 md:p-10 flex flex-col items-center text-center shadow-[0_10px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:border-luxury-gold/20 transition-all duration-500 h-full relative group">
                     
-                    {/* Centered circular image container for the company logo */}
-                    <div className="relative w-20 h-20 mb-6">
-                      <div className="w-20 h-20 rounded-full border border-gray-100 bg-white flex items-center justify-center p-3.5 shadow-[inset_0_2px_8px_rgba(0,0,0,0.02)] transition-transform duration-500 group-hover:scale-105">
-                        <img 
-                          src={item.logo} 
-                          alt={`${item.brand} Logo`} 
-                          className="w-full h-full object-contain opacity-100 transition-opacity duration-300" 
-                        />
-                      </div>
+                    {/* Direct logo image with no surrounding card shape */}
+                    <div className="relative w-36 h-18 mb-6 flex items-center justify-center">
+                      <img 
+                        src={item.logo} 
+                        alt={`${item.brand} Logo`} 
+                        className={cn(
+                          "w-full h-full object-contain opacity-100 transition-all duration-500",
+                          item.brand === "Neelam Dresses" 
+                            ? "scale-[0.72] group-hover:scale-[0.76]" 
+                            : "group-hover:scale-105"
+                        )}
+                      />
                       
                       {/* Google G Badge overlapping bottom-right of logo */}
-                      <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center border border-gray-100 z-10 transition-transform duration-500 group-hover:scale-110">
+                      <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center border border-gray-100 z-10 transition-transform duration-500 group-hover:scale-110">
                         <GoogleIcon />
                       </div>
                     </div>
@@ -294,7 +298,7 @@ const BrandSpeaks = () => {
                   onClick={() => goToSlide(dotIdx)}
                   className={`transition-all duration-500 rounded-full cursor-pointer ${
                     activeDotIndex === dotIdx 
-                      ? 'w-8 h-2 bg-violet-600' 
+                      ? 'w-8 h-2 bg-luxury-gold' 
                       : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
                   }`}
                   aria-label={`Go to slide ${dotIdx + 1}`}

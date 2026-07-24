@@ -77,7 +77,6 @@ const FeaturedWorkStage = ({ work, onPlay }) => {
           className="absolute inset-0 h-full w-full object-cover"
         />
       </AnimatePresence>
-      <div className="absolute inset-0 bg-luxury-cream/38 mix-blend-screen transition-opacity duration-700 group-hover:opacity-70" />
       <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/35 via-luxury-black/0 to-transparent opacity-70" />
       <span
         className="pointer-events-none absolute hidden h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/12 text-white backdrop-blur-[2px] transition-[transform,background-color] duration-300 ease-out group-hover:scale-110 group-hover:bg-white/22 md:flex"

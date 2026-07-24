@@ -152,14 +152,14 @@ const Footer = () => {
                   JHANSI // INDIA
                 </h4>
                 <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed font-sans">
-                  3rd Floor, B4 Commercial, near Chiranjeev Hospital,<br />
-                  Shivaji Nagar, Jhansi, U.P. 284002
+                  Vigyapan Estate, 2nd Floor, B4 Commercial,<br />
+                  near Chiranjeev Hospital, Shivaji Nagar, Jhansi, U.P. 284002
                 </p>
               </div>
             </div>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-white/30 font-mono">
-            <p>© 2026 VIGYAPAN360. All Rights Reserved.</p>
+            <p>&copy; 2026 VIGYAPAN360. All Rights Reserved.</p>
             <div className="flex space-x-8 mt-4 md:mt-0">
               <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="hover:text-white transition-colors duration-300">Privacy Policy</a>
               <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="hover:text-white transition-colors duration-300">Terms of Service</a>

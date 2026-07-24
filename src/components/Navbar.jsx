@@ -31,16 +31,15 @@ const Navbar = () => {
     }
   };
 
+  const showGlass = scrolled || isOpen;
+
   return (
     <>
       <motion.nav 
-        initial={{ y: -120, x: "-50%" }}
-        animate={{ y: hidden ? -130 : 0, x: "-50%" }}
+        initial={{ y: -120, x: 0 }}
+        animate={{ y: hidden ? -130 : 0, x: 0 }}
         transition={{ duration: 0.8, ease: [0.6, 0.05, 0.01, 0.9] }}
-        className={cn(
-          "fixed top-4 left-1/2 z-50 flex items-center justify-between px-4 md:px-8 transition-all duration-500 bg-luxury-white/80 backdrop-blur-md border border-luxury-black/5 text-luxury-black shadow-[0_12px_40px_rgba(0,0,0,0.04)] rounded-full w-[94vw] max-w-6xl",
-          scrolled ? "py-1.5 md:py-2" : "py-2.5 md:py-3.5"
-        )}
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500 bg-luxury-white/80 backdrop-blur-md border-b border-luxury-black/5 text-luxury-black shadow-[0_4px_25px_rgba(0,0,0,0.03)] w-full py-3.5 md:py-4 px-6 md:px-16"
       >
         <a 
           href="#home" 

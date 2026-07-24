@@ -51,8 +51,8 @@ const Contact = () => {
               <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.02] transition-all duration-300">
                 <span className="text-[9px] uppercase tracking-[0.2em] text-luxury-gold/70 block mb-1 font-bold">LOCATION</span>
                 <p className="text-sm font-sans font-light text-white/80 leading-relaxed">
-                  3rd Floor, B4 Commercial, near Chiranjeev Hospital,<br/>
-                  Shivaji Nagar, Jhansi, U.P. 284002
+                  Vigyapan Estate, 2nd Floor, B4 Commercial,<br/>
+                  near Chiranjeev Hospital, Shivaji Nagar, Jhansi, U.P. 284002
                 </p>
               </div>
               <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.02] transition-all duration-300">
@@ -98,8 +98,8 @@ const Contact = () => {
               
               <div className="relative w-full h-[320px] md:h-[400px] overflow-hidden z-10">
                 <iframe 
-                  title="Vigyapan 360 Office Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3424.2898094717198!2d78.60437720000002!3d25.453621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3977771cac25f73f%3A0xe42e0df8257edcc2!2sVigyapan%20360!5e1!3m2!1sen!2sin!4v1784118733355!5m2!1sen!2sin"
+                  title="Vigyapan Estate Office Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3640.064825502253!2d78.60438289999999!3d25.453692099999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397777ac3ecb2fdf%3A0xb2c7bd74b70da3a9!2sVigyapan%20Estate%20%7C%20Real%20Estate%20Marketing%20Agency!5e1!3m2!1sen!2sin!4v1784890521534!5m2!1sen!2sin"
                   className="w-full h-full border-0 opacity-100 z-10"
                   allowFullScreen={true} 
                   loading="lazy" 
@@ -109,7 +109,7 @@ const Contact = () => {
                 
                 <div className="absolute bottom-4 right-4 z-20">
                   <a 
-                    href="https://maps.app.goo.gl/ayP2Y7d3uCTk9pTr5"
+                    href="https://www.google.com/maps?cid=12882255745778887593"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-[8px] uppercase tracking-[0.15em] font-bold px-4 py-2 bg-luxury-gold text-luxury-dark rounded-lg hover:bg-white hover:text-black transition-all duration-300 shadow-lg"
