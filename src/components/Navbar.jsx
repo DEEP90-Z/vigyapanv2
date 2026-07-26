@@ -13,10 +13,11 @@ const Navbar = () => {
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
     const isScrollingDown = latest > previous;
+    const isScrolled = latest > 50;
+    const shouldHide = isScrollingDown && latest > 90 && !isOpen;
 
-    setScrolled(latest > 50);
-    // Only hide if mobile menu is closed
-    setHidden(isScrollingDown && latest > 90 && !isOpen);
+    setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
+    setHidden((prev) => (prev !== shouldHide ? shouldHide : prev));
   });
 
   const handleNavClick = (e, href) => {
@@ -38,7 +39,7 @@ const Navbar = () => {
       <motion.nav 
         initial={{ y: -120, x: 0 }}
         animate={{ y: hidden ? -130 : 0, x: 0 }}
-        transition={{ duration: 0.8, ease: [0.6, 0.05, 0.01, 0.9] }}
+        transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
         className={cn(
           "fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500 text-luxury-black w-full py-3.5 md:py-4 px-6 md:px-16",
           showGlass 

@@ -181,7 +181,7 @@ const ResponsiveReelsShowcase = ({ isInView }) => {
             <video
               src={reel.src}
               muted
-              autoPlay
+              autoPlay={isInView}
               loop
               playsInline
               preload="metadata"
@@ -212,7 +212,7 @@ const ResponsiveReelsShowcase = ({ isInView }) => {
               <video
                 src={reel.src}
                 muted
-                autoPlay
+                autoPlay={isInView}
                 loop
                 playsInline
                 preload="metadata"
@@ -228,7 +228,7 @@ const ResponsiveReelsShowcase = ({ isInView }) => {
 
 const ReelsShowcase = () => {
   const containerRef = useRef(null);
-  const isInViewRef = useRef(false);
+  const [isInView, setIsInView] = useState(false);
   const [activeWork, setActiveWork] = useState(null);
   const [featuredIndex, setFeaturedIndex] = useState(0);
 
@@ -249,9 +249,9 @@ const ReelsShowcase = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        isInViewRef.current = entry.isIntersecting;
+        setIsInView(entry.isIntersecting);
       },
-      { rootMargin: '300px' }
+      { rootMargin: '200px' }
     );
 
     observer.observe(el);
@@ -308,7 +308,7 @@ const ReelsShowcase = () => {
       </div>
 
       {/* Responsive 4-Reel Display: Frozen Grid on Desktop, Smooth Auto-Sliding Marquee on Mobile */}
-      <ResponsiveReelsShowcase isInView={isInViewRef.current} />
+      <ResponsiveReelsShowcase isInView={isInView} />
     </section>
   );
 };
