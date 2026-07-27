@@ -110,9 +110,11 @@ const BrandSpeaks = () => {
     }
   }, [isTransitioning]);
 
-  // Mobile auto-scroll every 3 seconds (smooth and seamless)
+  // Auto-scroll review carousel every 3.5 seconds on desktop & mobile (pauses on hover)
+  const [isHovered, setIsHovered] = useState(false);
+
   useEffect(() => {
-    if (visibleCards !== 1) {
+    if (isHovered) {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
       return;
     }
@@ -123,12 +125,12 @@ const BrandSpeaks = () => {
         isTransitioningRef.current = true;
         setCurrentIndex((prev) => prev + 1);
       }
-    }, 3000);
+    }, 3500);
 
     return () => {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     };
-  }, [visibleCards]);
+  }, [isHovered]);
 
   // Mobile touch event swiping
   const handleTouchStart = (e) => {
@@ -205,6 +207,8 @@ const BrandSpeaks = () => {
           {/* Carousel Viewport */}
           <div 
             className="overflow-hidden w-full py-6"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
