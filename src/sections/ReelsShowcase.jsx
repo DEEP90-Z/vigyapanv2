@@ -126,6 +126,35 @@ const FeaturedWorkStage = ({ work, onPlay }) => {
   );
 };
 
+const ModalReelVideo = ({ src, isMuted }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = isMuted;
+    const promise = video.play();
+    if (promise !== undefined) {
+      promise.catch(() => {});
+    }
+  }, [src, isMuted]);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      autoPlay
+      controls
+      loop
+      playsInline
+      muted={isMuted}
+      preload="auto"
+      className="h-full w-full object-cover"
+    />
+  );
+};
+
 const VideoModal = ({ media, onClose }) => {
   const [isMuted, setIsMuted] = useState(false);
   const isReel = Boolean(media?.number);
@@ -175,15 +204,7 @@ const VideoModal = ({ media, onClose }) => {
 
         {isReel ? (
           <div className="relative h-full w-full bg-black flex items-center justify-center">
-            <video
-              src={media.src}
-              autoPlay
-              controls
-              loop
-              playsInline
-              muted={isMuted}
-              className="h-full w-full object-cover"
-            />
+            <ModalReelVideo src={media.src} isMuted={isMuted} />
             <button
               type="button"
               onClick={() => setIsMuted((prev) => !prev)}
@@ -212,6 +233,37 @@ const VideoModal = ({ media, onClose }) => {
   );
 };
 
+const AutoplayReelVideo = ({ src, isInView }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isInView) {
+      const promise = video.play();
+      if (promise !== undefined) {
+        promise.catch(() => {});
+      }
+    } else {
+      video.pause();
+    }
+  }, [isInView]);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+    />
+  );
+};
+
 const ReelCard = ({ reel, isInView, onSelect }) => (
   <motion.div
     onClick={() => onSelect(reel)}
@@ -219,15 +271,7 @@ const ReelCard = ({ reel, isInView, onSelect }) => (
     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
     className="group relative w-[145px] sm:w-[170px] md:w-[200px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-md bg-black border border-luxury-black/10 hover:border-luxury-gold/60 transition-colors duration-300 cursor-pointer shrink-0"
   >
-    <video
-      src={reel.src}
-      muted
-      autoPlay={isInView}
-      loop
-      playsInline
-      preload="metadata"
-      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-    />
+    <AutoplayReelVideo src={reel.src} isInView={isInView} />
 
     {/* Reel Number Badge */}
     <div className="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-md border border-white/20 text-luxury-gold font-mono text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
