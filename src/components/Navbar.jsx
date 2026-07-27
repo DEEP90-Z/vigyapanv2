@@ -1,23 +1,16 @@
 import { useState } from 'react';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useLenis } from 'lenis/react';
 import { cn } from '../utils/cn';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
   const lenis = useLenis();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    const isScrollingDown = latest > previous;
-    const isScrolled = latest > 50;
-    const shouldHide = isScrollingDown && latest > 90 && !isOpen;
-
-    setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
-    setHidden((prev) => (prev !== shouldHide ? shouldHide : prev));
+    setScrolled(latest > 50);
   });
 
   const handleNavClick = (e, href) => {
@@ -32,19 +25,14 @@ const Navbar = () => {
     }
   };
 
-  const showGlass = scrolled || isOpen;
-
   return (
     <>
-      <motion.nav 
-        initial={{ y: -120, x: 0 }}
-        animate={{ y: hidden ? -130 : 0, x: 0 }}
-        transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
+      <nav 
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500 text-luxury-black w-full py-3.5 md:py-4 px-6 md:px-16",
-          showGlass 
+          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-300 text-luxury-black w-full py-4 md:py-5 px-6 md:px-16",
+          scrolled || isOpen
             ? "bg-luxury-white/90 backdrop-blur-md border-b border-luxury-black/5 shadow-[0_4px_25px_rgba(0,0,0,0.04)]" 
-            : "bg-luxury-white/60 backdrop-blur-sm border-b border-transparent"
+            : "bg-luxury-white/50 backdrop-blur-sm border-b border-transparent"
         )}
       >
         <a 
@@ -89,7 +77,7 @@ const Navbar = () => {
         <a 
           href="#contact" 
           onClick={(e) => handleNavClick(e, '#contact')}
-          className="hidden md:inline-block text-[9px] md:text-[11px] uppercase tracking-[0.2em] font-semibold px-4 py-2 rounded-full bg-luxury-black text-white hover:bg-black/80 transition-all duration-500"
+          className="hidden md:inline-block text-[9px] md:text-[11px] uppercase tracking-[0.2em] font-semibold px-5 py-2.5 rounded-full bg-luxury-black text-white hover:bg-black/80 transition-all duration-300"
         >
           Let's Talk
         </a>
@@ -111,7 +99,7 @@ const Navbar = () => {
             </svg>
           )}
         </button>
-      </motion.nav>
+      </nav>
 
       {/* Mobile Dropdown Panel */}
       <AnimatePresence>

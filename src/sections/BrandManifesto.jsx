@@ -5,13 +5,13 @@ import { useMagnetic } from '../hooks/useMagnetic';
 const manifestoMedia = [
   {
     id: 1,
-    src: "/images/manifesto_lens.png",
+    src: "/images/manifesto_lens.webp",
     label: "OPTICS_CALIBRATED",
     coordinates: "left-[4%] top-[14%] w-[28vw] max-w-[125px] sm:max-w-[150px] lg:max-w-[240px] lg:w-[240px]"
   },
   {
     id: 2,
-    src: "/images/manifesto_craft.png",
+    src: "/images/manifesto_craft.webp",
     label: "CRAFT_WORKSPACE",
     coordinates: "right-[4%] bottom-[14%] w-[30vw] max-w-[135px] sm:max-w-[160px] lg:max-w-[260px] lg:w-[260px]"
   }

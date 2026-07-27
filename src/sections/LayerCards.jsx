@@ -4,10 +4,10 @@ import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 const layersData = [
   { id: 1, src: '/layers/1. East Valley.webp', title: "East Valley" },
   { id: 2, src: '/layers/2. East Valley inside.webp', title: "East Valley Interior" },
-  { id: 3, src: '/layers/3..webp', title: "Dev Ashok Residency" },
-  { id: 4, src: '/layers/4..webp', title: "Elevated Living" },
   { id: 5, src: '/layers/5..webp', title: "Rashail Grandeur" },
   { id: 6, src: '/layers/6.webp', title: "Ganesh Enclave Visuals" },
+  { id: 3, src: '/layers/3..webp', title: "Dev Ashok Residency" },
+  { id: 4, src: '/layers/4..webp', title: "Elevated Living" },
   { id: 7, src: '/layers/last.webp', title: "Signature Estates" },
 ];
 

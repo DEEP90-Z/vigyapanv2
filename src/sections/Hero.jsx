@@ -27,7 +27,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="home" className="relative h-screen w-full flex items-end justify-end overflow-hidden bg-luxury-black">
+    <section id="home" className="relative h-[100dvh] w-full flex items-end justify-end overflow-hidden bg-luxury-black">
       
       {/* Cinematic Video Background */}
       <div className="absolute inset-0 h-full w-full">
@@ -62,15 +62,12 @@ const Hero = () => {
 
       {/* Cinematic Overlays */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-black/12" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/24" />
-        <div className="absolute bottom-0 right-0 h-[56%] w-full bg-gradient-to-tl from-black/58 via-black/16 to-transparent md:w-[58%]" />
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjIiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgibm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjAxNSIvPjwvc3ZnPg==')] opacity-[0.018] mix-blend-soft-light" />
+        <div className="absolute inset-0 bg-black/10" />
       </div>
 
       {/* Content - Bottom Right Aligned */}
-      <div className="w-full relative z-10 px-6 sm:px-10 md:px-16 lg:px-24 pb-10 sm:pb-14 lg:pb-20 flex justify-end">
-        <div className="flex flex-col items-end text-right w-[90vw] sm:w-[540px] lg:w-[640px] max-w-full">
+      <div className="w-full relative z-10 px-5 sm:px-10 md:px-16 lg:px-24 pb-12 sm:pb-14 lg:pb-20 flex justify-end">
+        <div className="flex flex-col items-end text-right w-full sm:w-[540px] lg:w-[640px] max-w-full">
           
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
@@ -79,13 +76,13 @@ const Hero = () => {
             style={{ willChange: "transform, opacity" }}
             className="flex flex-col gap-0 w-full items-end"
           >
-            <span className="text-[32px] sm:text-[40px] lg:text-[52px] font-extrabold leading-[1.08] text-white">
+            <span className="text-[26px] xs:text-[28px] sm:text-[40px] lg:text-[52px] font-extrabold leading-[1.1] text-white">
               Most projects are launched,
             </span>
-            <span className="text-[27px] sm:text-[34px] lg:text-[45px] font-semibold leading-[1.08]" style={{ color: 'rgba(255, 255, 255, 0.82)' }}>
+            <span className="text-[22px] xs:text-[24px] sm:text-[34px] lg:text-[45px] font-semibold leading-[1.1]" style={{ color: 'rgba(255, 255, 255, 0.82)' }}>
               few are remembered,
             </span>
-            <span className="text-[22px] sm:text-[28px] lg:text-[35px] text-luxury-gold italic font-serif font-light drop-shadow-[0_3px_10px_rgba(212,175,55,0.15)] leading-[1.08] mt-[14px]">
+            <span className="text-[19px] xs:text-[21px] sm:text-[28px] lg:text-[35px] text-luxury-gold italic font-serif font-light drop-shadow-[0_3px_10px_rgba(212,175,55,0.15)] leading-[1.1] mt-[10px] sm:mt-[14px]">
               but legends are designed.
             </span>
           </motion.h1>
