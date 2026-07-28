@@ -52,7 +52,7 @@ const Navbar = () => {
             handleNavClick(e, '#home');
             setIsOpen(false);
           }}
-          className="block w-[95px] shrink-0 md:w-[115px]" 
+          className="flex items-center w-[95px] shrink-0 md:w-[115px]" 
           aria-label="Vigyapan360 home"
         >
           <img

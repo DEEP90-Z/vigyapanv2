@@ -74,6 +74,9 @@ const CreativeSolutions = () => {
   const card3X = useTransform(scrollYProgress, [0.55, 0.80], ['108%', '0%']);
   const card3Visibility = useTransform(scrollYProgress, (p) => (p >= 0.50 ? 'visible' : 'hidden'));
 
+  // Scroll indicator opacity - fades out as section completes
+  const indicatorOpacity = useTransform(scrollYProgress, [0, 0.82, 0.95], [1, 1, 0]);
+
   return (
     <section ref={containerRef} id="solutions" className="relative h-[300vh] bg-luxury-cream">
       <div
@@ -88,6 +91,26 @@ const CreativeSolutions = () => {
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-luxury-cream/50 to-transparent pointer-events-none" />
           <div className="absolute left-1/2 top-24 h-[520px] w-[82vw] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05),transparent_66%)] pointer-events-none" />
         </div>
+
+        {/* Bottom Center 'Scroll to see next' Indicator */}
+        <motion.div
+          style={{ opacity: indicatorOpacity }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center gap-1.5"
+        >
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-luxury-black/15 bg-luxury-white/85 backdrop-blur-md shadow-[0_8px_24px_rgba(26,26,26,0.08)] text-[0.62rem] md:text-xs font-bold uppercase tracking-[0.22em] text-luxury-black/75">
+            <span>Scroll to see next</span>
+            <motion.svg
+              animate={{ y: [0, 4, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="w-3.5 h-3.5 text-luxury-gold stroke-[2.5]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+            </motion.svg>
+          </div>
+        </motion.div>
 
         {/* Section Header removed */}
 

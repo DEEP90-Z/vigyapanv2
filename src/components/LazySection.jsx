@@ -5,11 +5,17 @@ import { useState, useEffect, useRef } from 'react';
  * This prevents the browser from loading heavy video/image assets and executing
  * Framer Motion scripts for sections that are not yet visible.
  */
-const LazySection = ({ id, children, threshold = 0.01, rootMargin = '600px', placeholderHeight = '50vh', className = '' }) => {
-  const [isInView, setIsInView] = useState(false);
+const LazySection = ({ id, children, threshold = 0.01, rootMargin = '1200px', placeholderHeight = 'auto', className = '' }) => {
+  const [isInView, setIsInView] = useState(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return true; // Always render children on mobile to avoid section disappear/zoom glitches
+    }
+    return false;
+  });
   const ref = useRef(null);
 
   useEffect(() => {
+    if (isInView) return;
     const el = ref.current;
     if (!el) return;
 
@@ -28,11 +34,11 @@ const LazySection = ({ id, children, threshold = 0.01, rootMargin = '600px', pla
     return () => {
       observer.disconnect();
     };
-  }, [threshold, rootMargin]);
+  }, [isInView, threshold, rootMargin]);
 
   return (
-    <div id={id} ref={ref} className={className} style={!isInView ? { minHeight: placeholderHeight } : {}}>
-      {isInView ? children : null}
+    <div id={id} ref={ref} className={className}>
+      {isInView ? children : <div style={{ minHeight: placeholderHeight }} />}
     </div>
   );
 };
