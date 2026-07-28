@@ -264,12 +264,11 @@ const AutoplayReelVideo = ({ src, isInView }) => {
   );
 };
 
-const ReelCard = ({ reel, isInView, onSelect }) => (
+const ReelCard = ({ reel, isInView }) => (
   <motion.div
-    onClick={() => onSelect(reel)}
-    whileHover={{ y: -6, scale: 1.03 }}
+    whileHover={{ y: -4, scale: 1.02 }}
     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-    className="group relative w-[145px] sm:w-[170px] md:w-[200px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-md bg-black border border-luxury-black/10 hover:border-luxury-gold/60 transition-colors duration-300 cursor-pointer shrink-0"
+    className="group relative w-[145px] sm:w-[170px] md:w-[200px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-md bg-black border border-luxury-black/10 shrink-0 select-none"
   >
     <AutoplayReelVideo src={reel.src} isInView={isInView} />
 
@@ -278,18 +277,13 @@ const ReelCard = ({ reel, isInView, onSelect }) => (
       {reel.number}
     </div>
 
-    {/* Hover Overlay & Action Badge */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
-    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-      <span className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-luxury-gold text-luxury-black shadow-lg transform group-hover:scale-110 transition-transform">
-        <Play className="h-5 w-5 translate-x-0.5" fill="currentColor" />
-      </span>
-    </div>
+    {/* Gradient Overlay */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
   </motion.div>
 );
 
 // Glitch-Free GPU Infinite Marquee Component
-const ResponsiveReelsMarquee = ({ isInView, onSelectReel }) => {
+const ResponsiveReelsMarquee = ({ isInView }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   // Seamless infinite loop array
@@ -327,7 +321,6 @@ const ResponsiveReelsMarquee = ({ isInView, onSelectReel }) => {
               key={`${reel.id}-${idx}`}
               reel={reel}
               isInView={isInView}
-              onSelect={onSelectReel}
             />
           ))}
         </motion.div>
@@ -419,7 +412,7 @@ const ReelsShowcase = () => {
       </div>
 
       {/* Auto-Sliding Reels Showcase */}
-      <ResponsiveReelsMarquee isInView={isInView} onSelectReel={setActiveMedia} />
+      <ResponsiveReelsMarquee isInView={isInView} />
     </section>
   );
 };
