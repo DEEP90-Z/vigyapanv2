@@ -66,23 +66,23 @@ const Hero = () => {
       </div>
 
       {/* Content - Bottom Right Aligned */}
-      <div className="w-full relative z-10 px-5 sm:px-10 md:px-16 lg:px-24 pb-12 sm:pb-14 lg:pb-20 flex justify-end">
-        <div className="flex flex-col items-end text-right w-full sm:w-[540px] lg:w-[640px] max-w-full">
+      <div className="w-full relative z-10 px-6 sm:px-12 md:px-16 lg:px-24 pb-10 sm:pb-14 lg:pb-20 flex justify-end">
+        <div className="flex flex-col items-end text-right w-full max-w-[680px]">
           
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.25, 1, 0.5, 1], delay: 0.1 }}
             style={{ willChange: "transform, opacity" }}
-            className="flex flex-col gap-0 w-full items-end"
+            className="flex flex-col items-end text-right gap-1 md:gap-1.5 w-full"
           >
-            <span className="text-[18px] xs:text-[22px] sm:text-[32px] md:text-[40px] lg:text-[52px] font-extrabold leading-[1.1] text-white whitespace-nowrap">
+            <span className="text-[21px] xs:text-[25px] sm:text-[36px] md:text-[44px] lg:text-[52px] font-extrabold leading-[1.15] text-white">
               Most projects are launched,
             </span>
-            <span className="text-[16px] xs:text-[19px] sm:text-[28px] md:text-[34px] lg:text-[45px] font-semibold leading-[1.1] whitespace-nowrap" style={{ color: 'rgba(255, 255, 255, 0.82)' }}>
+            <span className="text-[19px] xs:text-[22px] sm:text-[31px] md:text-[38px] lg:text-[45px] font-semibold leading-[1.15] text-white/85">
               few are remembered,
             </span>
-            <span className="text-[14px] xs:text-[17px] sm:text-[24px] md:text-[28px] lg:text-[35px] text-luxury-gold italic font-serif font-light drop-shadow-[0_3px_10px_rgba(212,175,55,0.15)] leading-[1.1] mt-[8px] sm:mt-[14px] whitespace-nowrap">
+            <span className="text-[18px] xs:text-[20px] sm:text-[27px] md:text-[33px] lg:text-[38px] text-luxury-gold italic font-serif font-light leading-[1.15] mt-1 sm:mt-2.5 drop-shadow-[0_4px_12px_rgba(212,175,55,0.2)]">
               but legends are designed.
             </span>
           </motion.h1>
@@ -92,11 +92,11 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
             style={{ willChange: "transform, opacity" }}
-            className="mt-8 lg:mt-10"
+            className="mt-6 sm:mt-8 lg:mt-10"
           >
             <button 
               onClick={() => handleScroll('#reels')}
-              className="px-10 lg:px-12 py-3.5 lg:py-4 bg-white/8 border border-white/20 text-white rounded-full backdrop-blur-sm hover:bg-white hover:text-luxury-black transition-all duration-500 uppercase tracking-[0.2em] text-[10px] lg:text-[11px] font-bold hover:scale-105 active:scale-95 cursor-pointer"
+              className="px-8 sm:px-10 lg:px-12 py-3 sm:py-3.5 lg:py-4 bg-white/10 border border-white/20 text-white rounded-full backdrop-blur-md hover:bg-white hover:text-luxury-black transition-all duration-500 uppercase tracking-[0.2em] text-[10px] sm:text-[11px] font-bold hover:scale-105 active:scale-95 cursor-pointer shadow-lg"
             >
               Our Work
             </button>
