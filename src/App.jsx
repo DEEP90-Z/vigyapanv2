@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import LazySection from './components/LazySection';
+import WhatsAppButton from './components/WhatsAppButton';
 
 // Implement React.lazy to enable JS code-splitting and drastically reduce initial bundle size
 const CreativeSolutions = React.lazy(() => import('./sections/CreativeSolutions'));
@@ -73,6 +74,8 @@ function App() {
             <Footer />
           </Suspense>
         </LazySection>
+
+        <WhatsAppButton />
       </main>
     </ReactLenis>
   );

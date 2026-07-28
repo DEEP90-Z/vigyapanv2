@@ -76,13 +76,13 @@ const Hero = () => {
             style={{ willChange: "transform, opacity" }}
             className="flex flex-col gap-0 w-full items-end"
           >
-            <span className="text-[26px] xs:text-[28px] sm:text-[40px] lg:text-[52px] font-extrabold leading-[1.1] text-white">
+            <span className="text-[18px] xs:text-[22px] sm:text-[32px] md:text-[40px] lg:text-[52px] font-extrabold leading-[1.1] text-white whitespace-nowrap">
               Most projects are launched,
             </span>
-            <span className="text-[22px] xs:text-[24px] sm:text-[34px] lg:text-[45px] font-semibold leading-[1.1]" style={{ color: 'rgba(255, 255, 255, 0.82)' }}>
+            <span className="text-[16px] xs:text-[19px] sm:text-[28px] md:text-[34px] lg:text-[45px] font-semibold leading-[1.1] whitespace-nowrap" style={{ color: 'rgba(255, 255, 255, 0.82)' }}>
               few are remembered,
             </span>
-            <span className="text-[19px] xs:text-[21px] sm:text-[28px] lg:text-[35px] text-luxury-gold italic font-serif font-light drop-shadow-[0_3px_10px_rgba(212,175,55,0.15)] leading-[1.1] mt-[10px] sm:mt-[14px]">
+            <span className="text-[14px] xs:text-[17px] sm:text-[24px] md:text-[28px] lg:text-[35px] text-luxury-gold italic font-serif font-light drop-shadow-[0_3px_10px_rgba(212,175,55,0.15)] leading-[1.1] mt-[8px] sm:mt-[14px] whitespace-nowrap">
               but legends are designed.
             </span>
           </motion.h1>
