@@ -14,7 +14,7 @@ const Navbar = () => {
     const previous = scrollY.getPrevious() || 0;
     const heroHeight = typeof window !== 'undefined' ? window.innerHeight - 80 : 600;
 
-    setScrolled(latest > 50);
+    setScrolled(latest > 30);
 
     if (latest > heroHeight && latest > previous && !isOpen) {
       setHidden(true);
@@ -37,80 +37,114 @@ const Navbar = () => {
 
   return (
     <>
-      <nav 
+      <motion.nav 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500 ease-in-out text-white w-full py-4 md:py-5 px-6 md:px-16",
-          hidden && !isOpen ? "-translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100",
-          scrolled || isOpen
-            ? "bg-black/80 backdrop-blur-md border-b border-white/10 shadow-[0_4px_25px_rgba(0,0,0,0.4)]" 
-            : "bg-black/40 backdrop-blur-sm border-b border-white/5"
+          "fixed left-1/2 -translate-x-1/2 z-50 flex items-center justify-between w-[94vw] max-w-[1400px] pointer-events-none transition-all duration-300 ease-out",
+          hidden && !isOpen ? "-translate-y-28 opacity-0" : "translate-y-0 opacity-100",
+          scrolled ? "top-4 md:top-5 -translate-y-2" : "top-6 md:top-8"
         )}
       >
-        <a 
-          href="#home" 
-          onClick={(e) => {
-            handleNavClick(e, '#home');
-            setIsOpen(false);
-          }}
-          className="flex items-center w-[95px] shrink-0 md:w-[115px]" 
-          aria-label="Vigyapan360 home"
+        {/* LEFT PILL - Logo Only */}
+        <div 
+          className={cn(
+            "pointer-events-auto flex items-center px-4.5 py-2 md:px-5.5 md:py-2.5 rounded-[22px] border transition-all duration-300 ease-out",
+            scrolled
+              ? "bg-white/90 backdrop-blur-2xl border-white/70 shadow-[0_12px_36px_rgba(0,0,0,0.12),inset_0_1px_1px_rgba(255,255,255,0.9)]"
+              : "bg-white/75 backdrop-blur-xl border-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.08),inset_0_1px_1px_rgba(255,255,255,0.8)] hover:bg-white/90"
+          )}
         >
-          <img
-            src="/vigyapan-logo-nav-light.png"
-            alt="Vigyapan360"
-            className="block h-auto w-full object-contain"
-            width="520"
-            height="85"
-          />
-        </a>
+          <a 
+            href="#home" 
+            onClick={(e) => {
+              handleNavClick(e, '#home');
+              setIsOpen(false);
+            }}
+            className="flex items-center w-[85px] shrink-0 md:w-[100px] transition-transform duration-300 hover:scale-105" 
+            aria-label="Vigyapan360 home"
+          >
+            <img
+              src="/vigyapan-logo-nav.png"
+              alt="Vigyapan360"
+              className="block h-auto w-full object-contain"
+              width="520"
+              height="85"
+            />
+          </a>
+        </div>
         
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-7 md:space-x-8 text-[9px] md:text-[11px] uppercase tracking-[0.2em] font-semibold text-white">
+        {/* CENTER PILL - Navigation Links */}
+        <div 
+          className={cn(
+            "pointer-events-auto hidden md:flex items-center space-x-7 lg:space-x-9 px-7 py-2.5 md:py-3 rounded-[22px] border transition-all duration-300 ease-out text-[10px] lg:text-[10.5px] uppercase tracking-[0.22em] font-bold text-luxury-black",
+            scrolled
+              ? "bg-white/90 backdrop-blur-2xl border-white/70 shadow-[0_12px_36px_rgba(0,0,0,0.12),inset_0_1px_1px_rgba(255,255,255,0.9)]"
+              : "bg-white/75 backdrop-blur-xl border-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.08),inset_0_1px_1px_rgba(255,255,255,0.8)] hover:bg-white/90"
+          )}
+        >
           {[
             { label: 'Home', href: '#home' },
             { label: 'Services', href: '#solutions' },
             { label: 'Reviews', href: '#testimonials' },
             { label: 'Our Work', href: '#reels' },
+            { label: 'Contact', href: '#contact' },
           ].map((item) => (
             <a 
               key={item.label} 
               href={item.href} 
               onClick={(e) => handleNavClick(e, item.href)}
-              className="relative group overflow-hidden py-1"
+              className="relative group py-1 inline-block transition-colors duration-300"
             >
-              <span className="block transition-transform duration-500 group-hover:-translate-y-full text-white/90">{item.label}</span>
-              <span className="absolute inset-x-0 top-1 transition-transform duration-500 translate-y-full group-hover:translate-y-0 text-luxury-gold">{item.label}</span>
+              <span className="inline-block transition-transform duration-300 ease-out group-hover:-translate-y-[2px] text-black/85 group-hover:text-black">
+                {item.label}
+              </span>
+              {/* Underline grows from center on hover */}
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-luxury-black transition-all duration-300 ease-out group-hover:w-full" />
             </a>
           ))}
         </div>
 
-        {/* Desktop "Let's Talk" Button */}
-        <a 
-          href="#contact" 
-          onClick={(e) => handleNavClick(e, '#contact')}
-          className="hidden md:inline-block text-[9px] md:text-[11px] uppercase tracking-[0.2em] font-semibold px-5 py-2.5 rounded-full bg-luxury-gold text-luxury-black hover:bg-white transition-all duration-300 shadow-sm"
-        >
-          Let's Talk
-        </a>
+        {/* RIGHT PILL - Black Rounded CTA Button */}
+        <div className="pointer-events-auto hidden md:block">
+          <a 
+            href="#contact" 
+            onClick={(e) => handleNavClick(e, '#contact')}
+            className="group inline-flex items-center gap-2 px-6 py-2.5 md:py-3 rounded-[22px] bg-luxury-black text-white hover:bg-luxury-gold hover:text-luxury-black transition-all duration-300 text-[10px] uppercase tracking-[0.2em] font-bold shadow-[0_8px_25px_rgba(0,0,0,0.18)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.25)] hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            <span>Let's Talk</span>
+            <span className="inline-block transition-transform duration-300 ease-out group-hover:translate-x-1.5">
+              →
+            </span>
+          </a>
+        </div>
 
-        {/* Mobile Hamburger Button */}
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden flex items-center justify-center p-1.5 rounded-full hover:bg-white/10 transition-colors focus:outline-none cursor-pointer"
-          aria-label="Toggle menu"
-        >
-          {isOpen ? (
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-          )}
-        </button>
-      </nav>
+        {/* Mobile Hamburger Pill */}
+        <div className="pointer-events-auto md:hidden flex items-center">
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "flex items-center justify-center p-2.5 rounded-[18px] border transition-all duration-300 cursor-pointer",
+              scrolled || isOpen
+                ? "bg-white/90 backdrop-blur-2xl border-black/10 shadow-md text-black"
+                : "bg-white/75 backdrop-blur-xl border-white/60 shadow-sm text-black"
+            )}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? (
+              <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+            )}
+          </button>
+        </div>
+      </motion.nav>
 
       {/* Mobile Dropdown Panel */}
       <AnimatePresence>
@@ -120,13 +154,14 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
             exit={{ opacity: 0, y: -15, scale: 0.95, x: "-50%" }}
             transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
-            className="fixed top-18 md:hidden left-1/2 z-40 w-[94vw] bg-black/90 backdrop-blur-xl border border-white/10 rounded-[2rem] p-6 shadow-[0_15px_45px_rgba(0,0,0,0.5)] flex flex-col items-center space-y-4"
+            className="fixed top-20 md:hidden left-1/2 z-40 w-[90vw] bg-white/95 backdrop-blur-2xl border border-black/10 rounded-[2rem] p-5 shadow-[0_15px_45px_rgba(0,0,0,0.25)] flex flex-col items-center space-y-3.5"
           >
             {[
               { label: 'Home', href: '#home' },
               { label: 'Services', href: '#solutions' },
               { label: 'Reviews', href: '#testimonials' },
               { label: 'Our Work', href: '#reels' },
+              { label: 'Contact', href: '#contact' },
             ].map((item) => (
               <a
                 key={item.label}
@@ -135,7 +170,7 @@ const Navbar = () => {
                   handleNavClick(e, item.href);
                   setIsOpen(false);
                 }}
-                className="text-xs font-semibold uppercase tracking-[0.16em] text-white/90 hover:text-luxury-gold transition-colors py-1"
+                className="text-xs font-bold uppercase tracking-[0.16em] text-black/80 hover:text-black transition-colors py-1"
               >
                 {item.label}
               </a>
@@ -146,9 +181,9 @@ const Navbar = () => {
                 handleNavClick(e, '#contact');
                 setIsOpen(false);
               }}
-              className="w-full text-center text-[10px] uppercase tracking-[0.2em] font-semibold py-3 rounded-full bg-luxury-gold text-luxury-black hover:bg-white transition-all duration-300 mt-2"
+              className="w-full text-center text-[10px] uppercase tracking-[0.2em] font-bold py-2.5 rounded-full bg-luxury-black text-white hover:bg-luxury-gold hover:text-luxury-black transition-all duration-300 mt-1"
             >
-              Let's Talk
+              Let's Talk →
             </a>
           </motion.div>
         )}

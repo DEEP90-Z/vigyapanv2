@@ -33,7 +33,7 @@ function App() {
         <Navbar />
         <Hero />
 
-        <LazySection id="solutions" placeholderHeight="100vh" rootMargin="300px">
+        <LazySection id="solutions" placeholderHeight="100vh" rootMargin="300px" className="relative z-10 bg-luxury-cream">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <CreativeSolutions />
           </Suspense>
