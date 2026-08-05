@@ -6,8 +6,12 @@ const Hero = () => {
   const containerRef = useRef(null);
   const videoRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const isMutedRef = useRef(true);
   const lenis = useLenis();
+
+  // Keep ref in sync with state
+  isMutedRef.current = isMuted;
 
   const { scrollY, scrollYProgress } = useScroll();
 
@@ -25,7 +29,7 @@ const Hero = () => {
           videoRef.current.pause();
         }
       } else {
-        videoRef.current.muted = isMuted;
+        videoRef.current.muted = isMutedRef.current;
         if (videoRef.current.paused) {
           videoRef.current.play().catch(() => {});
         }
@@ -33,16 +37,12 @@ const Hero = () => {
     }
   });
 
-  const handleScrollToContact = (e) => {
+  const handleStrategyCallClick = (e) => {
     e.preventDefault();
-    if (lenis) {
-      lenis.scrollTo('#contact', { offset: -20, duration: 1.2 });
-    } else {
-      const target = document.querySelector('#contact');
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
+    const phoneNumber = '918114172501';
+    const message = encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my brand.");
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
   const handleScrollToSolutions = (e) => {
@@ -58,12 +58,16 @@ const Hero = () => {
   };
 
   const toggleSound = (e) => {
-    if (e) e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (videoRef.current) {
       const nextMutedState = !isMuted;
       videoRef.current.muted = nextMutedState;
+      isMutedRef.current = nextMutedState;
       setIsMuted(nextMutedState);
-      if (!nextMutedState) {
+      if (!nextMutedState && videoRef.current.paused) {
         videoRef.current.play().catch(() => {});
       }
     }
@@ -75,27 +79,17 @@ const Hero = () => {
       videoRef.current.muted = false;
       videoRef.current.play().then(() => {
         setIsMuted(false);
+        isMutedRef.current = false;
       }).catch(() => {
         // Fallback to muted playback if browser blocks initial unmuted autoplay
         if (videoRef.current) {
           videoRef.current.muted = true;
           videoRef.current.play().catch(() => {});
           setIsMuted(true);
+          isMutedRef.current = true;
         }
       });
     }
-
-    // Auto-unmute on user's first click or touch interaction
-    const handleFirstInteraction = () => {
-      if (videoRef.current && videoRef.current.muted) {
-        videoRef.current.muted = false;
-        videoRef.current.play().catch(() => {});
-        setIsMuted(false);
-      }
-    };
-
-    window.addEventListener('click', handleFirstInteraction, { once: true });
-    window.addEventListener('touchstart', handleFirstInteraction, { once: true });
 
     // Native scroll listener fallback to ensure sound stops when scrolling down
     const handleScroll = () => {
@@ -107,7 +101,7 @@ const Hero = () => {
             videoRef.current.pause();
           }
         } else {
-          videoRef.current.muted = isMuted;
+          videoRef.current.muted = isMutedRef.current;
           if (videoRef.current.paused) {
             videoRef.current.play().catch(() => {});
           }
@@ -124,50 +118,125 @@ const Hero = () => {
     return () => {
       clearTimeout(timer);
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('click', handleFirstInteraction);
-      window.removeEventListener('touchstart', handleFirstInteraction);
     };
-  }, [isMuted]);
+  }, []);
 
   return (
     <section 
       ref={containerRef} 
       id="home" 
-      className="relative h-[100vh] w-full overflow-hidden bg-luxury-black sticky top-0 z-0 flex flex-col justify-between"
+      className="relative h-[100vh] min-h-[100dvh] w-full overflow-hidden bg-[#EBEBEB] md:bg-luxury-black sticky top-0 z-0 flex flex-col justify-between"
     >
-      {/* Fullscreen Video Background with Scroll Scale (100% -> 108%) */}
+      {/* Diagonal Background Line Accent (Positioned at z-0 behind video at z-1) */}
+      <svg className="md:hidden absolute inset-0 w-full h-full pointer-events-none opacity-90 z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <line x1="82" y1="0" x2="14" y2="100" stroke="#FFFFFF" strokeWidth="0.75" />
+      </svg>
+
+      {/* SINGLE RESPONSIVE VIDEO ELEMENT (Positioned at z-1 above background line) */}
       <motion.div 
         style={{ scale: videoScale }}
-        className="absolute inset-0 h-full w-full origin-center will-change-transform"
+        className="absolute inset-0 w-full h-full md:origin-center will-change-transform z-1 flex items-center justify-center pointer-events-none"
       >
-        <video 
-          ref={videoRef}
-          autoPlay 
-          loop 
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          onLoadedData={() => setVideoLoaded(true)}
-          onPlay={() => setVideoLoaded(true)}
-          className="h-full w-full min-h-full min-w-full object-cover select-none pointer-events-none"
-        >
-          <source src="/videos/hero section 2.mp4" type="video/mp4" />
-          <source src="/videos/hero section.webm" type="video/webm" />
-        </video>
+        {/* Responsive wrapper: Full-bleed on Desktop, Centered 16:9 Card on Mobile */}
+        <div className="w-full h-full md:w-full md:h-full max-w-[92vw] md:max-w-none max-h-[30vh] md:max-h-none aspect-[1.85/1] md:aspect-auto overflow-hidden my-auto md:my-0 border-none shadow-none md:shadow-none">
+          <video 
+            ref={videoRef}
+            autoPlay 
+            loop 
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            onLoadedData={() => setVideoLoaded(true)}
+            onPlay={() => setVideoLoaded(true)}
+            className="h-full w-full min-h-full min-w-full object-cover select-none pointer-events-none"
+          >
+            <source src="/videos/hero section 2.mp4" type="video/mp4" />
+            <source src="/videos/hero section.webm" type="video/webm" />
+          </video>
+        </div>
       </motion.div>
 
-      {/* Floating Controls Overlay */}
+      {/* Mobile Editorial Layout Overlay (Positioned at z-10) */}
+      <div className="md:hidden relative z-10 flex flex-col justify-between h-full w-full pt-20 pb-7 px-5 sm:px-8 bg-transparent pointer-events-none overflow-hidden">
+
+        {/* Top Editorial Headers: VIGYAPAN 360° & CREATIVE AGENCY */}
+        <div className="relative z-10 w-full flex items-center justify-between pointer-events-auto pt-2">
+          <span className="text-[9.5px] uppercase tracking-[0.22em] font-bold text-neutral-800">
+            VIGYAPAN 360°
+          </span>
+          <span className="text-[9.5px] uppercase tracking-[0.2em] font-semibold text-neutral-500">
+            CREATIVE AGENCY
+          </span>
+        </div>
+
+        {/* Spacer for centered video alignment */}
+        <div className="w-full my-auto pointer-events-none opacity-0" aria-hidden="true">
+          <div className="w-full aspect-[1.85/1]" />
+        </div>
+
+        {/* Floating Sound Toggle & WhatsApp Strategy Call Buttons */}
+        <div className="relative z-10 w-full flex items-center justify-between pb-3 pointer-events-auto">
+          {/* Sound Toggle */}
+          <motion.button 
+            type="button"
+            onClick={toggleSound}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 text-neutral-900 border border-neutral-300/50 shadow-sm text-[8.5px] uppercase tracking-[0.18em] font-bold cursor-pointer"
+          >
+            {isMuted ? (
+              <svg className="w-3 h-3 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+              </svg>
+            ) : (
+              <div className="flex items-end gap-[2px] h-3 w-3 pb-0.5 justify-center">
+                <motion.span animate={{ height: ["30%", "100%", "40%"] }} transition={{ repeat: Infinity, duration: 0.6 }} className="w-[2px] bg-neutral-900 rounded-full" />
+                <motion.span animate={{ height: ["80%", "30%", "90%"] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-[2px] bg-neutral-900 rounded-full" />
+                <motion.span animate={{ height: ["40%", "90%", "20%"] }} transition={{ repeat: Infinity, duration: 0.5 }} className="w-[2px] bg-neutral-900 rounded-full" />
+              </div>
+            )}
+            <span>{isMuted ? "Sound Off" : "Sound On"}</span>
+          </motion.button>
+
+          {/* Strategy Call WhatsApp Button */}
+          <motion.a 
+            href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my brand.")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleStrategyCallClick}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 text-neutral-900 border border-neutral-300/50 shadow-sm text-[9px] font-bold uppercase tracking-[0.16em] cursor-pointer"
+          >
+            <span>🎯</span>
+            <span>Strategy Call</span>
+            <span>→</span>
+          </motion.a>
+        </div>
+
+        {/* Bottom Editorial Typography: Ideas that move markets. & Strategy paragraph */}
+        <div className="relative z-10 w-full flex items-end justify-between pointer-events-auto">
+          <div className="flex flex-col text-left">
+            <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 leading-[1.08] tracking-tight">
+              Ideas that move<br />
+              markets.
+            </h2>
+          </div>
+          <div className="flex flex-col text-right max-w-[155px] sm:max-w-[190px]">
+            <p className="text-[10px] sm:text-[11px] font-medium text-neutral-600 leading-tight">
+              Strategy, content, media, and growth crafted for attention.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Overlay & Controls (Hidden on Mobile) */}
       <motion.div 
         style={{ y: contentY }}
-        className="relative z-20 h-full w-full pointer-events-none flex flex-col justify-between px-6 sm:px-12 md:px-16 lg:px-24 pb-8 sm:pb-12 pt-24"
+        className="hidden md:flex relative z-20 h-full w-full pointer-events-none flex-col justify-between px-12 md:px-16 lg:px-24 pb-12 pt-24"
       >
-        {/* Top spacer reserved for floating header */}
         <div className="w-full" />
-
-        {/* Bottom Bar: Sound Toggle (Left), Scroll Indicator (Center) & Glassmorphism CTA (Right) */}
         <div className="w-full flex items-end justify-between relative mt-auto">
-          
-          {/* Floating Sound Toggle Button (Bottom-Left) */}
+          {/* Desktop Sound Button */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={videoLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -179,49 +248,49 @@ const Hero = () => {
               onClick={toggleSound}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-black/60 hover:bg-black/80 border border-white/20 hover:border-luxury-gold/50 text-white backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.4)] transition-all duration-300 cursor-pointer group"
+              className="flex items-center gap-2.5 px-5 py-3 rounded-full bg-white/85 hover:bg-white border border-black/20 text-luxury-black backdrop-blur-xl shadow-[0_6px_20px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer group"
               aria-label={isMuted ? "Unmute video sound" : "Mute video sound"}
             >
               {isMuted ? (
-                <svg className="w-3.5 h-3.5 text-white/80 group-hover:text-luxury-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <svg className="w-3.5 h-3.5 text-luxury-black group-hover:text-black transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
                 </svg>
               ) : (
                 <div className="flex items-end gap-[2px] h-3.5 w-3.5 pb-0.5 justify-center">
-                  <motion.span animate={{ height: ["30%", "100%", "40%"] }} transition={{ repeat: Infinity, duration: 0.6 }} className="w-[2px] bg-luxury-gold rounded-full" />
-                  <motion.span animate={{ height: ["80%", "30%", "90%"] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-[2px] bg-luxury-gold rounded-full" />
-                  <motion.span animate={{ height: ["40%", "90%", "20%"] }} transition={{ repeat: Infinity, duration: 0.5 }} className="w-[2px] bg-luxury-gold rounded-full" />
+                  <motion.span animate={{ height: ["30%", "100%", "40%"] }} transition={{ repeat: Infinity, duration: 0.6 }} className="w-[2px] bg-luxury-black rounded-full" />
+                  <motion.span animate={{ height: ["80%", "30%", "90%"] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-[2px] bg-luxury-black rounded-full" />
+                  <motion.span animate={{ height: ["40%", "90%", "20%"] }} transition={{ repeat: Infinity, duration: 0.5 }} className="w-[2px] bg-luxury-black rounded-full" />
                 </div>
               )}
-              <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-white/90 group-hover:text-luxury-gold transition-colors">
+              <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-luxury-black group-hover:text-black transition-colors">
                 {isMuted ? "Sound Off" : "Sound On"}
               </span>
             </motion.button>
           </motion.div>
 
-          {/* Subtle Animated Scroll Indicator (Centered) */}
+          {/* Desktop Scroll Indicator */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={videoLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.25, 1, 0.5, 1] }}
-            className="absolute left-1/2 -translate-x-1/2 bottom-1 sm:bottom-3 pointer-events-auto flex flex-col items-center gap-2 group cursor-pointer"
+            className="absolute left-1/2 -translate-x-1/2 bottom-3 pointer-events-auto flex flex-col items-center gap-2 cursor-pointer group"
             onClick={handleScrollToSolutions}
             aria-label="Scroll to content"
           >
-            <div className="w-[20px] h-[34px] sm:w-[22px] sm:h-[36px] rounded-full border border-white/30 backdrop-blur-md flex justify-center p-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-300 group-hover:border-luxury-gold/60 group-hover:shadow-[0_4px_20px_rgba(212,175,55,0.2)]">
+            <div className="w-[22px] h-[36px] rounded-full border border-white/40 backdrop-blur-sm flex justify-center p-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.2)] transition-colors duration-300 group-hover:border-luxury-gold">
               <motion.div 
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
                 className="w-1 h-1.5 bg-luxury-gold rounded-full"
               />
             </div>
-            <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-semibold text-white/60 group-hover:text-white/95 transition-colors">
+            <span className="text-[9px] uppercase tracking-[0.3em] font-semibold text-white/80 group-hover:text-white transition-colors">
               Scroll
             </span>
           </motion.div>
 
-          {/* Elegant Glassmorphism CTA Button (Floating Bottom-Right) */}
+          {/* Desktop Strategy Call Button */}
           <motion.div 
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={videoLoaded ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 30, scale: 0.95 }}
@@ -229,25 +298,19 @@ const Hero = () => {
             className="pointer-events-auto ml-auto"
           >
             <motion.a 
-              href="#contact"
-              onClick={handleScrollToContact}
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.96 }}
-              className="relative inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-white/[0.08] hover:bg-white/[0.16] border border-white/20 hover:border-luxury-gold/50 text-white hover:text-luxury-gold backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] hover:shadow-[0_12px_36px_rgba(212,175,55,0.25)] transition-all duration-500 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] group cursor-pointer overflow-hidden"
+              href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my brand.")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleStrategyCallClick}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-[22px] bg-white/85 hover:bg-white border border-black/20 text-luxury-black backdrop-blur-xl transition-all duration-300 text-[11px] font-bold uppercase tracking-[0.2em] shadow-[0_6px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.15)] cursor-pointer overflow-hidden"
             >
+              <span className="text-sm relative z-10">🎯</span>
               <span className="relative z-10">Book a Strategy Call</span>
-              <svg 
-                className="w-3.5 h-3.5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor" 
-                strokeWidth="2.5"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-
-              {/* Subtle glass shimmer effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+              <span className="relative z-10 inline-block transition-transform duration-300 ease-out group-hover:translate-x-1.5">
+                →
+              </span>
             </motion.a>
           </motion.div>
         </div>
