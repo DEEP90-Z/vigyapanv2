@@ -40,7 +40,7 @@ const Hero = () => {
   const handleStrategyCallClick = (e) => {
     e.preventDefault();
     const phoneNumber = '918114172501';
-    const message = encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my brand.");
+    const message = encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my Real Estate project.");
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
@@ -159,13 +159,13 @@ const Hero = () => {
       {/* Mobile Editorial Layout Overlay (Positioned at z-10) */}
       <div className="md:hidden relative z-10 flex flex-col justify-between h-full w-full pt-20 pb-7 px-5 sm:px-8 bg-transparent pointer-events-none overflow-hidden">
 
-        {/* Top Editorial Headers: VIGYAPAN 360° & CREATIVE AGENCY */}
+        {/* Top Editorial Headers: VIGYAPAN 360° & REAL ESTATE MARKETING */}
         <div className="relative z-10 w-full flex items-center justify-between pointer-events-auto pt-2">
           <span className="text-[9.5px] uppercase tracking-[0.22em] font-bold text-neutral-800">
             VIGYAPAN 360°
           </span>
-          <span className="text-[9.5px] uppercase tracking-[0.2em] font-semibold text-neutral-500">
-            CREATIVE AGENCY
+          <span className="text-[9.5px] uppercase tracking-[0.18em] font-semibold text-neutral-500">
+            REAL ESTATE MARKETING
           </span>
         </div>
 
@@ -200,7 +200,7 @@ const Hero = () => {
 
           {/* Strategy Call WhatsApp Button */}
           <motion.a 
-            href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my brand.")}`}
+            href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my Real Estate project.")}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleStrategyCallClick}
@@ -213,17 +213,17 @@ const Hero = () => {
           </motion.a>
         </div>
 
-        {/* Bottom Editorial Typography: Ideas that move markets. & Strategy paragraph */}
+        {/* Bottom Editorial Typography: Properties that move buyers. & Strategy paragraph */}
         <div className="relative z-10 w-full flex items-end justify-between pointer-events-auto">
           <div className="flex flex-col text-left">
             <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 leading-[1.08] tracking-tight">
-              Ideas that move<br />
-              markets.
+              Properties that move<br />
+              buyers.
             </h2>
           </div>
-          <div className="flex flex-col text-right max-w-[155px] sm:max-w-[190px]">
+          <div className="flex flex-col text-right max-w-[160px] sm:max-w-[200px]">
             <p className="text-[10px] sm:text-[11px] font-medium text-neutral-600 leading-tight">
-              Strategy, content, media, and growth crafted for attention.
+              360° property marketing, builder campaigns & qualified lead generation.
             </p>
           </div>
         </div>
