@@ -83,19 +83,19 @@ const Footer = () => {
               <a 
                 href="#home" 
                 onClick={(e) => handleScroll(e, '#home')}
-                className="block w-[140px] md:w-[170px] cursor-pointer"
+                className="block w-[160px] md:w-[200px] cursor-pointer"
               >
                 <img 
-                  src="/vigyapan-logo-nav-light.png" 
-                  alt="Vigyapan 360" 
+                  src="/vigyapan-estate-footer.webp" 
+                  alt="Vigyapan 360 Real Estate Marketing" 
                   className="block h-auto w-full object-contain"
                 />
               </a>
               <p className="text-sm md:text-base text-white/50 font-serif italic max-w-sm leading-relaxed mt-2">
-                "Capture modern curiosity and turn it into lasting brand legacy."
+                "Transforming real estate developments into iconic market leaders."
               </p>
               <p className="text-[10px] text-white/30 font-light tracking-[0.2em] uppercase font-mono mt-1">
-                [ High intent visual storytelling. Calibrated motion. Precision craftsmanship. ]
+                [ High intent property storytelling. Architectural visuals. Precision lead generation. ]
               </p>
               
               <div className="flex gap-4 mt-2">

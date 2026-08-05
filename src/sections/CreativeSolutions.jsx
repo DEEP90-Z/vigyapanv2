@@ -112,8 +112,6 @@ const CreativeSolutions = () => {
           </div>
         </motion.div>
 
-        {/* Section Header removed */}
-
         {/* --- CARD 1 --- */}
         <motion.div
           style={{ visibility: card1Visibility }}
@@ -123,25 +121,33 @@ const CreativeSolutions = () => {
             style={{ x: card1X, y: card1Y, willChange: 'transform', backfaceVisibility: 'hidden' }}
             className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
-            <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
+            <div className="lg:w-[55%] h-[40%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="360 marketing" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40 pointer-events-none" />
               <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg z-10">
                 Meta Ads / Growth
               </div>
             </div>
-            <div className="lg:w-[45%] h-[55%] lg:h-full p-6 md:p-12 lg:p-20 flex flex-col justify-center bg-luxury-white relative">
+            <div className="lg:w-[45%] h-[60%] lg:h-full p-6 md:p-12 lg:p-20 flex flex-col justify-between bg-luxury-white relative">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(212,175,55,0.06),transparent_27%)] pointer-events-none" />
-              <span className="text-[0.65rem] md:text-xs font-bold uppercase tracking-[0.28em] text-luxury-gold mb-4 md:mb-8 flex items-center gap-4">
-                <span className="w-8 md:w-12 h-[1px] bg-luxury-gold/50 block"></span> Campaigns Built To Convert.
-              </span>
-              <h3 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold text-luxury-black leading-[1.05] mb-4 md:mb-6">
-                360 Marketing
-              </h3>
-              <p className="text-base md:text-xl lg:text-2xl text-luxury-black/70 font-light font-sans mb-8 md:mb-10 max-w-lg">
-                Luxury growth systems for modern real-estate brands.
-              </p>
-              <div className="mt-auto border-t border-luxury-black/10 pt-6 md:pt-8">
+              <div>
+                <span className="text-[0.65rem] md:text-xs font-bold uppercase tracking-[0.28em] text-luxury-gold mb-3 md:mb-8 flex items-center gap-4">
+                  <span className="w-8 md:w-12 h-[1px] bg-luxury-gold/50 block"></span> Campaigns Built To Convert.
+                </span>
+                <h3 className="text-2xl md:text-5xl lg:text-7xl font-display font-bold text-luxury-black leading-[1.05] mb-2 md:mb-6">
+                  360 Marketing
+                </h3>
+                <p className="text-sm md:text-xl lg:text-2xl text-luxury-black/70 font-light font-sans max-w-lg">
+                  Luxury growth systems for modern real-estate brands.
+                </p>
+
+                {/* Mobile-Only Real Estate Paragraph (Fills Middle Empty Space Cleanly) */}
+                <p className="md:hidden text-[12px] text-luxury-black/75 font-sans leading-relaxed my-3 border-t border-luxury-black/10 pt-3 text-left">
+                  We design targeted Meta & Google ad campaigns engineered specifically for real estate developers and new project launches. From automated CRM pipelines to qualified buyer inquiries, we drive high-intent site visits and accelerate unit sales.
+                </p>
+              </div>
+
+              <div className="mt-auto border-t border-luxury-black/10 pt-4 md:pt-8">
                 <p className="text-[0.6rem] md:text-xs font-bold uppercase tracking-[0.26em] text-luxury-black/42">
                   Paid Media / Social Growth / Launch Strategy
                 </p>
@@ -159,25 +165,33 @@ const CreativeSolutions = () => {
             style={{ x: card2X, willChange: 'transform', backfaceVisibility: 'hidden' }}
             className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10"
           >
-            <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
+            <div className="lg:w-[55%] h-[40%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="branding" />
               <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-black/40 pointer-events-none" />
               <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg z-10">
                 Identity Systems
               </div>
             </div>
-            <div className="lg:w-[45%] h-[55%] lg:h-full p-6 md:p-12 lg:p-20 flex flex-col justify-center bg-[#FAFAF9] relative">
+            <div className="lg:w-[45%] h-[60%] lg:h-full p-6 md:p-12 lg:p-20 flex flex-col justify-between bg-[#FAFAF9] relative">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_84%_84%,rgba(26,26,26,0.04),transparent_30%)] pointer-events-none" />
-              <span className="text-[0.65rem] md:text-xs font-bold uppercase tracking-[0.28em] text-luxury-gold mb-4 md:mb-8 flex items-center gap-4">
-                <span className="w-8 md:w-12 h-[1px] bg-luxury-gold/50 block"></span> Brands People Remember.
-              </span>
-              <h3 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold text-luxury-black leading-[1.05] mb-4 md:mb-6">
-                Branding
-              </h3>
-              <p className="text-base md:text-xl lg:text-2xl text-luxury-black/70 font-light font-sans mb-8 md:mb-10 max-w-lg">
-                Identity systems designed for long-term attention.
-              </p>
-              <div className="mt-auto border-t border-luxury-black/10 pt-6 md:pt-8">
+              <div>
+                <span className="text-[0.65rem] md:text-xs font-bold uppercase tracking-[0.28em] text-luxury-gold mb-3 md:mb-8 flex items-center gap-4">
+                  <span className="w-8 md:w-12 h-[1px] bg-luxury-gold/50 block"></span> Brands People Remember.
+                </span>
+                <h3 className="text-2xl md:text-5xl lg:text-7xl font-display font-bold text-luxury-black leading-[1.05] mb-2 md:mb-6">
+                  Branding
+                </h3>
+                <p className="text-sm md:text-xl lg:text-2xl text-luxury-black/70 font-light font-sans max-w-lg">
+                  Identity systems designed for long-term attention.
+                </p>
+
+                {/* Mobile-Only Real Estate Paragraph (Fills Middle Empty Space Cleanly) */}
+                <p className="md:hidden text-[12px] text-luxury-black/75 font-sans leading-relaxed my-3 border-t border-luxury-black/10 pt-3 text-left">
+                  From project naming and visual identity to high-end printed brochures, we craft luxury brand worlds for residential and commercial developments. We create compelling visual storytelling that builds long-term prestige for real estate builders.
+                </p>
+              </div>
+
+              <div className="mt-auto border-t border-luxury-black/10 pt-4 md:pt-8">
                 <p className="text-[0.6rem] md:text-xs font-bold uppercase tracking-[0.26em] text-luxury-black/42">
                   Identity / Editorial Systems / Brand Worlds
                 </p>
@@ -195,25 +209,33 @@ const CreativeSolutions = () => {
             style={{ x: card3X, willChange: 'transform', backfaceVisibility: 'hidden' }}
             className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
           >
-            <div className="lg:w-[55%] h-[45%] lg:h-full relative overflow-hidden bg-luxury-black">
+            <div className="lg:w-[55%] h-[40%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="audio-video-production" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40 pointer-events-none" />
               <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[0.65rem] font-bold uppercase tracking-widest text-white shadow-lg z-10">
                 Production / Reels
               </div>
             </div>
-            <div className="lg:w-[45%] h-[55%] lg:h-full p-6 md:p-12 lg:p-20 flex flex-col justify-center bg-luxury-white relative">
+            <div className="lg:w-[45%] h-[60%] lg:h-full p-6 md:p-12 lg:p-20 flex flex-col justify-between bg-luxury-white relative">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(212,175,55,0.06),transparent_27%)] pointer-events-none" />
-              <span className="text-[0.65rem] md:text-xs font-bold uppercase tracking-[0.28em] text-luxury-gold mb-4 md:mb-8 flex items-center gap-4">
-                <span className="w-8 md:w-12 h-[1px] bg-luxury-gold/50 block"></span> Stories Built For The Scroll.
-              </span>
-              <h3 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold text-luxury-black leading-[1.05] mb-4 md:mb-6">
-                Audio & Video Production
-              </h3>
-              <p className="text-base md:text-xl lg:text-2xl text-luxury-black/70 font-light font-sans mb-8 md:mb-10 max-w-lg">
-                Cinematic content engineered for attention.
-              </p>
-              <div className="mt-auto border-t border-luxury-black/10 pt-6 md:pt-8">
+              <div>
+                <span className="text-[0.65rem] md:text-xs font-bold uppercase tracking-[0.28em] text-luxury-gold mb-3 md:mb-8 flex items-center gap-4">
+                  <span className="w-8 md:w-12 h-[1px] bg-luxury-gold/50 block"></span> Stories Built For The Scroll.
+                </span>
+                <h3 className="text-2xl md:text-5xl lg:text-7xl font-display font-bold text-luxury-black leading-[1.05] mb-2 md:mb-6">
+                  Audio & Video Production
+                </h3>
+                <p className="text-sm md:text-xl lg:text-2xl text-luxury-black/70 font-light font-sans max-w-lg">
+                  Cinematic content engineered for attention.
+                </p>
+
+                {/* Mobile-Only Real Estate Paragraph (Fills Middle Empty Space Cleanly) */}
+                <p className="md:hidden text-[12px] text-luxury-black/75 font-sans leading-relaxed my-3 border-t border-luxury-black/10 pt-3 text-left">
+                  Cinematic 4K drone walkthroughs, sample flat tours, and scripted short-form video reels built for social media. We create visually stunning video content that grabs buyer attention and drives direct inquiries for real estate projects.
+                </p>
+              </div>
+
+              <div className="mt-auto border-t border-luxury-black/10 pt-4 md:pt-8">
                 <p className="text-[0.6rem] md:text-xs font-bold uppercase tracking-[0.26em] text-luxury-black/42">
                   Reels / Production / Social Storytelling
                 </p>

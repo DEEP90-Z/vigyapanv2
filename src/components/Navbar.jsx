@@ -61,15 +61,13 @@ const Navbar = () => {
           <a 
             href="#home" 
             onClick={(e) => handleNavClick(e, '#home')}
-            className="flex items-center w-[85px] shrink-0" 
-            aria-label="Vigyapan360 home"
+            className="flex items-center justify-center h-6 sm:h-7 w-auto shrink-0 my-auto" 
+            aria-label="Vigyapan 360 Real Estate Marketing"
           >
             <img
-              src="/vigyapan-logo-nav.png"
-              alt="Vigyapan360"
-              className="block h-auto w-full object-contain"
-              width="520"
-              height="85"
+              src="/vigyapan-estate-navbar-cropped.webp"
+              alt="Vigyapan 360 Real Estate Marketing"
+              className="h-full w-auto max-w-[105px] sm:max-w-[125px] object-contain mix-blend-multiply my-auto block"
             />
           </a>
 
@@ -98,7 +96,7 @@ const Navbar = () => {
         {/* DESKTOP LEFT PILL - Logo Only (Hidden on Mobile) */}
         <div 
           className={cn(
-            "hidden md:flex pointer-events-auto items-center px-5.5 py-2.5 rounded-[22px] transition-all duration-300 ease-out",
+            "hidden md:flex pointer-events-auto items-center justify-center px-5.5 py-2.5 rounded-[22px] transition-all duration-300 ease-out",
             scrolled
               ? "bg-white/20 backdrop-blur-xl shadow-[0_8px_25px_rgba(0,0,0,0.1)] hover:bg-white/30"
               : "bg-transparent backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:bg-white/10"
@@ -109,15 +107,13 @@ const Navbar = () => {
             onClick={(e) => {
               handleNavClick(e, '#home');
             }}
-            className="flex items-center w-[100px] shrink-0 transition-transform duration-300 hover:scale-105" 
-            aria-label="Vigyapan360 home"
+            className="flex items-center justify-center h-7 lg:h-8 w-auto shrink-0 transition-transform duration-300 hover:scale-105 my-auto" 
+            aria-label="Vigyapan 360 Real Estate Marketing"
           >
             <img
-              src="/vigyapan-logo-nav.png"
-              alt="Vigyapan360"
-              className="block h-auto w-full object-contain"
-              width="520"
-              height="85"
+              src="/vigyapan-estate-navbar-cropped.webp"
+              alt="Vigyapan 360 Real Estate Marketing"
+              className="h-full w-auto max-w-[120px] lg:max-w-[140px] object-contain mix-blend-multiply my-auto block"
             />
           </a>
         </div>

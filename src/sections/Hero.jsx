@@ -159,10 +159,10 @@ const Hero = () => {
       {/* Mobile Editorial Layout Overlay (Positioned at z-10) */}
       <div className="md:hidden relative z-10 flex flex-col justify-between h-full w-full pt-20 pb-7 px-5 sm:px-8 bg-transparent pointer-events-none overflow-hidden">
 
-        {/* Top Editorial Headers: VIGYAPAN 360° & REAL ESTATE MARKETING */}
+        {/* Top Editorial Headers: BRAND SYSTEMS & MEDIA & REAL ESTATE MARKETING */}
         <div className="relative z-10 w-full flex items-center justify-between pointer-events-auto pt-2">
-          <span className="text-[9.5px] uppercase tracking-[0.22em] font-bold text-neutral-800">
-            VIGYAPAN 360°
+          <span className="text-[9.5px] uppercase tracking-[0.2em] font-semibold text-neutral-500">
+            BRAND SYSTEMS & MEDIA
           </span>
           <span className="text-[9.5px] uppercase tracking-[0.18em] font-semibold text-neutral-500">
             REAL ESTATE MARKETING
@@ -213,7 +213,7 @@ const Hero = () => {
           </motion.a>
         </div>
 
-        {/* Bottom Editorial Typography: Properties that move buyers. & Strategy paragraph */}
+        {/* Bottom Editorial Typography: Properties that move buyers. & Refined aesthetic statement */}
         <div className="relative z-10 w-full flex items-end justify-between pointer-events-auto">
           <div className="flex flex-col text-left">
             <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 leading-[1.08] tracking-tight">
@@ -221,9 +221,9 @@ const Hero = () => {
               buyers.
             </h2>
           </div>
-          <div className="flex flex-col text-right max-w-[160px] sm:max-w-[200px]">
-            <p className="text-[10px] sm:text-[11px] font-medium text-neutral-600 leading-tight">
-              360° property marketing, builder campaigns & qualified lead generation.
+          <div className="flex flex-col text-right max-w-[165px] sm:max-w-[210px]">
+            <p className="text-[10px] sm:text-[11px] font-medium text-neutral-600 leading-snug tracking-[0.02em]">
+              Architectural film, 3D vision & high-intent buyer acquisition.
             </p>
           </div>
         </div>
