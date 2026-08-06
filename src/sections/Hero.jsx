@@ -11,7 +11,9 @@ const Hero = () => {
   const lenis = useLenis();
 
   // Keep ref in sync with state
-  isMutedRef.current = isMuted;
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+  }, [isMuted]);
 
   const { scrollY, scrollYProgress } = useScroll({
     layoutEffect: false,

@@ -55,13 +55,14 @@ const MediaCard = ({ src, label, coordinates, yOffset }) => {
 
 const BrandManifesto = () => {
   const containerRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    return typeof window !== 'undefined' ? window.matchMedia('(max-width: 1023px)').matches : false;
+  });
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 1023px)');
     const handleMediaChange = (e) => setIsMobile(e.matches);
     
-    setIsMobile(mediaQuery.matches);
     mediaQuery.addEventListener('change', handleMediaChange);
     return () => mediaQuery.removeEventListener('change', handleMediaChange);
   }, []);
