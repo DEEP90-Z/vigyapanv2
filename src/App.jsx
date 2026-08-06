@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import LazySection from './components/LazySection';
@@ -17,6 +17,13 @@ import { ReactLenis } from 'lenis/react';
 import 'lenis/dist/lenis.css';
 
 function App() {
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <ReactLenis
       root
@@ -40,37 +47,37 @@ function App() {
           </Suspense>
         </LazySection>
 
-        <LazySection id="work" placeholderHeight="100vh" rootMargin="200px">
+        <LazySection id="work" placeholderHeight="100vh" rootMargin="200px" className="relative z-10 bg-luxury-cream">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <LayerCards />
           </Suspense>
         </LazySection>
 
-        <LazySection id="testimonials" placeholderHeight="60vh" rootMargin="200px">
+        <LazySection id="testimonials" placeholderHeight="60vh" rootMargin="200px" className="relative z-10 bg-[#F5F5F5]">
           <Suspense fallback={<div style={{ minHeight: '60vh' }} />}>
             <BrandSpeaks />
           </Suspense>
         </LazySection>
 
-        <LazySection id="reels" placeholderHeight="80vh" rootMargin="200px">
+        <LazySection id="reels" placeholderHeight="80vh" rootMargin="200px" className="relative z-10 bg-luxury-cream">
           <Suspense fallback={<div style={{ minHeight: '80vh' }} />}>
             <ReelsShowcase />
           </Suspense>
         </LazySection>
 
-        <LazySection id="brand-manifesto" placeholderHeight="100vh" rootMargin="200px">
+        <LazySection id="brand-manifesto" placeholderHeight="100vh" rootMargin="200px" className="relative z-10 bg-luxury-dark">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <BrandManifesto />
           </Suspense>
         </LazySection>
 
-        <LazySection id="contact" placeholderHeight="60vh" rootMargin="200px">
-          <Suspense fallback={<div style={{ minHeight: '60vh' }} />}>
+        <LazySection id="contact" placeholderHeight="60vh" rootMargin="200px" className="relative z-10 bg-luxury-black">
+          <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <Contact />
           </Suspense>
         </LazySection>
 
-        <LazySection placeholderHeight="30vh" rootMargin="200px">
+        <LazySection placeholderHeight="30vh" rootMargin="200px" className="relative z-10 bg-luxury-dark">
           <Suspense fallback={<div style={{ minHeight: '30vh' }} />}>
             <Footer />
           </Suspense>

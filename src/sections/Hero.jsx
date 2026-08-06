@@ -21,9 +21,15 @@ const Hero = () => {
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -35]);
 
+  const [isPastHero, setIsPastHero] = useState(false);
+
   // Instantly mute audio and pause video when scrolling past 35% of Hero viewport
   useMotionValueEvent(scrollY, "change", (latest) => {
     const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.35 : 300;
+    const pastHeroThreshold = typeof window !== 'undefined' ? window.innerHeight * 1.05 : 800;
+
+    setIsPastHero(latest > pastHeroThreshold);
+
     if (videoRef.current) {
       if (latest > threshold) {
         videoRef.current.muted = true;
@@ -38,7 +44,6 @@ const Hero = () => {
       }
     }
   });
-
 
   const handleScrollToSolutions = (e) => {
     e.preventDefault();
@@ -99,7 +104,9 @@ const Hero = () => {
     <section 
       ref={containerRef} 
       id="home" 
-      className="relative h-[100vh] min-h-[100dvh] w-full overflow-hidden bg-[#EBEBEB] md:bg-luxury-black sticky top-0 z-0 flex flex-col justify-between"
+      className={`relative h-[100vh] min-h-[100dvh] w-full overflow-hidden bg-[#EBEBEB] md:bg-luxury-black sticky top-0 z-0 flex flex-col justify-between transition-opacity duration-300 ${
+        isPastHero ? 'opacity-0 pointer-events-none invisible' : 'opacity-100 visible'
+      }`}
     >
       {/* Diagonal Background Line Accent (Positioned at z-0 behind video at z-1) */}
       <svg className="md:hidden absolute inset-0 w-full h-full pointer-events-none opacity-90 z-0" viewBox="0 0 100 100" preserveAspectRatio="none">

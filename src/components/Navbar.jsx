@@ -27,6 +27,14 @@ const Navbar = () => {
   const handleNavClick = (e, href) => {
     e.preventDefault();
     setMobileMenuOpen(false); // Always close mobile menu when a nav link is tapped
+    if (href === '#home' || href === '/') {
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
     if (lenis && href) {
       lenis.scrollTo(href, { offset: -20, duration: 1.2 });
     } else if (href && typeof href === 'string' && href.startsWith('#')) {
