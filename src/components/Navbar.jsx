@@ -3,9 +3,17 @@ import { AnimatePresence, motion, useScroll, useMotionValueEvent } from 'framer-
 import { useLenis } from 'lenis/react';
 import { cn } from '../utils/cn';
 
+const NAV_ITEMS = [
+  { label: 'Home', href: '#home' },
+  { label: 'Services', href: '#solutions' },
+  { label: 'Our Work', href: '#work' },
+  { label: 'Reviews', href: '#testimonials' },
+  { label: 'Contact', href: '#contact' },
+];
+
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // Closed by default on mobile
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopNavOpen, setDesktopNavOpen] = useState(true);
   const { scrollY } = useScroll();
   const lenis = useLenis();
@@ -26,7 +34,7 @@ const Navbar = () => {
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
-    setMobileMenuOpen(false); // Always close mobile menu when a nav link is tapped
+    setMobileMenuOpen(false);
     if (href === '#home' || href === '/') {
       if (lenis) {
         lenis.scrollTo(0, { duration: 1.2 });
@@ -56,7 +64,7 @@ const Navbar = () => {
           scrolled ? "top-4 md:top-5 -translate-y-1" : "top-6 md:top-8"
         )}
       >
-        {/* MOBILE SINGLE FLOATING BAR (Logo + Menu Button combined in ONE bar) */}
+        {/* MOBILE SINGLE FLOATING BAR */}
         <div 
           className={cn(
             "md:hidden pointer-events-auto flex items-center justify-between w-full px-4.5 py-2.5 rounded-[22px] transition-all duration-300 ease-out",
@@ -101,7 +109,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* DESKTOP LEFT PILL - Logo Only (Hidden on Mobile) */}
+        {/* DESKTOP LEFT PILL - Logo Only */}
         <div 
           className={cn(
             "hidden md:flex pointer-events-auto items-center justify-center px-5.5 py-2.5 rounded-[22px] transition-all duration-300 ease-out",
@@ -112,9 +120,7 @@ const Navbar = () => {
         >
           <a 
             href="#home" 
-            onClick={(e) => {
-              handleNavClick(e, '#home');
-            }}
+            onClick={(e) => handleNavClick(e, '#home')}
             className="flex items-center justify-center h-7 lg:h-8 w-auto shrink-0 transition-transform duration-300 hover:scale-105 my-auto" 
             aria-label="Vigyapan 360 Real Estate Marketing"
           >
@@ -126,7 +132,7 @@ const Navbar = () => {
           </a>
         </div>
         
-        {/* DESKTOP CENTER PILL - Collapsible Navigation Links (Hidden on Mobile) */}
+        {/* DESKTOP CENTER PILL - Collapsible Navigation Links */}
         <AnimatePresence>
           {desktopNavOpen && (
             <motion.div 
@@ -135,19 +141,13 @@ const Navbar = () => {
               exit={{ opacity: 0, scale: 0.92, y: -5 }}
               transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
               className={cn(
-                "pointer-events-auto hidden md:flex items-center space-x-7 lg:space-x-9 px-7 py-3 rounded-[22px] transition-all duration-300 ease-out text-[10px] lg:text-[10.5px] uppercase tracking-[0.22em] font-bold text-luxury-black",
+                "pointer-events-auto hidden md:flex items-center space-x-6 lg:space-x-8 px-7 py-3 rounded-[22px] transition-all duration-300 ease-out text-[10px] lg:text-[10.5px] uppercase tracking-[0.22em] font-bold text-luxury-black",
                 scrolled
                   ? "bg-white/20 backdrop-blur-xl shadow-[0_8px_25px_rgba(0,0,0,0.1)] hover:bg-white/30"
                   : "bg-transparent backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:bg-white/10"
               )}
             >
-              {[
-                { label: 'Home', href: '#home' },
-                { label: 'Services', href: '#solutions' },
-                { label: 'Reviews', href: '#testimonials' },
-                { label: 'Our Work', href: '#reels' },
-                { label: 'Contact', href: '#contact' },
-              ].map((item) => (
+              {NAV_ITEMS.map((item) => (
                 <a 
                   key={item.label} 
                   href={item.href} 
@@ -164,7 +164,7 @@ const Navbar = () => {
           )}
         </AnimatePresence>
 
-        {/* DESKTOP RIGHT PILL - Always Visible Menu Toggle Pill (Hidden on Mobile) */}
+        {/* DESKTOP RIGHT PILL - Menu Toggle Pill */}
         <div className="pointer-events-auto hidden md:flex items-center">
           <button 
             type="button"
@@ -193,7 +193,7 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* Mobile Dropdown Panel (ONLY opens when mobileMenuOpen is true) */}
+      {/* Mobile Dropdown Panel */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -203,19 +203,11 @@ const Navbar = () => {
             transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
             className="fixed top-20 md:hidden left-1/2 z-40 w-[90vw] bg-white/95 backdrop-blur-2xl rounded-[2rem] p-5 shadow-[0_15px_45px_rgba(0,0,0,0.25)] flex flex-col items-center space-y-3.5 border border-black/10"
           >
-            {[
-              { label: 'Home', href: '#home' },
-              { label: 'Services', href: '#solutions' },
-              { label: 'Reviews', href: '#testimonials' },
-              { label: 'Our Work', href: '#reels' },
-              { label: 'Contact', href: '#contact' },
-            ].map((item) => (
+            {NAV_ITEMS.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                onClick={(e) => {
-                  handleNavClick(e, item.href);
-                }}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className="text-xs font-bold uppercase tracking-[0.16em] text-black/80 hover:text-black transition-colors py-1"
               >
                 {item.label}

@@ -5,11 +5,12 @@ import LazySection from './components/LazySection';
 import WhatsAppButton from './components/WhatsAppButton';
 
 // Implement React.lazy to enable JS code-splitting and drastically reduce initial bundle size
+const FloatingBrandShowcase = React.lazy(() => import('./sections/FloatingBrandShowcase'));
 const CreativeSolutions = React.lazy(() => import('./sections/CreativeSolutions'));
-const BrandManifesto = React.lazy(() => import('./sections/BrandManifesto'));
+const ReelsShowcase = React.lazy(() => import('./sections/ReelsShowcase'));
 const LayerCards = React.lazy(() => import('./sections/LayerCards'));
 const BrandSpeaks = React.lazy(() => import('./sections/BrandSpeaks'));
-const ReelsShowcase = React.lazy(() => import('./sections/ReelsShowcase'));
+const BrandManifesto = React.lazy(() => import('./sections/BrandManifesto'));
 const Contact = React.lazy(() => import('./sections/Contact'));
 const Footer = React.lazy(() => import('./sections/Footer'));
 
@@ -39,32 +40,46 @@ function App() {
     >
       <main className="relative">
         <Navbar />
+
+        {/* 1. Hero */}
         <Hero />
 
-        <LazySection id="solutions" placeholderHeight="100vh" rootMargin="300px" className="relative z-10 bg-luxury-cream">
+        {/* 2. Logos Floating */}
+        <LazySection id="showcase" placeholderHeight="100vh" rootMargin="300px" className="relative z-10 bg-[#FAF9F5]">
+          <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+            <FloatingBrandShowcase />
+          </Suspense>
+        </LazySection>
+
+        {/* 3. Services */}
+        <LazySection id="solutions" placeholderHeight="100vh" rootMargin="200px" className="relative z-10 bg-luxury-cream">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <CreativeSolutions />
           </Suspense>
         </LazySection>
 
-        <LazySection id="work" placeholderHeight="100vh" rootMargin="200px" className="relative z-10 bg-luxury-cream">
+        {/* 4. Our Work (Reels & Slideshow) */}
+        <LazySection id="work" placeholderHeight="80vh" rootMargin="200px" className="relative z-10 bg-luxury-cream">
+          <Suspense fallback={<div style={{ minHeight: '80vh' }} />}>
+            <ReelsShowcase />
+          </Suspense>
+        </LazySection>
+
+        {/* 5. Campaign (Layer Cards) */}
+        <LazySection id="campaign" placeholderHeight="100vh" rootMargin="200px" className="relative z-10 bg-luxury-cream">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <LayerCards />
           </Suspense>
         </LazySection>
 
+        {/* 6. Reviews (Testimonials) */}
         <LazySection id="testimonials" placeholderHeight="60vh" rootMargin="200px" className="relative z-10 bg-[#F5F5F5]">
           <Suspense fallback={<div style={{ minHeight: '60vh' }} />}>
             <BrandSpeaks />
           </Suspense>
         </LazySection>
 
-        <LazySection id="reels" placeholderHeight="80vh" rootMargin="200px" className="relative z-10 bg-luxury-cream">
-          <Suspense fallback={<div style={{ minHeight: '80vh' }} />}>
-            <ReelsShowcase />
-          </Suspense>
-        </LazySection>
-
+        {/* 7. Map & Contact */}
         <LazySection id="brand-manifesto" placeholderHeight="100vh" rootMargin="200px" className="relative z-10 bg-luxury-dark">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <BrandManifesto />
@@ -77,6 +92,7 @@ function App() {
           </Suspense>
         </LazySection>
 
+        {/* 8. Footer */}
         <LazySection placeholderHeight="30vh" rootMargin="200px" className="relative z-10 bg-luxury-dark">
           <Suspense fallback={<div style={{ minHeight: '30vh' }} />}>
             <Footer />
