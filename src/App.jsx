@@ -14,6 +14,7 @@ const Contact = React.lazy(() => import('./sections/Contact'));
 const Footer = React.lazy(() => import('./sections/Footer'));
 
 import { ReactLenis } from 'lenis/react';
+import 'lenis/dist/lenis.css';
 
 function App() {
   return (

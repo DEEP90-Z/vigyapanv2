@@ -13,7 +13,9 @@ const Hero = () => {
   // Keep ref in sync with state
   isMutedRef.current = isMuted;
 
-  const { scrollY, scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll({
+    layoutEffect: false,
+  });
 
   // Parallax scale video slightly from 100% to 108% as user scrolls down
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
@@ -37,13 +39,6 @@ const Hero = () => {
     }
   });
 
-  const handleStrategyCallClick = (e) => {
-    e.preventDefault();
-    const phoneNumber = '918114172501';
-    const message = encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my Real Estate project.");
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-  };
 
   const handleScrollToSolutions = (e) => {
     e.preventDefault();
@@ -91,33 +86,12 @@ const Hero = () => {
       });
     }
 
-    // Native scroll listener fallback to ensure sound stops when scrolling down
-    const handleScroll = () => {
-      const threshold = window.innerHeight * 0.35;
-      if (videoRef.current) {
-        if (window.scrollY > threshold) {
-          videoRef.current.muted = true;
-          if (!videoRef.current.paused) {
-            videoRef.current.pause();
-          }
-        } else {
-          videoRef.current.muted = isMutedRef.current;
-          if (videoRef.current.paused) {
-            videoRef.current.play().catch(() => {});
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
     const timer = setTimeout(() => {
       setVideoLoaded(true);
     }, 300);
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -150,8 +124,8 @@ const Hero = () => {
             onPlay={() => setVideoLoaded(true)}
             className="h-full w-full min-h-full min-w-full object-cover select-none pointer-events-none"
           >
-            <source src="/videos/hero section 2.mp4" type="video/mp4" />
             <source src="/videos/hero section.webm" type="video/webm" />
+            <source src="/videos/hero section 2.mp4" type="video/mp4" />
           </video>
         </div>
       </motion.div>
@@ -203,7 +177,6 @@ const Hero = () => {
             href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my Real Estate project.")}`}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={handleStrategyCallClick}
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 text-neutral-900 border border-neutral-300/50 shadow-sm text-[9px] font-bold uppercase tracking-[0.16em] cursor-pointer"
           >
@@ -301,7 +274,6 @@ const Hero = () => {
               href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my brand.")}`}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={handleStrategyCallClick}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-[22px] bg-white/85 hover:bg-white border border-black/20 text-luxury-black backdrop-blur-xl transition-all duration-300 text-[11px] font-bold uppercase tracking-[0.2em] shadow-[0_6px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.15)] cursor-pointer overflow-hidden"

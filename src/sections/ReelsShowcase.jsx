@@ -44,10 +44,13 @@ const parseYoutubeEmbedUrl = (rawUrl) => {
   if (!rawUrl) return '';
   try {
     const parsed = new URL(rawUrl);
+    const validHosts = ['www.youtube.com', 'youtube.com', 'youtu.be'];
+    if (!validHosts.includes(parsed.hostname)) return '';
+
     const videoId = parsed.searchParams.get('v') || parsed.pathname.split('/').filter(Boolean).pop();
-    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0` : rawUrl;
+    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0` : '';
   } catch {
-    return rawUrl;
+    return '';
   }
 };
 
@@ -254,11 +257,10 @@ const AutoplayReelVideo = ({ src, isInView }) => {
     <video
       ref={videoRef}
       src={src}
-      autoPlay
       muted
       loop
       playsInline
-      preload="auto"
+      preload="none"
       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
     />
   );

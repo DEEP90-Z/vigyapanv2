@@ -50,10 +50,11 @@ const BrandSpeaks = () => {
   const [currentIndex, setCurrentIndex] = useState(originalLength);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [visibleCards, setVisibleCards] = useState(3);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
 
+  const touchStartRef = useRef(null);
+  const touchEndRef = useRef(null);
   const isTransitioningRef = useRef(false);
+  const transitionTimerRef = useRef(null);
   const autoPlayRef = useRef(null);
 
   // Dynamic screen resizing to detect how many cards are visible
@@ -72,29 +73,36 @@ const BrandSpeaks = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const nextSlide = () => {
-    if (isTransitioningRef.current) return;
+  const triggerTransitionLock = () => {
     setIsTransitioning(true);
     isTransitioningRef.current = true;
+    clearTimeout(transitionTimerRef.current);
+    transitionTimerRef.current = setTimeout(() => {
+      isTransitioningRef.current = false;
+    }, 600);
+  };
+
+  const nextSlide = () => {
+    if (isTransitioningRef.current) return;
+    triggerTransitionLock();
     setCurrentIndex((prev) => prev + 1);
   };
 
   const prevSlide = () => {
     if (isTransitioningRef.current) return;
-    setIsTransitioning(true);
-    isTransitioningRef.current = true;
+    triggerTransitionLock();
     setCurrentIndex((prev) => prev - 1);
   };
 
   const goToSlide = (dotIdx) => {
     if (isTransitioningRef.current) return;
-    setIsTransitioning(true);
-    isTransitioningRef.current = true;
+    triggerTransitionLock();
     setCurrentIndex(originalLength + dotIdx);
   };
 
   // Silent wrap-around reset after transition completes
   const handleTransitionEnd = () => {
+    clearTimeout(transitionTimerRef.current);
     if (currentIndex >= originalLength * 2) {
       setIsTransitioning(false);
       setCurrentIndex(currentIndex - originalLength);
@@ -127,8 +135,7 @@ const BrandSpeaks = () => {
 
     autoPlayRef.current = setInterval(() => {
       if (!isTransitioningRef.current) {
-        setIsTransitioning(true);
-        isTransitioningRef.current = true;
+        triggerTransitionLock();
         setCurrentIndex((prev) => prev + 1);
       }
     }, 3500);
@@ -140,17 +147,17 @@ const BrandSpeaks = () => {
 
   // Mobile touch event swiping
   const handleTouchStart = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+    touchEndRef.current = null;
+    touchStartRef.current = e.targetTouches[0].clientX;
   };
 
   const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    touchEndRef.current = e.targetTouches[0].clientX;
   };
 
   const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
+    if (!touchStartRef.current || !touchEndRef.current) return;
+    const distance = touchStartRef.current - touchEndRef.current;
     const minSwipeDistance = 50;
     if (distance > minSwipeDistance) {
       nextSlide();

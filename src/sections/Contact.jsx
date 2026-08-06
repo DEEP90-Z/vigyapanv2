@@ -6,7 +6,8 @@ const Contact = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
+    layoutEffect: false,
   });
 
   const gridY = useTransform(scrollYProgress, [0, 1], [-50, 50]);

@@ -10,15 +10,24 @@ const SolutionVideo = ({ baseName }) => {
     const el = containerRef.current;
     if (!el) return;
 
+    let playPromise;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           if (videoRef.current) {
-            videoRef.current.play().catch(() => {});
+            playPromise = videoRef.current.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(() => {});
+            }
           }
         } else {
           if (videoRef.current) {
-            videoRef.current.pause();
+            if (playPromise !== undefined) {
+              playPromise.then(() => videoRef.current?.pause()).catch(() => {});
+            } else {
+              videoRef.current.pause();
+            }
           }
         }
       },

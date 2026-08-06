@@ -27,9 +27,9 @@ const Navbar = () => {
   const handleNavClick = (e, href) => {
     e.preventDefault();
     setMobileMenuOpen(false); // Always close mobile menu when a nav link is tapped
-    if (lenis) {
+    if (lenis && href) {
       lenis.scrollTo(href, { offset: -20, duration: 1.2 });
-    } else {
+    } else if (href && typeof href === 'string' && href.startsWith('#')) {
       const target = document.querySelector(href);
       if (target) {
         target.scrollIntoView({ behavior: 'smooth' });
