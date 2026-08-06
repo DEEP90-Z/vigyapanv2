@@ -12,11 +12,8 @@ const WhatsAppButton = () => {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const heroThreshold = (window.innerHeight || 600) * 0.6;
-    if (latest > heroThreshold) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
+    const shouldBeVisible = latest > heroThreshold;
+    setIsVisible((prev) => (prev !== shouldBeVisible ? shouldBeVisible : prev));
   });
 
   return (

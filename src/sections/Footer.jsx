@@ -1,9 +1,10 @@
+import { memo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useMagnetic } from '../hooks/useMagnetic';
 import { useLenis } from 'lenis/react';
 
-const MagneticSocialIcon = ({ href, children }) => {
-  const { ref, x, y, handleMouseMove, handleMouseLeave } = useMagnetic(60, 0.5);
+const MagneticSocialPill = memo(({ href, label }) => {
+  const { ref, x, y, handleMouseMove, handleMouseLeave } = useMagnetic(40, 0.4);
   return (
     <motion.a
       ref={ref}
@@ -13,21 +14,43 @@ const MagneticSocialIcon = ({ href, children }) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-luxury-gold hover:border-luxury-gold/40 bg-white/[0.01] hover:bg-white/[0.04] transition-all duration-300 shadow-lg cursor-pointer"
+      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-neutral-300/80 bg-white/90 text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all duration-300 text-[10px] font-mono font-bold uppercase tracking-widest cursor-pointer shadow-2xs"
     >
-      {children}
+      <span>{label}</span>
+      <span>↗</span>
     </motion.a>
   );
-};
+});
 
 const Footer = () => {
   const lenis = useLenis();
-  
+  const [currentTime, setCurrentTime] = useState('');
+
+  // Live Jhansi IST time display
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+      setCurrentTime(now.toLocaleTimeString('en-US', options) + ' IST');
+    };
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleScroll = (e, href) => {
     e.preventDefault();
+    if (href === '#home' || href === '/') {
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 1.4 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
     if (lenis) {
       lenis.scrollTo(href, {
-        duration: 1.5,
+        duration: 1.4,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
     } else {
@@ -38,133 +61,154 @@ const Footer = () => {
     }
   };
 
+  const { ref: topBtnRef, x: topBtnX, y: topBtnY, handleMouseMove: topBtnMove, handleMouseLeave: topBtnLeave } = useMagnetic(60, 0.4);
+
   return (
-    <div className="relative w-full bg-luxury-dark select-none">
+    <div className="relative w-full bg-[#FAF9F5] select-none text-neutral-900 overflow-hidden border-t border-neutral-300/50">
       
-      <div className="w-full overflow-hidden py-10 md:py-14 bg-luxury-black select-none relative z-10 border-t border-white/5">
+      {/* 1. Giant Editorial Brand Watermark Header */}
+      <div className="pt-16 pb-6 px-6 text-center overflow-hidden border-b border-neutral-300/40">
+        <h1 
+          className="text-6xl sm:text-9xl lg:text-[13rem] font-display font-black tracking-tighter uppercase leading-none select-none text-transparent"
+          style={{ WebkitTextStroke: '1.5px rgba(26,26,26,0.18)' }}
+        >
+          VIGYAPAN 360
+        </h1>
+      </div>
+
+      {/* 2. Light Ticker Marquee Bar */}
+      <div className="w-full overflow-hidden py-5 bg-[#EFECE6] border-b border-neutral-300/50 select-none relative z-10 font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-neutral-700">
         <div 
-          className="flex gap-16 text-5xl md:text-7xl font-serif italic text-white/95 uppercase tracking-widest whitespace-nowrap animate-marquee-left"
+          className="flex gap-16 whitespace-nowrap animate-marquee-right font-bold"
           style={{ width: 'max-content' }}
         >
           {[0, 1, 2].map((i) => (
-            <span key={i} className="flex items-center gap-16 font-serif font-extralight">
-              <span>Get In Touch</span>
+            <span key={i} className="flex items-center gap-14">
+              <span>REAL ESTATE BRAND SYSTEMS</span>
               <span className="text-luxury-gold">&bull;</span>
-              <span className="font-light">Let's Build Legends</span>
+              <span>ARCHITECTURAL FILM & VISUALS</span>
               <span className="text-luxury-gold">&bull;</span>
-              <span>Vigyapan 360</span>
+              <span>HIGH-INTENT BUYER ACQUISITION</span>
               <span className="text-luxury-gold">&bull;</span>
             </span>
           ))}
         </div>
       </div>
-      <div className="relative w-full overflow-hidden leading-[0] z-10 bg-transparent mt-[-1px]">
-        <svg 
-          viewBox="0 0 1440 120" 
-          preserveAspectRatio="none" 
-          className="relative block w-full h-[60px] md:h-[100px] fill-current text-luxury-dark"
-        >
-          <path d="M0,120 C480,30 960,30 1440,120 L1440,120 L0,120 Z" />
-          <path 
-            d="M0,120 C480,30 960,30 1440,120" 
-            fill="none" 
-            stroke="#D4AF37" 
-            strokeWidth="2.5" 
-            opacity="0.5"
-          />
-        </svg>
-      </div>
-      <footer className="pt-16 pb-12 bg-luxury-dark text-white relative z-10">
-        <div className="max-w-[1200px] mx-auto px-6 md:px-12 w-full">
+
+      {/* 3. Main Footer Body */}
+      <footer className="pt-16 pb-12 bg-[#FAF9F5] text-neutral-900 relative z-10">
+        <div className="max-w-[1360px] mx-auto px-6 md:px-12 w-full">
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 mb-16 items-start">
             
-            <div className="lg:col-span-2 pr-6 flex flex-col gap-6">
+            {/* Column 1: Brand & Tagline */}
+            <div className="md:col-span-5 flex flex-col gap-6">
               <a 
                 href="#home" 
                 onClick={(e) => handleScroll(e, '#home')}
-                className="block w-[160px] md:w-[200px] cursor-pointer"
+                className="block w-[160px] md:w-[190px] cursor-pointer"
+                aria-label="Vigyapan 360 Home"
               >
                 <img 
-                  src="/vigyapan-estate-footer.webp" 
+                  src="/vigyapan-estate-navbar-cropped.webp" 
                   alt="Vigyapan 360 Real Estate Marketing" 
-                  className="block h-auto w-full object-contain"
+                  className="block h-auto w-full object-contain mix-blend-multiply"
                 />
               </a>
-              <p className="text-sm md:text-base text-white/50 font-serif italic max-w-sm leading-relaxed mt-2">
+              
+              <p className="text-base sm:text-lg text-neutral-800 font-serif italic max-w-md leading-relaxed">
                 "Transforming real estate developments into iconic market leaders."
               </p>
-              <p className="text-[10px] text-white/30 font-light tracking-[0.2em] uppercase font-mono mt-1">
-                [ High intent property storytelling. Architectural visuals. Precision lead generation. ]
-              </p>
-              
-              <div className="flex gap-4 mt-2">
-                <MagneticSocialIcon href="https://www.instagram.com/vigyapan360/">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                  </svg>
-                </MagneticSocialIcon>
-                <MagneticSocialIcon href="https://linkedin.com/company/vigyapan360">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </MagneticSocialIcon>
-                <MagneticSocialIcon href="https://twitter.com/vigyapan360">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                  </svg>
-                </MagneticSocialIcon>
+
+              {/* Social Pills */}
+              <div className="flex flex-wrap gap-2.5 pt-2">
+                <MagneticSocialPill href="https://www.instagram.com/vigyapan360/" label="INSTAGRAM" />
+                <MagneticSocialPill href="https://linkedin.com/company/vigyapan360" label="LINKEDIN" />
+                <MagneticSocialPill href="https://twitter.com/vigyapan360" label="TWITTER" />
+                <MagneticSocialPill 
+                  href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call.")}`} 
+                  label="WHATSAPP" 
+                />
               </div>
             </div>
-            <div>
-              <h4 className="text-[10px] uppercase tracking-[0.25em] mb-6 text-luxury-gold font-bold">
+
+            {/* Column 2: Numbered Directory Navigation */}
+            <div className="md:col-span-3">
+              <span className="text-[9.5px] uppercase tracking-[0.25em] text-neutral-400 font-mono font-bold block mb-6">
                 DIRECTORY
-              </h4>
-              <div className="flex flex-col space-y-4">
+              </span>
+              <div className="flex flex-col space-y-3 font-mono text-xs uppercase tracking-widest">
                 {[
-                  { label: 'Home', href: '#home' },
-                  { label: 'Services', href: '#solutions' },
-                  { label: 'Reviews', href: '#testimonials' },
-                  { label: 'Campaigns', href: '#work' },
-                  { label: 'Our Work', href: '#reels' },
+                  { num: '01', label: 'HOME', href: '#home' },
+                  { num: '02', label: 'SERVICES', href: '#solutions' },
+                  { num: '03', label: 'OUR WORK', href: '#work' },
+                  { num: '04', label: 'REVIEWS', href: '#testimonials' },
+                  { num: '05', label: 'CONTACT', href: '#contact' },
                 ].map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
                     onClick={(e) => handleScroll(e, item.href)}
-                    className="relative text-xs md:text-sm tracking-[0.15em] text-white/50 hover:text-white transition-colors duration-300 w-fit py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-luxury-gold hover:after:w-full after:transition-all after:duration-300 uppercase font-mono cursor-pointer"
+                    className="group flex items-center gap-3 text-neutral-600 hover:text-black transition-colors duration-300 w-fit py-1 cursor-pointer"
                   >
-                    {item.label}
+                    <span className="text-[10px] text-luxury-gold font-bold">{item.num} /</span>
+                    <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-black group-hover:after:w-full after:transition-all after:duration-300">
+                      {item.label}
+                    </span>
                   </a>
                 ))}
               </div>
             </div>
-            <div className="flex flex-col space-y-4">
+
+            {/* Column 3: Office Address & Coordinates */}
+            <div className="md:col-span-4 flex flex-col justify-between h-full">
               <div>
-                <h4 className="text-[10px] uppercase tracking-[0.25em] mb-4 text-luxury-gold font-bold flex items-center gap-2">
-                  <svg className="w-3.5 h-3.5 fill-luxury-gold" viewBox="0 0 466.583 466.582" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M233.292,0c-85.1,0-154.334,69.234-154.334,154.333c0,34.275,21.887,90.155,66.908,170.834c31.846,57.063,63.168,104.643,64.484,106.64l22.942,34.775l22.941-34.774c1.317-1.998,32.641-49.577,64.483-106.64c45.023-80.68,66.908-136.559,66.908-170.834C387.625,69.234,318.391,0,233.292,0z M233.292,233.291c-44.182,0-80-35.817-80-80s35.818-80,80-80c44.182,0,80,35.817,80,80S277.473,233.291,233.292,233.291z" />
-                  </svg>
-                  JHANSI // INDIA
-                </h4>
-                <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed font-sans">
+                <span className="text-[9.5px] uppercase tracking-[0.25em] text-neutral-400 font-mono font-bold block mb-6">
+                  OFFICE & LOCATION
+                </span>
+                <p className="text-xs sm:text-sm text-neutral-700 font-sans leading-relaxed">
                   Vigyapan Estate, 2nd Floor, B4 Commercial,<br />
-                  near Chiranjeev Hospital, Shivaji Nagar, Jhansi, U.P. 284002
+                  near Chiranjeev Hospital, Shivaji Nagar,<br />
+                  Jhansi, Uttar Pradesh 284002
                 </p>
+                <div className="mt-4 pt-4 border-t border-neutral-200/80 flex flex-col gap-1 text-xs font-mono text-neutral-600">
+                  <a href="tel:+918114172501" className="hover:text-black transition-colors">+91 81141 72501</a>
+                  <a href="mailto:contact@vigyapan360.com" className="hover:text-black transition-colors">contact@vigyapan360.com</a>
+                </div>
               </div>
             </div>
+
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-white/30 font-mono">
-            <p>&copy; 2026 VIGYAPAN360. All Rights Reserved.</p>
-            <div className="flex space-x-8 mt-4 md:mt-0">
-              <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="hover:text-white transition-colors duration-300">Privacy Policy</a>
-              <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="hover:text-white transition-colors duration-300">Terms of Service</a>
+
+          {/* 4. Bottom Utility Bar */}
+          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-neutral-300/60 text-[9px] md:text-[10px] uppercase tracking-[0.22em] text-neutral-500 font-mono gap-4">
+            <div className="flex items-center gap-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>JHANSI, IN [{currentTime || '19:13 IST'}]</span>
+            </div>
+
+            <p>&copy; 2026 VIGYAPAN 360. ALL RIGHTS RESERVED.</p>
+            
+            <div className="flex items-center gap-6">
+              <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="hover:text-black transition-colors duration-300">Privacy Policy</a>
+              <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="hover:text-black transition-colors duration-300">Terms</a>
+              
+              {/* Back to top magnetic button */}
+              <motion.button
+                ref={topBtnRef}
+                style={{ x: topBtnX, y: topBtnY }}
+                onMouseMove={topBtnMove}
+                onMouseLeave={topBtnLeave}
+                type="button"
+                onClick={(e) => handleScroll(e, '#home')}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-300/80 bg-white text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300 cursor-pointer font-bold shadow-2xs"
+              >
+                <span>RETURN TO TOP</span>
+                <span>↑</span>
+              </motion.button>
             </div>
           </div>
+
         </div>
       </footer>
     </div>

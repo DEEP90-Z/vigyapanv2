@@ -10,7 +10,6 @@ const CreativeSolutions = React.lazy(() => import('./sections/CreativeSolutions'
 const ReelsShowcase = React.lazy(() => import('./sections/ReelsShowcase'));
 const LayerCards = React.lazy(() => import('./sections/LayerCards'));
 const BrandSpeaks = React.lazy(() => import('./sections/BrandSpeaks'));
-const BrandManifesto = React.lazy(() => import('./sections/BrandManifesto'));
 const Contact = React.lazy(() => import('./sections/Contact'));
 const Footer = React.lazy(() => import('./sections/Footer'));
 
@@ -80,20 +79,14 @@ function App() {
         </LazySection>
 
         {/* 7. Map & Contact */}
-        <LazySection id="brand-manifesto" placeholderHeight="100vh" rootMargin="200px" className="relative z-10 bg-luxury-dark">
-          <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
-            <BrandManifesto />
-          </Suspense>
-        </LazySection>
-
-        <LazySection id="contact" placeholderHeight="60vh" rootMargin="200px" className="relative z-10 bg-luxury-black">
+        <LazySection id="contact" placeholderHeight="60vh" rootMargin="200px" className="relative z-10 bg-[#FAF9F5]">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <Contact />
           </Suspense>
         </LazySection>
 
         {/* 8. Footer */}
-        <LazySection placeholderHeight="30vh" rootMargin="200px" className="relative z-10 bg-luxury-dark">
+        <LazySection placeholderHeight="30vh" rootMargin="200px" className="relative z-10 bg-[#FAF9F5]">
           <Suspense fallback={<div style={{ minHeight: '30vh' }} />}>
             <Footer />
           </Suspense>

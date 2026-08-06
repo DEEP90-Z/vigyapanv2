@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { useMotionValue, useSpring } from 'framer-motion';
 
 /**
@@ -15,7 +15,7 @@ export function useMagnetic(range = 100, strength = 0.4) {
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!ref.current) return;
     if (!boundsRef.current) {
       boundsRef.current = ref.current.getBoundingClientRect();
@@ -36,13 +36,13 @@ export function useMagnetic(range = 100, strength = 0.4) {
       x.set(0);
       y.set(0);
     }
-  };
+  }, [range, strength, x, y]);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     boundsRef.current = null;
     x.set(0);
     y.set(0);
-  };
+  }, [x, y]);
 
   return {
     ref,

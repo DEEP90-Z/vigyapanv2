@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const layersData = [
@@ -11,7 +11,7 @@ const layersData = [
   { id: 7, src: '/layers/last.webp', title: "Signature Estates" },
 ];
 
-const Card = ({ i, layer, progress, range, targetScale }) => {
+const Card = memo(({ i, layer, progress, range, targetScale }) => {
   // Scale down when scroll passes this card (using parent progress)
   const scale = useTransform(progress, [range[0], 1], [1, targetScale]);
 
@@ -39,7 +39,7 @@ const Card = ({ i, layer, progress, range, targetScale }) => {
       </motion.div>
     </div>
   );
-};
+});
 
 const LayerCards = () => {
   const containerRef = useRef(null);

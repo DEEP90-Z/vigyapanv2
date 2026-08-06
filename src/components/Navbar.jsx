@@ -22,13 +22,14 @@ const Navbar = () => {
     const previous = scrollY.getPrevious() || 0;
     const heroHeight = typeof window !== 'undefined' ? window.innerHeight * 0.6 : 450;
 
-    setScrolled(latest > 30);
+    const nextScrolled = latest > 30;
+    setScrolled((prev) => (prev !== nextScrolled ? nextScrolled : prev));
 
     // Desktop pill collapse past Hero section
     if (latest > heroHeight && latest > previous) {
-      setDesktopNavOpen(false);
+      setDesktopNavOpen((prev) => (prev !== false ? false : prev));
     } else if (latest < previous || latest <= 80) {
-      setDesktopNavOpen(true);
+      setDesktopNavOpen((prev) => (prev !== true ? true : prev));
     }
   });
 

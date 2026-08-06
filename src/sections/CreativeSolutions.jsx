@@ -1,8 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, memo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 // Performance-optimized Video Component with viewport-aware play/pause
-const SolutionVideo = ({ baseName }) => {
+const SolutionVideo = memo(({ baseName }) => {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -53,7 +53,7 @@ const SolutionVideo = ({ baseName }) => {
       </video>
     </div>
   );
-};
+});
 
 const CreativeSolutions = () => {
   const containerRef = useRef(null);

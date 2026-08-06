@@ -6,8 +6,8 @@ const Hero = () => {
   const containerRef = useRef(null);
   const videoRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const isMutedRef = useRef(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const isMutedRef = useRef(false);
   const lenis = useLenis();
 
   // Keep ref in sync with state
@@ -30,18 +30,21 @@ const Hero = () => {
     const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.35 : 300;
     const pastHeroThreshold = typeof window !== 'undefined' ? window.innerHeight * 1.05 : 800;
 
-    setIsPastHero(latest > pastHeroThreshold);
+    const nextPastHero = latest > pastHeroThreshold;
+    setIsPastHero((prev) => (prev !== nextPastHero ? nextPastHero : prev));
 
-    if (videoRef.current) {
+    const video = videoRef.current;
+    if (video) {
       if (latest > threshold) {
-        videoRef.current.muted = true;
-        if (!videoRef.current.paused) {
-          videoRef.current.pause();
+        if (!video.muted) video.muted = true;
+        if (!video.paused) {
+          video.pause();
         }
       } else {
-        videoRef.current.muted = isMutedRef.current;
-        if (videoRef.current.paused) {
-          videoRef.current.play().catch(() => {});
+        const targetMuted = isMutedRef.current;
+        if (video.muted !== targetMuted) video.muted = targetMuted;
+        if (video.paused) {
+          video.play().catch(() => {});
         }
       }
     }
@@ -76,6 +79,19 @@ const Hero = () => {
   };
 
   useEffect(() => {
+    const handleFirstInteraction = () => {
+      if (videoRef.current && isMutedRef.current) {
+        videoRef.current.muted = false;
+        videoRef.current.play().then(() => {
+          setIsMuted(false);
+          isMutedRef.current = false;
+        }).catch(() => {});
+      }
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
+    };
+
     // Attempt unmuted play on mount
     if (videoRef.current) {
       videoRef.current.muted = false;
@@ -89,6 +105,10 @@ const Hero = () => {
           videoRef.current.play().catch(() => {});
           setIsMuted(true);
           isMutedRef.current = true;
+          // Add event listeners to enable sound on first user gesture
+          window.addEventListener('click', handleFirstInteraction, { once: true });
+          window.addEventListener('touchstart', handleFirstInteraction, { once: true });
+          window.addEventListener('keydown', handleFirstInteraction, { once: true });
         }
       });
     }
@@ -99,6 +119,9 @@ const Hero = () => {
 
     return () => {
       clearTimeout(timer);
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
     };
   }, []);
 

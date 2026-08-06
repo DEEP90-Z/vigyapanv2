@@ -157,10 +157,11 @@ export default function FloatingBrandShowcase() {
               left: bubble.left,
               animation: `floatUpwardAesthetic ${bubble.duration}s linear infinite`,
               animationDelay: `${bubble.delay}s`,
+              willChange: 'transform',
             }}
           >
             <motion.div
-              className={`pointer-events-auto cursor-pointer rounded-full bg-gradient-to-br from-white/95 via-white/80 to-purple-50/40 backdrop-blur-xl border border-white/90 shadow-[0_12px_40px_rgba(0,0,0,0.06)] ring-1 ring-purple-500/10 flex items-center justify-center p-3.5 sm:p-5 group transition-all duration-300 hover:shadow-[0_25px_60px_rgba(147,51,234,0.22)] hover:border-purple-300 hover:ring-purple-500/30 hover:bg-white ${bubble.size}`}
+              className={`pointer-events-auto cursor-pointer rounded-full bg-gradient-to-br from-white/95 via-white/80 to-purple-50/40 backdrop-blur-xl border border-white/90 shadow-[0_12px_40px_rgba(0,0,0,0.06)] ring-1 ring-purple-500/10 flex items-center justify-center p-3.5 sm:p-5 group transition-all duration-300 hover:shadow-[0_25px_60px_rgba(147,51,234,0.22)] hover:border-purple-300 hover:ring-purple-500/30 hover:bg-white will-change-transform ${bubble.size}`}
               animate={{
                 x: [-bubble.sway, bubble.sway, -bubble.sway],
                 rotate: [-5, 5, -5],

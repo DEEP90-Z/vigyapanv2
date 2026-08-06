@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import { testimonials } from '../data/testimonials';
 import { cn } from '../utils/cn';
 
-const StarIcon = () => (
+const StarIcon = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-[18px] h-[18px] text-[#FBBF24]">
     <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.379 21.3c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
   </svg>
-);
+));
 
-const VerificationIcon = () => (
+const VerificationIcon = memo(() => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 24 24" 
@@ -18,9 +18,9 @@ const VerificationIcon = () => (
   >
     <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.79-4-4-4-.495 0-.965.084-1.4.238C14.55 2.475 13.18 1.6 11.6 1.6c-1.58 0-2.95.875-3.6 2.148-.435-.154-.905-.238-1.4-.238-2.21 0-4 1.79-4 4 0 .495.084.965.238 1.4C1.575 9.55.7 10.92.7 12.5c0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.79 4 4 4 .495 0 .965-.084 1.4-.238 1.45 1.273 2.82 2.148 4.4 2.148 1.58 0 2.95-.875 3.6-2.148.435.154.905.238 1.4.238 2.21 0 4-1.79 4-4 0-.495-.084-.965-.238-1.4 1.273-1.45 2.148-2.82 2.148-4.4zm-12.8 4.2l-3.9-3.9 1.41-1.41 2.49 2.49 6.59-6.59 1.41 1.41-8 8z" />
   </svg>
-);
+));
 
-const GoogleIcon = () => (
+const GoogleIcon = memo(() => (
   <svg className="w-[14px] h-[14px]" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path
       fill="#4285F4"
@@ -39,7 +39,57 @@ const GoogleIcon = () => (
       d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
     />
   </svg>
-);
+));
+
+const TestimonialCard = memo(({ item }) => (
+  <div className="bg-white rounded-[2rem] border border-gray-100 p-7 md:p-9 flex flex-col items-center text-center shadow-[0_10px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:border-luxury-gold/20 transition-all duration-500 h-full relative group">
+    
+    {/* Top Row: Google Review Pill Badge & Timestamp */}
+    <div className="w-full flex items-center justify-between mb-5">
+      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-50 border border-gray-200/60 shadow-[0_1px_4px_rgba(0,0,0,0.03)]">
+        <GoogleIcon />
+        <span className="text-[10px] font-semibold tracking-wider uppercase text-gray-500">Google Review</span>
+      </div>
+      <span className="text-[0.7rem] md:text-xs text-luxury-black/40 font-sans">
+        {item.time}
+      </span>
+    </div>
+
+    {/* Unobstructed Brand Logo Container */}
+    <div className="w-full h-16 mb-5 flex items-center justify-center">
+      <img 
+        src={item.logo} 
+        alt={`${item.brand} Logo`} 
+        className={cn(
+          "max-w-[150px] max-h-full object-contain transition-transform duration-500 group-hover:scale-105",
+          item.brand === "Neelam Dresses" && "scale-[0.82]"
+        )}
+      />
+    </div>
+
+    {/* Client Name with Verified Checkmark */}
+    <div className="flex items-center justify-center mb-2.5">
+      <h3 className="font-display text-base md:text-lg font-bold text-luxury-black tracking-wider uppercase leading-none inline-flex items-center gap-1.5">
+        <span>{item.brand}</span>
+        <VerificationIcon />
+      </h3>
+    </div>
+
+    {/* Star Rating Row */}
+    <div className="flex items-center justify-center gap-1 mb-5">
+      <StarIcon />
+      <StarIcon />
+      <StarIcon />
+      <StarIcon />
+      <StarIcon />
+    </div>
+
+    {/* Testimonial Quote Text */}
+    <p className="text-sm leading-relaxed text-luxury-black/70 font-sans font-light italic flex-grow">
+      "{item.text}"
+    </p>
+  </div>
+));
 
 const BrandSpeaks = () => {
   const originalLength = testimonials.length;
@@ -239,54 +289,7 @@ const BrandSpeaks = () => {
                   key={`${item.id}-${idx}`} 
                   className="shrink-0 w-full md:w-1/2 lg:w-1/3 px-4"
                 >
-                  {/* Testimonial Card */}
-                  <div className="bg-white rounded-[2rem] border border-gray-100 p-7 md:p-9 flex flex-col items-center text-center shadow-[0_10px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:border-luxury-gold/20 transition-all duration-500 h-full relative group">
-                    
-                    {/* Top Row: Google Review Pill Badge & Timestamp */}
-                    <div className="w-full flex items-center justify-between mb-5">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-50 border border-gray-200/60 shadow-[0_1px_4px_rgba(0,0,0,0.03)]">
-                        <GoogleIcon />
-                        <span className="text-[10px] font-semibold tracking-wider uppercase text-gray-500">Google Review</span>
-                      </div>
-                      <span className="text-[0.7rem] md:text-xs text-luxury-black/40 font-sans">
-                        {item.time}
-                      </span>
-                    </div>
-
-                    {/* Unobstructed Brand Logo Container */}
-                    <div className="w-full h-16 mb-5 flex items-center justify-center">
-                      <img 
-                        src={item.logo} 
-                        alt={`${item.brand} Logo`} 
-                        className={cn(
-                          "max-w-[150px] max-h-full object-contain transition-transform duration-500 group-hover:scale-105",
-                          item.brand === "Neelam Dresses" && "scale-[0.82]"
-                        )}
-                      />
-                    </div>
-
-                    {/* Client Name with Verified Checkmark */}
-                    <div className="flex items-center justify-center mb-2.5">
-                      <h3 className="font-display text-base md:text-lg font-bold text-luxury-black tracking-wider uppercase leading-none inline-flex items-center gap-1.5">
-                        <span>{item.brand}</span>
-                        <VerificationIcon />
-                      </h3>
-                    </div>
-
-                    {/* Star Rating Row */}
-                    <div className="flex items-center justify-center gap-1 mb-5">
-                      <StarIcon />
-                      <StarIcon />
-                      <StarIcon />
-                      <StarIcon />
-                      <StarIcon />
-                    </div>
-
-                    {/* Testimonial Quote Text */}
-                    <p className="text-sm leading-relaxed text-luxury-black/70 font-sans font-light italic flex-grow">
-                      "{item.text}"
-                    </p>
-                  </div>
+                  <TestimonialCard item={item} />
                 </div>
               ))}
             </div>

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useMemo, useCallback } from 'react';
+import { useRef, useEffect, useState, useMemo, useCallback, memo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Play, X, Sparkles, Volume2, VolumeX } from 'lucide-react';
 
@@ -78,13 +78,13 @@ const useCursorFollow = () => {
 /** ============================================================================
  * REUSABLE UI SUB-COMPONENTS
  * ========================================================================== */
-const PlayIconBadge = ({ sizeClassName = 'h-7 w-7', containerClassName = '' }) => (
+const PlayIconBadge = memo(({ sizeClassName = 'h-7 w-7', containerClassName = '' }) => (
   <span className={`pointer-events-none flex items-center justify-center rounded-full border border-white/80 bg-white/12 text-white backdrop-blur-[2px] transition-all duration-300 ease-out ${containerClassName}`}>
     <Play className={`${sizeClassName} translate-x-0.5`} fill="currentColor" strokeWidth={1.5} />
   </span>
-);
+));
 
-const FeaturedWorkStage = ({ work, onPlay }) => {
+const FeaturedWorkStage = memo(({ work, onPlay }) => {
   const { position, handlePointerMove, handlePointerLeave } = useCursorFollow();
 
   return (
@@ -127,9 +127,9 @@ const FeaturedWorkStage = ({ work, onPlay }) => {
       </div>
     </motion.button>
   );
-};
+});
 
-const ModalReelVideo = ({ src, isMuted }) => {
+const ModalReelVideo = memo(({ src, isMuted }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -156,9 +156,9 @@ const ModalReelVideo = ({ src, isMuted }) => {
       className="h-full w-full object-cover"
     />
   );
-};
+});
 
-const VideoModal = ({ media, onClose }) => {
+const VideoModal = memo(({ media, onClose }) => {
   const [isMuted, setIsMuted] = useState(false);
   const isReel = Boolean(media?.number);
 
@@ -234,9 +234,9 @@ const VideoModal = ({ media, onClose }) => {
       </motion.div>
     </motion.div>
   );
-};
+});
 
-const AutoplayReelVideo = ({ src, isInView }) => {
+const AutoplayReelVideo = memo(({ src, isInView }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -264,9 +264,9 @@ const AutoplayReelVideo = ({ src, isInView }) => {
       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
     />
   );
-};
+});
 
-const ReelCard = ({ reel, isInView }) => (
+const ReelCard = memo(({ reel, isInView }) => (
   <motion.div
     whileHover={{ y: -4, scale: 1.02 }}
     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -282,10 +282,10 @@ const ReelCard = ({ reel, isInView }) => (
     {/* Gradient Overlay */}
     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
   </motion.div>
-);
+));
 
 // Glitch-Free GPU Infinite Marquee Component
-const ResponsiveReelsMarquee = ({ isInView }) => {
+const ResponsiveReelsMarquee = memo(({ isInView }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   // Seamless infinite loop array
@@ -329,7 +329,7 @@ const ResponsiveReelsMarquee = ({ isInView }) => {
       </div>
     </div>
   );
-};
+});
 
 /** ============================================================================
  * MAIN SECTION COMPONENT
