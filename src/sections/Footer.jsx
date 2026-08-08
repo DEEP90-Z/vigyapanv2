@@ -65,15 +65,6 @@ const Footer = () => {
   return (
     <div className="relative w-full bg-[#FAF9F5] select-none text-neutral-900 overflow-hidden border-t border-neutral-300/50">
       
-      {/* 1. Giant Editorial Brand Watermark Header */}
-      <div className="pt-16 pb-6 px-6 text-center overflow-hidden border-b border-neutral-300/40">
-        <h1 
-          className="text-6xl sm:text-9xl lg:text-[13rem] font-display font-black tracking-tighter uppercase leading-none select-none text-transparent"
-          style={{ WebkitTextStroke: '1.5px rgba(26,26,26,0.18)' }}
-        >
-          VIGYAPAN 360
-        </h1>
-      </div>
 
       {/* 2. Light Ticker Marquee Bar */}
       <div className="w-full overflow-hidden py-5 bg-[#EFECE6] border-b border-neutral-300/50 select-none relative z-10 font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-neutral-700">
