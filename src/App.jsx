@@ -36,7 +36,8 @@ function App() {
         syncTouch: false,
         smoothTouch: false,
         wheelMultiplier: 1.1,
-        touchMultiplier: 1.0
+        touchMultiplier: 1.0,
+        prevent: () => typeof window !== 'undefined' && window.innerWidth < 768
       }}
     >
       <main className="relative">

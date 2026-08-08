@@ -60,6 +60,9 @@ const TestimonialCard = memo(({ item }) => (
       <img 
         src={item.logo} 
         alt={`${item.brand} Logo`} 
+        width="150"
+        height="64"
+        loading="lazy"
         className={cn(
           "max-w-[150px] max-h-full object-contain transition-transform duration-500 group-hover:scale-105",
           item.brand === "Neelam Dresses" && "scale-[0.82]"

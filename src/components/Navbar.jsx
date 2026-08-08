@@ -86,6 +86,8 @@ const Navbar = () => {
             <img
               src="/vigyapan-estate-navbar-cropped.webp"
               alt="Vigyapan 360 Real Estate Marketing"
+              width="131"
+              height="27"
               className="h-full w-auto max-w-[105px] sm:max-w-[125px] object-contain mix-blend-multiply my-auto block"
             />
           </a>
@@ -130,6 +132,8 @@ const Navbar = () => {
             <img
               src="/vigyapan-estate-navbar-cropped.webp"
               alt="Vigyapan 360 Real Estate Marketing"
+              width="131"
+              height="27"
               className="h-full w-auto max-w-[120px] lg:max-w-[140px] object-contain mix-blend-multiply my-auto block"
             />
           </a>

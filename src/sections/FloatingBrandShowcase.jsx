@@ -141,6 +141,8 @@ export default function FloatingBrandShowcase() {
               <img
                 src={bubble.logo.src}
                 alt={bubble.logo.name}
+                width="120"
+                height="120"
                 className="w-full h-full object-contain max-w-[82%] max-h-[82%] filter drop-shadow-sm group-hover:scale-105 transition-transform duration-300 rounded-full"
                 loading="lazy"
               />
