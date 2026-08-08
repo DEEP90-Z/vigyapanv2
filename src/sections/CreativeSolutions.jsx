@@ -1,5 +1,4 @@
-import { useRef, useEffect, memo } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useEffect, useState, memo } from 'react';
 
 // Performance-optimized Video Component with viewport-aware play/pause
 const SolutionVideo = memo(({ baseName }) => {
@@ -57,78 +56,113 @@ const SolutionVideo = memo(({ baseName }) => {
 
 const CreativeSolutions = () => {
   const containerRef = useRef(null);
+  const [progress, setProgress] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-    layoutEffect: false,
-  });
+  const lastProgressRef = useRef(-1);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const el = containerRef.current;
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            const totalScrollableHeight = rect.height - window.innerHeight;
+            if (totalScrollableHeight > 0) {
+              const currentProgress = Math.min(1, Math.max(0, -rect.top / totalScrollableHeight));
+              if (Math.abs(currentProgress - lastProgressRef.current) > 0.002 || currentProgress === 0 || currentProgress === 1) {
+                lastProgressRef.current = currentProgress;
+                setProgress(currentProgress);
+              }
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Card 1 — settles in, then slides out to the left
-  const card1Y = useTransform(scrollYProgress, [0, 0.08], ['3vh', '0vh']);
-  const card1X = useTransform(scrollYProgress, [0.10, 0.35], ['0%', '-108%']);
-  const card1Visibility = useTransform(scrollYProgress, (p) => (p < 0.37 ? 'visible' : 'hidden'));
+  let card1X = '0%';
+  let card1Y = '0vh';
+  if (progress <= 0.08) {
+    card1Y = `${(1 - progress / 0.08) * 3}vh`;
+  } else if (progress >= 0.10 && progress <= 0.35) {
+    card1X = `${-((progress - 0.10) / 0.25) * 108}%`;
+  } else if (progress > 0.35) {
+    card1X = '-108%';
+  }
+  const card1Visible = progress < 0.37;
 
   // Card 2 — enters from right, holds, exits left
-  const card2X = useTransform(
-    scrollYProgress,
-    [0.10, 0.35, 0.55, 0.80],
-    ['108%', '0%', '0%', '-108%'],
-  );
-  const card2Visibility = useTransform(scrollYProgress, (p) =>
-    p >= 0.08 && p < 0.82 ? 'visible' : 'hidden',
-  );
+  let card2X = '108%';
+  if (progress >= 0.10 && progress <= 0.35) {
+    card2X = `${(1 - (progress - 0.10) / 0.25) * 108}%`;
+  } else if (progress > 0.35 && progress < 0.55) {
+    card2X = '0%';
+  } else if (progress >= 0.55 && progress <= 0.80) {
+    card2X = `${-((progress - 0.55) / 0.25) * 108}%`;
+  } else if (progress > 0.80) {
+    card2X = '-108%';
+  }
+  const card2Visible = progress >= 0.08 && progress < 0.82;
 
-  // Card 3 — enters from right (same slide pattern as cards 1 & 2)
-  const card3X = useTransform(scrollYProgress, [0.55, 0.80], ['108%', '0%']);
-  const card3Visibility = useTransform(scrollYProgress, (p) => (p >= 0.50 ? 'visible' : 'hidden'));
+  // Card 3 — enters from right
+  let card3X = '108%';
+  if (progress >= 0.55 && progress <= 0.80) {
+    card3X = `${(1 - (progress - 0.55) / 0.25) * 108}%`;
+  } else if (progress > 0.80) {
+    card3X = '0%';
+  }
+  const card3Visible = progress >= 0.50;
 
-  // Scroll indicator opacity - fades out as section completes
-  const indicatorOpacity = useTransform(scrollYProgress, [0, 0.82, 0.95], [1, 1, 0]);
+  const indicatorOpacity = progress >= 0.82 ? Math.max(0, 1 - (progress - 0.82) / 0.13) : 1;
 
   return (
     <section ref={containerRef} id="solutions" className="relative h-[300vh] bg-luxury-cream">
-      <div
-        className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center"
-      >
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
         {/* Background gradient/glow for the section */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-        >
+        <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-luxury-white/40 to-transparent pointer-events-none" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-luxury-cream/50 to-transparent pointer-events-none" />
           <div className="absolute left-1/2 top-24 h-[520px] w-[82vw] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05),transparent_66%)] pointer-events-none" />
         </div>
 
         {/* Bottom Center 'Scroll to see next' Indicator */}
-        <motion.div
+        <div
           style={{ opacity: indicatorOpacity }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center gap-1.5"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center gap-1.5 transition-opacity duration-300"
         >
           <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-luxury-black/15 bg-luxury-white/85 backdrop-blur-md shadow-[0_8px_24px_rgba(26,26,26,0.08)] text-[0.62rem] md:text-xs font-bold uppercase tracking-[0.22em] text-luxury-black/75">
             <span>Scroll to see next</span>
-            <motion.svg
-              animate={{ y: [0, 4, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="w-3.5 h-3.5 text-luxury-gold stroke-[2.5]"
+            <svg
+              className="w-3.5 h-3.5 text-luxury-gold stroke-[2.5] animate-bounce"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
-            </motion.svg>
+            </svg>
           </div>
-        </motion.div>
+        </div>
 
         {/* --- CARD 1 --- */}
-        <motion.div
-          style={{ visibility: card1Visibility }}
-          className="absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-10"
+        <div
+          className={`absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-10 ${
+            card1Visible ? 'visible' : 'invisible'
+          }`}
         >
-          <motion.div
-            style={{ x: card1X, y: card1Y, willChange: 'transform', backfaceVisibility: 'hidden' }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
+          <div
+            style={{ transform: `translate3d(${card1X}, ${card1Y}, 0px)`, willChange: 'transform' }}
+            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10 transition-transform duration-75 ease-out"
           >
             <div className="lg:w-[55%] h-[40%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="360 marketing" />
@@ -150,7 +184,6 @@ const CreativeSolutions = () => {
                   Luxury growth systems for modern real-estate brands.
                 </p>
 
-                {/* Mobile-Only Real Estate Paragraph (Fills Middle Empty Space Cleanly) */}
                 <p className="md:hidden text-[12px] text-luxury-black/75 font-sans leading-relaxed my-3 border-t border-luxury-black/10 pt-3 text-left">
                   We design targeted Meta & Google ad campaigns engineered specifically for real estate developers and new project launches. From automated CRM pipelines to qualified buyer inquiries, we drive high-intent site visits and accelerate unit sales.
                 </p>
@@ -162,17 +195,18 @@ const CreativeSolutions = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* --- CARD 2 --- */}
-        <motion.div
-          style={{ visibility: card2Visibility }}
-          className="absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-20"
+        <div
+          className={`absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-20 ${
+            card2Visible ? 'visible' : 'invisible'
+          }`}
         >
-          <motion.div
-            style={{ x: card2X, willChange: 'transform', backfaceVisibility: 'hidden' }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10"
+          <div
+            style={{ transform: `translate3d(${card2X}, 0px, 0px)`, willChange: 'transform' }}
+            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10 transition-transform duration-75 ease-out"
           >
             <div className="lg:w-[55%] h-[40%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="branding" />
@@ -194,7 +228,6 @@ const CreativeSolutions = () => {
                   Identity systems designed for long-term attention.
                 </p>
 
-                {/* Mobile-Only Real Estate Paragraph (Fills Middle Empty Space Cleanly) */}
                 <p className="md:hidden text-[12px] text-luxury-black/75 font-sans leading-relaxed my-3 border-t border-luxury-black/10 pt-3 text-left">
                   From project naming and visual identity to high-end printed brochures, we craft luxury brand worlds for residential and commercial developments. We create compelling visual storytelling that builds long-term prestige for real estate builders.
                 </p>
@@ -206,17 +239,18 @@ const CreativeSolutions = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* --- CARD 3 --- */}
-        <motion.div
-          style={{ visibility: card3Visibility }}
-          className="absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-30"
+        <div
+          className={`absolute inset-0 flex items-center justify-center p-5 md:p-12 lg:p-24 w-full h-full z-30 ${
+            card3Visible ? 'visible' : 'invisible'
+          }`}
         >
-          <motion.div
-            style={{ x: card3X, willChange: 'transform', backfaceVisibility: 'hidden' }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10"
+          <div
+            style={{ transform: `translate3d(${card3X}, 0px, 0px)`, willChange: 'transform' }}
+            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10 transition-transform duration-75 ease-out"
           >
             <div className="lg:w-[55%] h-[40%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="audio-video-production" />
@@ -238,7 +272,6 @@ const CreativeSolutions = () => {
                   Cinematic content engineered for attention.
                 </p>
 
-                {/* Mobile-Only Real Estate Paragraph (Fills Middle Empty Space Cleanly) */}
                 <p className="md:hidden text-[12px] text-luxury-black/75 font-sans leading-relaxed my-3 border-t border-luxury-black/10 pt-3 text-left">
                   Cinematic 4K drone walkthroughs, sample flat tours, and scripted short-form video reels built for social media. We create visually stunning video content that grabs buyer attention and drives direct inquiries for real estate projects.
                 </p>
@@ -250,8 +283,8 @@ const CreativeSolutions = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
       </div>
     </section>

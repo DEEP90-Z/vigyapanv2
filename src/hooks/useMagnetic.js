@@ -1,19 +1,13 @@
-import { useRef, useCallback } from 'react';
-import { useMotionValue, useSpring } from 'framer-motion';
+import { useRef, useState, useCallback } from 'react';
 
 /**
- * useMagnetic Hook
- * Returns motion values x & y, a ref, and handlers to apply a physics-based magnetic pull
- * to any button or media card on cursor hover.
+ * High-performance lightweight magnetic hook (No framer-motion dependency)
+ * Uses CSS transform styles and smooth cubic-bezier transitions for silky spring physics.
  */
 export function useMagnetic(range = 100, strength = 0.4) {
   const ref = useRef(null);
   const boundsRef = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springConfig = { stiffness: 120, damping: 12, mass: 0.2 };
-  const springX = useSpring(x, springConfig);
-  const springY = useSpring(y, springConfig);
+  const [style, setStyle] = useState({ transform: 'translate3d(0px, 0px, 0px)', transition: 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)' });
 
   const handleMouseMove = useCallback((e) => {
     if (!ref.current) return;
@@ -30,24 +24,31 @@ export function useMagnetic(range = 100, strength = 0.4) {
 
     if (distance < range) {
       const ratio = 1 - distance / range;
-      x.set(distanceX * strength * ratio);
-      y.set(distanceY * strength * ratio);
+      const targetX = (distanceX * strength * ratio).toFixed(2);
+      const targetY = (distanceY * strength * ratio).toFixed(2);
+      setStyle({
+        transform: `translate3d(${targetX}px, ${targetY}px, 0px)`,
+        transition: 'transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1)'
+      });
     } else {
-      x.set(0);
-      y.set(0);
+      setStyle({
+        transform: 'translate3d(0px, 0px, 0px)',
+        transition: 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)'
+      });
     }
-  }, [range, strength, x, y]);
+  }, [range, strength]);
 
   const handleMouseLeave = useCallback(() => {
     boundsRef.current = null;
-    x.set(0);
-    y.set(0);
-  }, [x, y]);
+    setStyle({
+      transform: 'translate3d(0px, 0px, 0px)',
+      transition: 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)'
+    });
+  }, []);
 
   return {
     ref,
-    x: springX,
-    y: springY,
+    style,
     handleMouseMove,
     handleMouseLeave
   };

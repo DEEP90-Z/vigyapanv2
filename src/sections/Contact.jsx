@@ -1,23 +1,14 @@
 import { useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { MapPin } from 'lucide-react';
 import { useMagnetic } from '../hooks/useMagnetic';
 
 const Contact = () => {
   const containerRef = useRef(null);
   const [copied, setCopied] = useState(false);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-    layoutEffect: false,
-  });
-
-  const gridY = useTransform(scrollYProgress, [0, 1], [-25, 25]);
-
   const { 
     ref: btnRef, 
-    x: btnX, 
-    y: btnY, 
+    style: btnStyle, 
     handleMouseMove: btnMove, 
     handleMouseLeave: btnLeave 
   } = useMagnetic(100, 0.45);
@@ -37,8 +28,7 @@ const Contact = () => {
     >
       {/* Subtle Architectural Grid Background */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <motion.div 
-          style={{ y: gridY }}
+        <div 
           className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:60px_60px] opacity-80"
         />
         <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.07)_0%,transparent_70%)] rounded-full blur-3xl pointer-events-none" />
@@ -52,7 +42,7 @@ const Contact = () => {
             <span className="w-2 h-2 rounded-full bg-luxury-gold animate-ping" />
             <span>07 // INITIATE COLLABORATION</span>
           </div>
-          <div className="flex items-center gap-2 text-neutral-500">
+          <div className="flex items-center gap-2 text-neutral-600">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
             <span>ACCEPTING REAL ESTATE CAMPAIGNS FOR 2026</span>
           </div>
@@ -71,9 +61,9 @@ const Contact = () => {
               Partner with Jhansi's premier real estate marketing & architectural film agency to elevate your next development.
             </p>
             {/* Magnetic Strategy Call Button */}
-            <motion.div
+            <div
               ref={btnRef}
-              style={{ x: btnX, y: btnY }}
+              style={btnStyle}
               onMouseMove={btnMove}
               onMouseLeave={btnLeave}
             >
@@ -87,92 +77,56 @@ const Contact = () => {
                 <span>Book Strategy Call</span>
                 <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </a>
-            </motion.div>
+            </div>
           </div>
         </div>
 
-        {/* Minimalist Architectural Contact Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-neutral-300/60 rounded-3xl overflow-hidden border border-neutral-300/60 shadow-[0_15px_45px_rgba(0,0,0,0.03)] mb-16">
-          
-          {/* Card 1: Interactive Click-to-Copy Email */}
-          <div className="bg-[#FAF9F5] p-8 md:p-10 flex flex-col justify-between group hover:bg-white transition-colors duration-300">
-            <div>
-              <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-400 font-mono font-bold block mb-4">
-                01 / DIRECT MAIL
-              </span>
-              <p className="text-xs text-neutral-500 font-sans mb-6 leading-relaxed">
-                Send us project briefs, deck requests, or agency inquiries anytime.
-              </p>
-            </div>
-            <div>
-              <button 
-                type="button"
-                onClick={copyEmail}
-                className="w-full py-4 px-5 rounded-2xl bg-neutral-100 hover:bg-neutral-900 hover:text-white transition-all duration-300 flex items-center justify-between text-left group/btn border border-neutral-200/80 cursor-pointer"
-              >
-                <div className="flex flex-col">
-                  <span className="text-[8.5px] uppercase tracking-[0.2em] font-mono text-neutral-400 group-hover/btn:text-neutral-300">
-                    {copied ? "COPIED TO CLIPBOARD ✓" : "CLICK TO COPY"}
-                  </span>
-                  <span className="text-xs sm:text-sm font-semibold font-mono text-neutral-900 group-hover/btn:text-white transition-colors mt-0.5">
-                    contact@vigyapan360.com
-                  </span>
-                </div>
-                <span className="text-sm font-mono text-neutral-400 group-hover/btn:text-white transition-colors">
-                  📋
+        {/* Sleek Combined Contact Bar */}
+        <div className="bg-[#FAF9F5] p-5 sm:p-6 rounded-3xl border border-neutral-300/60 shadow-[0_15px_45px_rgba(0,0,0,0.03)] mb-12 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+          {/* Quick Contact Actions: Email & Phone */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+            {/* Email Pill */}
+            <button 
+              type="button"
+              onClick={copyEmail}
+              className="flex-1 px-5 py-3.5 rounded-2xl bg-white hover:bg-neutral-900 hover:text-white transition-all duration-300 flex items-center justify-between gap-4 border border-neutral-200/80 cursor-pointer shadow-2xs group/btn"
+            >
+              <div className="flex flex-col text-left">
+                <span className="text-[8.5px] uppercase tracking-[0.2em] font-mono text-neutral-500 group-hover/btn:text-neutral-300">
+                  {copied ? "COPIED TO CLIPBOARD ✓" : "DIRECT MAIL"}
                 </span>
-              </button>
-            </div>
-          </div>
+                <span className="text-xs sm:text-sm font-semibold font-mono text-neutral-900 group-hover/btn:text-white transition-colors">
+                  contact@vigyapan360.com
+                </span>
+              </div>
+              <span className="text-xs font-mono text-neutral-400 group-hover/btn:text-white">📋</span>
+            </button>
 
-          {/* Card 2: Direct Phone Line & WhatsApp */}
-          <div className="bg-[#FAF9F5] p-8 md:p-10 flex flex-col justify-between group hover:bg-white transition-colors duration-300">
-            <div>
-              <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-400 font-mono font-bold block mb-4">
-                02 / DIRECT LINE
-              </span>
-              <p className="text-xs text-neutral-500 font-sans mb-6 leading-relaxed">
-                Instant project consultations and executive discussions.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2">
-              <a 
-                href="tel:+918114172501"
-                className="w-full py-3.5 px-5 rounded-2xl bg-neutral-100 hover:bg-neutral-900 hover:text-white transition-all duration-300 flex items-center justify-between text-left border border-neutral-200/80 group/phone cursor-pointer"
-              >
+            {/* Phone Pill */}
+            <a 
+              href="tel:+918114172501"
+              className="flex-1 px-5 py-3.5 rounded-2xl bg-white hover:bg-neutral-900 hover:text-white transition-all duration-300 flex items-center justify-between gap-4 border border-neutral-200/80 cursor-pointer shadow-2xs group/phone"
+            >
+              <div className="flex flex-col text-left">
+                <span className="text-[8.5px] uppercase tracking-[0.2em] font-mono text-neutral-500 group-hover/phone:text-neutral-300">
+                  DIRECT LINE
+                </span>
                 <span className="text-xs sm:text-sm font-semibold font-mono text-neutral-900 group-hover/phone:text-white transition-colors">
                   +91 81141 72501
                 </span>
-                <span className="text-xs uppercase tracking-widest font-mono text-neutral-400 group-hover/phone:text-white">
-                  CALL ↗
-                </span>
-              </a>
-            </div>
-          </div>
-
-          {/* Card 3: Physical Headquarters */}
-          <div className="bg-[#FAF9F5] p-8 md:p-10 flex flex-col justify-between group hover:bg-white transition-colors duration-300">
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-400 font-mono font-bold">
-                  03 / HEADQUARTERS
-                </span>
-                <span className="text-[9px] font-mono text-luxury-gold font-bold">
-                  25.4537° N, 78.6044° E
-                </span>
               </div>
-              <p className="text-xs sm:text-sm font-sans text-neutral-700 leading-relaxed font-normal">
-                Vigyapan Estate, 2nd Floor, B4 Commercial,<br />
-                near Chiranjeev Hospital, Shivaji Nagar,<br />
-                Jhansi, Uttar Pradesh 284002
-              </p>
-            </div>
-            <div className="mt-6 pt-4 border-t border-neutral-200/60 flex items-center justify-between text-[10px] uppercase font-mono tracking-widest text-neutral-500">
-              <span>JHANSI HQ</span>
-              <span>INDIA</span>
-            </div>
+              <span className="text-xs uppercase font-mono text-neutral-400 group-hover/phone:text-white">↗</span>
+            </a>
           </div>
 
+          {/* Location Summary Pill */}
+          <div className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white border border-neutral-200/80 text-xs font-mono text-neutral-700 shrink-0 shadow-2xs">
+            <MapPin className="w-4 h-4 text-luxury-gold shrink-0" />
+            <div>
+              <span className="font-bold text-neutral-900 block leading-tight">Vigyapan Estate, 2nd Floor</span>
+              <span className="text-[11px] text-neutral-600 font-sans">Shivaji Nagar, Jhansi, UP 284002</span>
+            </div>
+          </div>
         </div>
 
         {/* Minimalist Architectural Map Window */}

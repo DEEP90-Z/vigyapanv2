@@ -1,5 +1,4 @@
 import { useRef, useEffect, useState, useMemo, useCallback, memo } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { Play, X, Sparkles, Volume2, VolumeX } from 'lucide-react';
 
 /** ============================================================================
@@ -88,34 +87,26 @@ const FeaturedWorkStage = memo(({ work, onPlay }) => {
   const { position, handlePointerMove, handlePointerLeave } = useCursorFollow();
 
   return (
-    <motion.button
+    <button
       type="button"
       onClick={() => onPlay(work)}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      whileHover={{ scale: 1.005 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative mx-auto block w-[90vw] max-w-[1100px] aspect-[16/7.5] min-h-[200px] max-h-[380px] overflow-hidden rounded-[1.5rem] md:rounded-[3rem] bg-luxury-black text-left shadow-[0_15px_50px_rgba(0,0,0,0.08)] cursor-pointer"
+      className="group relative mx-auto block w-[90vw] max-w-[1100px] aspect-[16/7.5] min-h-[200px] max-h-[380px] overflow-hidden rounded-[1.5rem] md:rounded-[3rem] bg-luxury-black text-left shadow-[0_15px_50px_rgba(0,0,0,0.08)] cursor-pointer transition-transform duration-500 hover:scale-[1.005]"
       aria-label={`Play ${work.title}`}
     >
-      <AnimatePresence mode="sync">
-        <motion.img
-          key={work.id}
-          src={work.image}
-          alt={work.title}
-          loading="lazy"
-          initial={{ opacity: 0, scale: 1.015 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ opacity: { duration: 1.2, ease: 'easeInOut' }, scale: { duration: 4.5, ease: 'linear' } }}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      </AnimatePresence>
+      <img
+        key={work.id}
+        src={work.image}
+        alt={work.title}
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover transition-all duration-700 ease-out"
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/35 via-luxury-black/0 to-transparent opacity-70" />
       
       {/* Dynamic Desktop Pointer Follow Play Badge */}
       <div
-        className="absolute -translate-x-1/2 -translate-y-1/2 hidden md:block"
+        className="absolute -translate-x-1/2 -translate-y-1/2 hidden md:block transition-all duration-75"
         style={{ left: `${position.x}%`, top: `${position.y}%` }}
       >
         <PlayIconBadge sizeClassName="h-8 w-8" containerClassName="h-16 w-16 group-hover:scale-110 group-hover:bg-white/22" />
@@ -125,7 +116,7 @@ const FeaturedWorkStage = memo(({ work, onPlay }) => {
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:hidden">
         <PlayIconBadge sizeClassName="h-6 w-6" containerClassName="h-13 w-13" />
       </div>
-    </motion.button>
+    </button>
   );
 });
 
@@ -181,19 +172,12 @@ const VideoModal = memo(({ media, onClose }) => {
   if (!media) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-luxury-black/80 px-4 backdrop-blur-md"
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-luxury-black/80 px-4 backdrop-blur-md transition-opacity duration-300 animate-fadeIn"
       onClick={onClose}
     >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.94, y: 18 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.94, y: 18 }}
-        transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
-        className={`relative w-full ${isReel ? 'max-w-sm aspect-[9/16] rounded-3xl overflow-hidden' : 'max-w-5xl aspect-video'} bg-black shadow-[0_30px_90px_rgba(0,0,0,0.6)]`}
+      <div
+        className={`relative w-full ${isReel ? 'max-w-sm aspect-[9/16] rounded-3xl overflow-hidden' : 'max-w-5xl aspect-video'} bg-black shadow-[0_30px_90px_rgba(0,0,0,0.6)] transition-all duration-300 animate-scaleUp`}
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -231,19 +215,35 @@ const VideoModal = memo(({ media, onClose }) => {
             />
           </div>
         )}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 });
 
 const AutoplayReelVideo = memo(({ src, isInView }) => {
   const videoRef = useRef(null);
+  const [isCardVisible, setIsCardVisible] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (isInView) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsCardVisible(entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isInView && isCardVisible) {
       const promise = video.play();
       if (promise !== undefined) {
         promise.catch(() => {});
@@ -251,7 +251,7 @@ const AutoplayReelVideo = memo(({ src, isInView }) => {
     } else {
       video.pause();
     }
-  }, [isInView]);
+  }, [isInView, isCardVisible]);
 
   return (
     <video
@@ -267,10 +267,8 @@ const AutoplayReelVideo = memo(({ src, isInView }) => {
 });
 
 const ReelCard = memo(({ reel, isInView }) => (
-  <motion.div
-    whileHover={{ y: -4, scale: 1.02 }}
-    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-    className="group relative w-[145px] sm:w-[170px] md:w-[200px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-md bg-black border border-luxury-black/10 shrink-0 select-none"
+  <div
+    className="group relative w-[145px] sm:w-[170px] md:w-[200px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-md bg-black border border-luxury-black/10 shrink-0 select-none transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.02]"
   >
     <AutoplayReelVideo src={reel.src} isInView={isInView} />
 
@@ -281,18 +279,30 @@ const ReelCard = memo(({ reel, isInView }) => (
 
     {/* Gradient Overlay */}
     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-  </motion.div>
+  </div>
 ));
 
 // Glitch-Free GPU Infinite Marquee Component
 const ResponsiveReelsMarquee = memo(({ isInView }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Seamless infinite loop array
   const infiniteReels = useMemo(() => [...REEL_VIDEOS, ...REEL_VIDEOS], []);
 
   return (
     <div className="relative w-full py-4 group/showcase">
+      <style>{`
+        @keyframes reelsMarqueeLoop {
+          0% { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .animate-reels-marquee {
+          animation: reelsMarqueeLoop 30s linear infinite;
+        }
+        .animate-reels-marquee-paused {
+          animation-play-state: paused;
+        }
+      `}</style>
+
       {/* Side Fade Gradient Masks */}
       <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 md:w-24 bg-gradient-to-r from-luxury-cream to-transparent z-10" />
       <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 md:w-24 bg-gradient-to-l from-luxury-cream to-transparent z-10" />
@@ -305,17 +315,8 @@ const ResponsiveReelsMarquee = memo(({ isInView }) => {
         onTouchStart={() => setIsHovered(true)}
         onTouchEnd={() => setIsHovered(false)}
       >
-        <motion.div
-          animate={isHovered ? false : { x: ['0%', '-50%'] }}
-          transition={{
-            x: {
-              repeat: Infinity,
-              repeatType: 'loop',
-              duration: 28,
-              ease: 'linear'
-            }
-          }}
-          className="flex gap-4 md:gap-5 px-4"
+        <div
+          className={`flex gap-4 md:gap-5 px-4 animate-reels-marquee ${isHovered ? 'animate-reels-marquee-paused' : ''}`}
           style={{ width: 'max-content', willChange: 'transform' }}
         >
           {infiniteReels.map((reel, idx) => (
@@ -325,7 +326,7 @@ const ResponsiveReelsMarquee = memo(({ isInView }) => {
               isInView={isInView}
             />
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
@@ -342,7 +343,6 @@ const ReelsShowcase = () => {
 
   const currentFeaturedWork = FEATURED_WORKS[featuredIndex];
 
-  // Auto-rotate featured works
   useEffect(() => {
     const timer = window.setInterval(() => {
       setFeaturedIndex((index) => (index + 1) % FEATURED_WORKS.length);
@@ -351,7 +351,6 @@ const ReelsShowcase = () => {
     return () => window.clearInterval(timer);
   }, []);
 
-  // IntersectionObserver for visibility awareness
   useEffect(() => {
     const element = containerRef.current;
     if (!element) return undefined;
@@ -373,15 +372,9 @@ const ReelsShowcase = () => {
 
       {/* Header Badge */}
       <div className="container-wide mb-10 px-4 md:px-12 lg:px-24">
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
-          className="mx-auto max-w-3xl text-center"
-        >
+        <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-luxury-gold mb-1 block">Our Work</h2>
-        </motion.div>
+        </div>
       </div>
 
       {/* Featured Stage */}
@@ -396,13 +389,7 @@ const ReelsShowcase = () => {
 
       {/* Short-Form Visuals Header */}
       <div className="container-wide px-4 md:px-12 lg:px-24 mt-10 md:mt-16 mb-4">
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
-          className="mx-auto max-w-3xl text-center"
-        >
+        <div className="mx-auto max-w-3xl text-center">
           <div className="inline-flex items-center gap-1.5 rounded-full border border-luxury-gold/30 bg-luxury-gold/10 px-3 py-0.5 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-luxury-gold mb-2">
             <Sparkles className="h-3 w-3 text-luxury-gold" />
             <span>Short-Form Visuals</span>
@@ -410,7 +397,7 @@ const ReelsShowcase = () => {
           <h3 className="text-xl md:text-3xl lg:text-4xl font-serif italic text-luxury-black tracking-tight leading-[1.15]">
             Reels Built To <span className="font-display font-bold not-italic text-luxury-black">Stop The Scroll.</span>
           </h3>
-        </motion.div>
+        </div>
       </div>
 
       {/* Auto-Sliding Reels Showcase */}
@@ -420,6 +407,3 @@ const ReelsShowcase = () => {
 };
 
 export default ReelsShowcase;
-
-
-

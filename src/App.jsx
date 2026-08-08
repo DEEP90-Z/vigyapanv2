@@ -8,6 +8,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 const FloatingBrandShowcase = React.lazy(() => import('./sections/FloatingBrandShowcase'));
 const CreativeSolutions = React.lazy(() => import('./sections/CreativeSolutions'));
 const ReelsShowcase = React.lazy(() => import('./sections/ReelsShowcase'));
+const SelectedWork = React.lazy(() => import('./sections/SelectedWork'));
 const LayerCards = React.lazy(() => import('./sections/LayerCards'));
 const BrandSpeaks = React.lazy(() => import('./sections/BrandSpeaks'));
 const Contact = React.lazy(() => import('./sections/Contact'));
@@ -33,8 +34,9 @@ function App() {
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         syncTouch: false,
+        smoothTouch: false,
         wheelMultiplier: 1.1,
-        touchMultiplier: 1.5
+        touchMultiplier: 1.0
       }}
     >
       <main className="relative">
@@ -61,6 +63,13 @@ function App() {
         <LazySection id="work" placeholderHeight="80vh" rootMargin="200px" className="relative z-10 bg-luxury-cream">
           <Suspense fallback={<div style={{ minHeight: '80vh' }} />}>
             <ReelsShowcase />
+          </Suspense>
+        </LazySection>
+
+        {/* 4b. Selected Work (Minimalist Bento Showcase) */}
+        <LazySection id="selected-work" placeholderHeight="100vh" rootMargin="300px" className="relative z-10 bg-[#FAF9F5]">
+          <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+            <SelectedWork />
           </Suspense>
         </LazySection>
 

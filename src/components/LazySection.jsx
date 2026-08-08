@@ -6,12 +6,7 @@ import { useState, useEffect, useRef } from 'react';
  * Framer Motion scripts for sections that are not yet visible.
  */
 const LazySection = ({ id, children, threshold = 0.01, rootMargin = '1200px', placeholderHeight = 'auto', className = '' }) => {
-  const [isInView, setIsInView] = useState(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      return true; // Always render children on mobile to avoid section disappear/zoom glitches
-    }
-    return false;
-  });
+  const [isInView, setIsInView] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {

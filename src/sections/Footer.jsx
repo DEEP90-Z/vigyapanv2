@@ -1,14 +1,13 @@
 import { memo, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { useMagnetic } from '../hooks/useMagnetic';
 import { useLenis } from 'lenis/react';
 
 const MagneticSocialPill = memo(({ href, label }) => {
-  const { ref, x, y, handleMouseMove, handleMouseLeave } = useMagnetic(40, 0.4);
+  const { ref, style, handleMouseMove, handleMouseLeave } = useMagnetic(40, 0.4);
   return (
-    <motion.a
+    <a
       ref={ref}
-      style={{ x, y }}
+      style={style}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       href={href}
@@ -18,7 +17,7 @@ const MagneticSocialPill = memo(({ href, label }) => {
     >
       <span>{label}</span>
       <span>↗</span>
-    </motion.a>
+    </a>
   );
 });
 
@@ -61,7 +60,7 @@ const Footer = () => {
     }
   };
 
-  const { ref: topBtnRef, x: topBtnX, y: topBtnY, handleMouseMove: topBtnMove, handleMouseLeave: topBtnLeave } = useMagnetic(60, 0.4);
+  const { ref: topBtnRef, style: topBtnStyle, handleMouseMove: topBtnMove, handleMouseLeave: topBtnLeave } = useMagnetic(60, 0.4);
 
   return (
     <div className="relative w-full bg-[#FAF9F5] select-none text-neutral-900 overflow-hidden border-t border-neutral-300/50">
@@ -160,20 +159,23 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Column 3: Office Address & Coordinates */}
+            {/* Column 3: Simplified Location & Hours */}
             <div className="md:col-span-4 flex flex-col justify-between h-full">
               <div>
-                <span className="text-[9.5px] uppercase tracking-[0.25em] text-neutral-400 font-mono font-bold block mb-6">
-                  OFFICE & LOCATION
+                <span className="text-[9.5px] uppercase tracking-[0.25em] text-neutral-400 font-mono font-bold block mb-4">
+                  HEADQUARTERS & HOURS
                 </span>
-                <p className="text-xs sm:text-sm text-neutral-700 font-sans leading-relaxed">
-                  Vigyapan Estate, 2nd Floor, B4 Commercial,<br />
-                  near Chiranjeev Hospital, Shivaji Nagar,<br />
-                  Jhansi, Uttar Pradesh 284002
-                </p>
-                <div className="mt-4 pt-4 border-t border-neutral-200/80 flex flex-col gap-1 text-xs font-mono text-neutral-600">
-                  <a href="tel:+918114172501" className="hover:text-black transition-colors">+91 81141 72501</a>
-                  <a href="mailto:contact@vigyapan360.com" className="hover:text-black transition-colors">contact@vigyapan360.com</a>
+                <div className="space-y-1.5">
+                  <p className="text-xs sm:text-sm text-neutral-800 font-mono font-bold uppercase tracking-wider">
+                    Jhansi, Uttar Pradesh &bull; India
+                  </p>
+                  <p className="text-xs text-neutral-500 font-sans">
+                    Mon &ndash; Sat: 10:00 &ndash; 19:00 IST
+                  </p>
+                </div>
+                <div className="mt-4 pt-4 border-t border-neutral-200/80 flex items-center gap-2 text-xs font-mono text-neutral-500">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span>Active Client Support</span>
                 </div>
               </div>
             </div>
@@ -194,9 +196,9 @@ const Footer = () => {
               <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="hover:text-black transition-colors duration-300">Terms</a>
               
               {/* Back to top magnetic button */}
-              <motion.button
+              <button
                 ref={topBtnRef}
-                style={{ x: topBtnX, y: topBtnY }}
+                style={topBtnStyle}
                 onMouseMove={topBtnMove}
                 onMouseLeave={topBtnLeave}
                 type="button"
@@ -205,7 +207,7 @@ const Footer = () => {
               >
                 <span>RETURN TO TOP</span>
                 <span>↑</span>
-              </motion.button>
+              </button>
             </div>
           </div>
 

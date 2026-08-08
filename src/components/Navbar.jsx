@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { AnimatePresence, motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { useLenis } from 'lenis/react';
 import { cn } from '../utils/cn';
 
@@ -15,23 +14,29 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopNavOpen, setDesktopNavOpen] = useState(true);
-  const { scrollY } = useScroll();
   const lenis = useLenis();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() || 0;
-    const heroHeight = typeof window !== 'undefined' ? window.innerHeight * 0.6 : 450;
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
 
-    const nextScrolled = latest > 30;
-    setScrolled((prev) => (prev !== nextScrolled ? nextScrolled : prev));
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const heroHeight = window.innerHeight * 0.6 || 450;
 
-    // Desktop pill collapse past Hero section
-    if (latest > heroHeight && latest > previous) {
-      setDesktopNavOpen((prev) => (prev !== false ? false : prev));
-    } else if (latest < previous || latest <= 80) {
-      setDesktopNavOpen((prev) => (prev !== true ? true : prev));
-    }
-  });
+      setScrolled(currentScrollY > 30);
+
+      if (currentScrollY > heroHeight && currentScrollY > lastScrollY) {
+        setDesktopNavOpen(false);
+      } else if (currentScrollY < lastScrollY || currentScrollY <= 80) {
+        setDesktopNavOpen(true);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
@@ -56,12 +61,9 @@ const Navbar = () => {
 
   return (
     <>
-      <motion.nav 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
+      <nav 
         className={cn(
-          "fixed left-1/2 -translate-x-1/2 z-50 flex items-center justify-between w-[94vw] max-w-[1400px] pointer-events-none transition-all duration-300 ease-out",
+          "fixed left-1/2 -translate-x-1/2 z-50 flex items-center justify-between w-[94vw] max-w-[1400px] pointer-events-none transition-all duration-500 ease-out",
           scrolled ? "top-4 md:top-5 -translate-y-1" : "top-6 md:top-8"
         )}
       >
@@ -134,36 +136,29 @@ const Navbar = () => {
         </div>
         
         {/* DESKTOP CENTER PILL - Collapsible Navigation Links */}
-        <AnimatePresence>
-          {desktopNavOpen && (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.92, y: -5 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: -5 }}
-              transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
-              className={cn(
-                "pointer-events-auto hidden md:flex items-center space-x-6 lg:space-x-8 px-7 py-3 rounded-[22px] transition-all duration-300 ease-out text-[10px] lg:text-[10.5px] uppercase tracking-[0.22em] font-bold text-luxury-black",
-                scrolled
-                  ? "bg-white/20 backdrop-blur-xl shadow-[0_8px_25px_rgba(0,0,0,0.1)] hover:bg-white/30"
-                  : "bg-transparent backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:bg-white/10"
-              )}
-            >
-              {NAV_ITEMS.map((item) => (
-                <a 
-                  key={item.label} 
-                  href={item.href} 
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  className="relative group py-1 inline-block transition-colors duration-300"
-                >
-                  <span className="inline-block transition-transform duration-300 ease-out group-hover:-translate-y-[2px] text-black/85 group-hover:text-black">
-                    {item.label}
-                  </span>
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-luxury-black transition-all duration-300 ease-out group-hover:w-full" />
-                </a>
-              ))}
-            </motion.div>
+        <div 
+          className={cn(
+            "pointer-events-auto hidden md:flex items-center space-x-6 lg:space-x-8 px-7 py-3 rounded-[22px] transition-all duration-300 ease-out text-[10px] lg:text-[10.5px] uppercase tracking-[0.22em] font-bold text-luxury-black",
+            desktopNavOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none",
+            scrolled
+              ? "bg-white/20 backdrop-blur-xl shadow-[0_8px_25px_rgba(0,0,0,0.1)] hover:bg-white/30"
+              : "bg-transparent backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:bg-white/10"
           )}
-        </AnimatePresence>
+        >
+          {NAV_ITEMS.map((item) => (
+            <a 
+              key={item.label} 
+              href={item.href} 
+              onClick={(e) => handleNavClick(e, item.href)}
+              className="relative group py-1 inline-block transition-colors duration-300"
+            >
+              <span className="inline-block transition-transform duration-300 ease-out group-hover:-translate-y-[2px] text-black/85 group-hover:text-black">
+                {item.label}
+              </span>
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-luxury-black transition-all duration-300 ease-out group-hover:w-full" />
+            </a>
+          ))}
+        </div>
 
         {/* DESKTOP RIGHT PILL - Menu Toggle Pill */}
         <div className="pointer-events-auto hidden md:flex items-center">
@@ -192,31 +187,26 @@ const Navbar = () => {
             <span>Menu</span>
           </button>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile Dropdown Panel */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -15, scale: 0.95, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
-            exit={{ opacity: 0, y: -15, scale: 0.95, x: "-50%" }}
-            transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
-            className="fixed top-20 md:hidden left-1/2 z-40 w-[90vw] bg-white/95 backdrop-blur-2xl rounded-[2rem] p-5 shadow-[0_15px_45px_rgba(0,0,0,0.25)] flex flex-col items-center space-y-3.5 border border-black/10"
-          >
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className="text-xs font-bold uppercase tracking-[0.16em] text-black/80 hover:text-black transition-colors py-1"
-              >
-                {item.label}
-              </a>
-            ))}
-          </motion.div>
+      <div
+        className={cn(
+          "fixed top-20 md:hidden left-1/2 -translate-x-1/2 z-40 w-[90vw] bg-white/95 backdrop-blur-2xl rounded-[2rem] p-5 shadow-[0_15px_45px_rgba(0,0,0,0.25)] flex flex-col items-center space-y-3.5 border border-black/10 transition-all duration-300 ease-out",
+          mobileMenuOpen ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-4 pointer-events-none"
         )}
-      </AnimatePresence>
+      >
+        {NAV_ITEMS.map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            onClick={(e) => handleNavClick(e, item.href)}
+            className="text-xs font-bold uppercase tracking-[0.16em] text-black/80 hover:text-black transition-colors py-1"
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
     </>
   );
 };
