@@ -95,9 +95,9 @@ const Navbar = () => {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-luxury-black text-white text-[10px] uppercase tracking-[0.2em] font-bold cursor-pointer shadow-md active:scale-95 transition-all"
-            aria-label="Toggle Navigation Menu"
+            aria-label="Menu - Toggle Navigation Menu"
           >
-            <span className="relative flex items-center justify-center w-3.5 h-3.5">
+            <span className="relative flex items-center justify-center w-3.5 h-3.5" aria-hidden="true">
               {mobileMenuOpen ? (
                 <svg className="w-3.5 h-3.5 text-white transition-transform duration-300 group-hover:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -171,9 +171,9 @@ const Navbar = () => {
                 ? "bg-luxury-black text-white hover:bg-neutral-800"
                 : "bg-white/80 text-luxury-black hover:bg-white backdrop-blur-xl"
             )}
-            aria-label="Toggle Navigation Menu"
+            aria-label="Menu - Toggle Navigation Menu"
           >
-            <span className="relative flex items-center justify-center w-3.5 h-3.5">
+            <span className="relative flex items-center justify-center w-3.5 h-3.5" aria-hidden="true">
               {desktopNavOpen ? (
                 <svg className="w-3.5 h-3.5 text-white transition-transform duration-300 group-hover:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

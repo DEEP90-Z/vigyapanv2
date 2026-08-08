@@ -216,15 +216,16 @@ const Hero = () => {
           <button 
             type="button"
             onClick={toggleSound}
+            aria-label={isMuted ? "Sound Off - Unmute video sound" : "Sound On - Mute video sound"}
             className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 text-neutral-900 border border-neutral-300/50 shadow-sm text-[8.5px] uppercase tracking-[0.18em] font-bold cursor-pointer active:scale-95 transition-transform"
           >
             {isMuted ? (
-              <svg className="w-3 h-3 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <svg aria-hidden="true" className="w-3 h-3 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
               </svg>
             ) : (
-              <div className="flex items-end gap-[2px] h-3 w-3 pb-0.5 justify-center">
+              <div aria-hidden="true" className="flex items-end gap-[2px] h-3 w-3 pb-0.5 justify-center">
                 <span className="w-[2px] h-full bg-neutral-900 rounded-full animate-pulse" />
                 <span className="w-[2px] h-2/3 bg-neutral-900 rounded-full animate-pulse delay-100" />
                 <span className="w-[2px] h-1/2 bg-neutral-900 rounded-full animate-pulse delay-200" />
@@ -237,11 +238,12 @@ const Hero = () => {
             href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my Real Estate project.")}`}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Book a Strategy Call on WhatsApp"
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 text-neutral-900 border border-neutral-300/50 shadow-sm text-[9px] font-bold uppercase tracking-[0.16em] cursor-pointer active:scale-95 transition-transform"
           >
-            <span>🎯</span>
+            <span aria-hidden="true">🎯</span>
             <span>Strategy Call</span>
-            <span>→</span>
+            <span aria-hidden="true">→</span>
           </a>
         </div>
 
@@ -277,7 +279,7 @@ const Hero = () => {
               type="button"
               onClick={toggleSound}
               className="flex items-center gap-2.5 px-5 py-3 rounded-full bg-white/85 hover:bg-white border border-black/20 text-luxury-black backdrop-blur-xl shadow-[0_6px_20px_rgba(0,0,0,0.08)] transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 active:scale-95 cursor-pointer group"
-              aria-label={isMuted ? "Unmute video sound" : "Mute video sound"}
+              aria-label={isMuted ? "Sound Off - Unmute video sound" : "Sound On - Mute video sound"}
             >
               {isMuted ? (
                 <svg className="w-3.5 h-3.5 text-luxury-black group-hover:text-black transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
