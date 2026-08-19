@@ -26,36 +26,33 @@ const Hero = () => {
         requestAnimationFrame(() => {
           const scrollY = window.scrollY;
           const viewportH = window.innerHeight || 800;
-          const threshold = viewportH * 0.35;
           const pastHeroThreshold = viewportH * 1.05;
 
           const nextPastHero = scrollY > pastHeroThreshold;
           if (nextPastHero !== isPastHeroRef.current) {
             isPastHeroRef.current = nextPastHero;
             setIsPastHero(nextPastHero);
+
+            // Automatically resume video playback when scrolling back up into Hero section
+            if (!nextPastHero && videoRef.current && videoRef.current.paused) {
+              const p = videoRef.current.play();
+              if (p !== undefined) {
+                p.catch(() => {
+                  if (videoRef.current) {
+                    videoRef.current.muted = true;
+                    isMutedRef.current = true;
+                    setIsMuted(true);
+                    videoRef.current.play().catch(() => {});
+                  }
+                });
+              }
+            }
           }
 
           const rawProgress = Math.min(1, Math.max(0, scrollY / viewportH));
           if (Math.abs(rawProgress - lastProgressRef.current) > 0.005 || rawProgress === 0 || rawProgress === 1) {
             lastProgressRef.current = rawProgress;
             setScrollProgress(rawProgress);
-          }
-
-          const video = videoRef.current;
-          if (video) {
-            if (scrollY > threshold) {
-              if (!video.paused) {
-                video.pause();
-              }
-            } else {
-              if (video.paused) {
-                video.play().catch(() => {});
-              }
-              const targetMuted = isMutedRef.current;
-              if (video.muted !== targetMuted) {
-                video.muted = targetMuted;
-              }
-            }
           }
 
           ticking = false;
@@ -66,6 +63,41 @@ const Hero = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // IntersectionObserver to manage video playback without interrupting scrolling
+  useEffect(() => {
+    const video = videoRef.current;
+    const container = containerRef.current;
+    if (!video || !container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (video.paused) {
+              const playPromise = video.play();
+              if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                  video.muted = true;
+                  isMutedRef.current = true;
+                  setIsMuted(true);
+                  video.play().catch(() => {});
+                });
+              }
+            }
+          } else {
+            if (!video.paused) {
+              video.pause();
+            }
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
   }, []);
 
   const handleScrollToSolutions = (e) => {
@@ -162,7 +194,7 @@ const Hero = () => {
       ref={containerRef} 
       id="home" 
       className={`relative h-[100vh] min-h-[100dvh] w-full overflow-hidden bg-luxury-black sticky top-0 z-0 flex flex-col justify-between transition-opacity duration-300 ${
-        isPastHero ? 'opacity-0 pointer-events-none invisible' : 'opacity-100 visible'
+        isPastHero ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
       {/* SINGLE RESPONSIVE VIDEO ELEMENT */}
@@ -176,6 +208,9 @@ const Hero = () => {
             autoPlay 
             loop 
             playsInline
+            webkit-playsinline="true"
+            x5-playsinline="true"
+            disablePictureInPicture
             muted={isMuted}
             preload="auto"
             aria-hidden="true"
@@ -193,43 +228,44 @@ const Hero = () => {
       </div>
 
       {/* Mobile Dark Gradient Overlay at Bottom for Control Contrast */}
-      <div className="md:hidden absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none z-5" />
+      <div className="md:hidden absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none z-10" />
 
-      {/* Mobile Editorial Layout Overlay - Controls Only */}
-      <div className="md:hidden relative z-10 flex flex-col justify-end h-full w-full pb-7 px-5 sm:px-8 bg-transparent pointer-events-none overflow-hidden">
-        {/* Interactive Controls Safe Zone - Clean Horizontal Alignment */}
-        <div className="relative z-10 w-full flex items-center justify-between pointer-events-auto">
+      {/* Mobile Controls Overlay - Safely Lifted Above Mobile Browser Toolbars */}
+      <div className="md:hidden absolute bottom-14 sm:bottom-18 inset-x-0 z-20 px-4 sm:px-6 pointer-events-auto pb-[env(safe-area-inset-bottom)]">
+        <div className="w-full flex items-center justify-between gap-2">
+          {/* Sound Toggle Button */}
           <button 
             type="button"
             onClick={toggleSound}
             aria-label={isMuted ? "Sound Off - Unmute video sound" : "Sound On - Mute video sound"}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/90 hover:bg-white text-neutral-900 border border-white/60 shadow-lg backdrop-blur-md text-[8.5px] uppercase tracking-[0.18em] font-bold cursor-pointer active:scale-95 transition-all"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-white/95 hover:bg-white text-neutral-950 border border-black/10 shadow-2xl backdrop-blur-xl text-[9px] uppercase tracking-[0.14em] font-bold cursor-pointer active:scale-95 transition-all shrink-0"
           >
             {isMuted ? (
-              <svg aria-hidden="true" className="w-3 h-3 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <svg aria-hidden="true" className="w-3.5 h-3.5 text-neutral-950 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
               </svg>
             ) : (
-              <div aria-hidden="true" className="flex items-end gap-[2px] h-3 w-3 pb-0.5 justify-center">
-                <span className="w-[2px] h-full bg-neutral-900 rounded-full animate-pulse" />
-                <span className="w-[2px] h-2/3 bg-neutral-900 rounded-full animate-pulse delay-100" />
-                <span className="w-[2px] h-1/2 bg-neutral-900 rounded-full animate-pulse delay-200" />
+              <div aria-hidden="true" className="flex items-end gap-[2px] h-3.5 w-3.5 pb-0.5 justify-center shrink-0">
+                <span className="w-[2px] h-full bg-neutral-950 rounded-full animate-pulse" />
+                <span className="w-[2px] h-2/3 bg-neutral-950 rounded-full animate-pulse delay-100" />
+                <span className="w-[2px] h-1/2 bg-neutral-950 rounded-full animate-pulse delay-200" />
               </div>
             )}
-            <span>{isMuted ? "Sound Off" : "Sound On"}</span>
+            <span className="whitespace-nowrap">{isMuted ? "Sound Off" : "Sound On"}</span>
           </button>
 
+          {/* Book a Strategy Call Button */}
           <a 
             href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call for my Real Estate project.")}`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Book a Strategy Call on WhatsApp"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/90 hover:bg-white text-neutral-900 border border-white/60 shadow-lg backdrop-blur-md text-[9px] font-bold uppercase tracking-[0.16em] cursor-pointer active:scale-95 transition-all"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-white/95 hover:bg-white text-neutral-950 border border-black/10 shadow-2xl backdrop-blur-xl text-[9px] font-bold uppercase tracking-[0.14em] cursor-pointer active:scale-95 transition-all shrink-0"
           >
-            <span aria-hidden="true">🎯</span>
-            <span>Book a Strategy Call</span>
-            <span aria-hidden="true">→</span>
+            <span aria-hidden="true" className="text-xs">🎯</span>
+            <span className="whitespace-nowrap">Strategy Call</span>
+            <span aria-hidden="true" className="font-sans">→</span>
           </a>
         </div>
       </div>
