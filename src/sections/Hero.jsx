@@ -161,21 +161,16 @@ const Hero = () => {
     <section 
       ref={containerRef} 
       id="home" 
-      className={`relative h-[100vh] min-h-[100dvh] w-full overflow-hidden bg-[#EBEBEB] md:bg-luxury-black sticky top-0 z-0 flex flex-col justify-between transition-opacity duration-300 ${
+      className={`relative h-[100vh] min-h-[100dvh] w-full overflow-hidden bg-luxury-black sticky top-0 z-0 flex flex-col justify-between transition-opacity duration-300 ${
         isPastHero ? 'opacity-0 pointer-events-none invisible' : 'opacity-100 visible'
       }`}
     >
-      {/* Diagonal Background Line Accent */}
-      <svg aria-hidden="true" className="md:hidden absolute inset-0 w-full h-full pointer-events-none opacity-90 z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <line x1="82" y1="0" x2="14" y2="100" stroke="#FFFFFF" strokeWidth="0.75" />
-      </svg>
-
       {/* SINGLE RESPONSIVE VIDEO ELEMENT */}
       <div 
         style={{ transform: `scale(${videoScale})` }}
-        className="absolute inset-0 w-full h-full md:origin-center will-change-transform z-1 flex items-center justify-center pointer-events-none transition-transform duration-75 ease-out"
+        className="absolute inset-0 w-full h-full origin-center will-change-transform z-1 flex items-center justify-center pointer-events-none transition-transform duration-75 ease-out"
       >
-        <div className="w-full h-full md:w-full md:h-full max-w-[92vw] md:max-w-none max-h-[30vh] md:max-h-none aspect-[1.85/1] md:aspect-auto overflow-hidden my-auto md:my-0 border-none shadow-none md:shadow-none">
+        <div className="w-full h-full overflow-hidden border-none shadow-none">
           <video 
             ref={videoRef}
             autoPlay 
@@ -197,27 +192,18 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Mobile Editorial Layout Overlay */}
-      <div className="md:hidden relative z-10 flex flex-col justify-between h-full w-full pt-20 pb-7 px-5 sm:px-8 bg-transparent pointer-events-none overflow-hidden">
-        <div className="relative z-10 w-full flex items-center justify-between pointer-events-auto pt-2">
-          <span className="text-[9.5px] uppercase tracking-[0.2em] font-semibold text-neutral-500">
-            BRAND SYSTEMS & MEDIA
-          </span>
-          <span className="text-[9.5px] uppercase tracking-[0.18em] font-semibold text-neutral-500">
-            REAL ESTATE MARKETING
-          </span>
-        </div>
+      {/* Mobile Dark Gradient Overlay at Bottom for Control Contrast */}
+      <div className="md:hidden absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none z-5" />
 
-        <div className="w-full my-auto pointer-events-none opacity-0" aria-hidden="true">
-          <div className="w-full aspect-[1.85/1]" />
-        </div>
-
-        <div className="relative z-10 w-full flex items-center justify-between pb-3 pointer-events-auto">
+      {/* Mobile Editorial Layout Overlay - Controls Only */}
+      <div className="md:hidden relative z-10 flex flex-col justify-end h-full w-full pb-7 px-5 sm:px-8 bg-transparent pointer-events-none overflow-hidden">
+        {/* Interactive Controls Safe Zone - Clean Horizontal Alignment */}
+        <div className="relative z-10 w-full flex items-center justify-between pointer-events-auto">
           <button 
             type="button"
             onClick={toggleSound}
             aria-label={isMuted ? "Sound Off - Unmute video sound" : "Sound On - Mute video sound"}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 text-neutral-900 border border-neutral-300/50 shadow-sm text-[8.5px] uppercase tracking-[0.18em] font-bold cursor-pointer active:scale-95 transition-transform"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/90 hover:bg-white text-neutral-900 border border-white/60 shadow-lg backdrop-blur-md text-[8.5px] uppercase tracking-[0.18em] font-bold cursor-pointer active:scale-95 transition-all"
           >
             {isMuted ? (
               <svg aria-hidden="true" className="w-3 h-3 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -239,26 +225,12 @@ const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Book a Strategy Call on WhatsApp"
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 text-neutral-900 border border-neutral-300/50 shadow-sm text-[9px] font-bold uppercase tracking-[0.16em] cursor-pointer active:scale-95 transition-transform"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/90 hover:bg-white text-neutral-900 border border-white/60 shadow-lg backdrop-blur-md text-[9px] font-bold uppercase tracking-[0.16em] cursor-pointer active:scale-95 transition-all"
           >
             <span aria-hidden="true">🎯</span>
-            <span>Strategy Call</span>
+            <span>Book a Strategy Call</span>
             <span aria-hidden="true">→</span>
           </a>
-        </div>
-
-        <div className="relative z-10 w-full flex items-end justify-between pointer-events-auto">
-          <div className="flex flex-col text-left">
-            <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 leading-[1.08] tracking-tight">
-              Properties that move<br />
-              buyers.
-            </h2>
-          </div>
-          <div className="flex flex-col text-right max-w-[165px] sm:max-w-[210px]">
-            <p className="text-[10px] sm:text-[11px] font-medium text-neutral-600 leading-snug tracking-[0.02em]">
-              Architectural film, 3D vision & high-intent buyer acquisition.
-            </p>
-          </div>
         </div>
       </div>
 
