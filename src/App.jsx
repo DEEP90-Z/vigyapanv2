@@ -7,6 +7,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 // Implement React.lazy to enable JS code-splitting and drastically reduce initial bundle size
 const FloatingBrandShowcase = React.lazy(() => import('./sections/FloatingBrandShowcase'));
 const CreativeSolutions = React.lazy(() => import('./sections/CreativeSolutions'));
+const Expertise = React.lazy(() => import('./sections/Expertise'));
 const ReelsShowcase = React.lazy(() => import('./sections/ReelsShowcase'));
 const SelectedWork = React.lazy(() => import('./sections/SelectedWork'));
 const LayerCards = React.lazy(() => import('./sections/LayerCards'));
@@ -31,13 +32,11 @@ function App() {
       autoRaf={true}
       options={{
         duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        syncTouch: false,
         smoothTouch: false,
-        wheelMultiplier: 1.1,
-        touchMultiplier: 1.0,
-        prevent: () => typeof window !== 'undefined' && window.innerWidth < 768
+        touchMultiplier: 1.5,
+        wheelMultiplier: 1.0,
       }}
     >
       <main className="relative">
@@ -57,6 +56,13 @@ function App() {
         <LazySection id="solutions" placeholderHeight="100vh" rootMargin="200px" className="relative z-10 bg-luxury-cream">
           <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <CreativeSolutions />
+          </Suspense>
+        </LazySection>
+
+        {/* 3b. Expertise / Sectors */}
+        <LazySection id="expertise" placeholderHeight="60vh" rootMargin="200px" className="relative z-10 bg-[#FAF9F5]">
+          <Suspense fallback={<div style={{ minHeight: '60vh' }} />}>
+            <Expertise />
           </Suspense>
         </LazySection>
 

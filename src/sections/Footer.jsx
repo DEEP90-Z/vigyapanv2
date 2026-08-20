@@ -116,9 +116,8 @@ const Footer = () => {
 
               {/* Social Pills */}
               <div className="flex flex-wrap gap-2.5 pt-2">
-                <MagneticSocialPill href="https://www.instagram.com/vigyapan360/" label="INSTAGRAM" />
-                <MagneticSocialPill href="https://linkedin.com/company/vigyapan360" label="LINKEDIN" />
-                <MagneticSocialPill href="https://twitter.com/vigyapan360" label="TWITTER" />
+                <MagneticSocialPill href="https://www.instagram.com/vigyapanestate?igsi=MWRndmZsZmJ6OHhuNQ==" label="INSTAGRAM" />
+                <MagneticSocialPill href="https://www.facebook.com/vigyapanestate" label="FACEBOOK" />
                 <MagneticSocialPill 
                   href={`https://wa.me/918114172501?text=${encodeURIComponent("Hello Vigyapan! I'd like to book a 1-on-1 Strategy Call.")}`} 
                   label="WHATSAPP" 

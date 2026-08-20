@@ -83,37 +83,54 @@ const PlayIconBadge = memo(({ sizeClassName = 'h-7 w-7', containerClassName = ''
   </span>
 ));
 
-const FeaturedWorkStage = memo(({ work, onPlay }) => {
+const FeaturedWorkStage = memo(({ works, activeIndex, onPlay }) => {
   const { position, handlePointerMove, handlePointerLeave } = useCursorFollow();
+  const currentWork = works[activeIndex];
 
   return (
     <button
       type="button"
-      onClick={() => onPlay(work)}
+      onClick={() => onPlay(currentWork)}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       className="group relative mx-auto block w-[90vw] max-w-[1100px] aspect-[16/7.5] min-h-[200px] max-h-[380px] overflow-hidden rounded-[1.5rem] md:rounded-[3rem] bg-luxury-black text-left shadow-[0_15px_50px_rgba(0,0,0,0.08)] cursor-pointer transition-transform duration-500 hover:scale-[1.005]"
-      aria-label={`Play ${work.title}`}
+      aria-label={`Play ${currentWork.title}`}
     >
-      <img
-        key={work.id}
-        src={work.image}
-        alt={work.title}
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover transition-all duration-700 ease-out"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/35 via-luxury-black/0 to-transparent opacity-70" />
-      
+      {/* Smooth Stacked Mix Crossfade Images */}
+      {works.map((work, idx) => {
+        const isActive = idx === activeIndex;
+        return (
+          <img
+            key={work.id}
+            src={work.image}
+            alt={work.title}
+            loading={idx === 0 ? 'eager' : 'lazy'}
+            className={`absolute inset-0 h-full w-full object-cover transition-all duration-1000 ease-in-out ${
+              isActive ? 'opacity-100 scale-100 z-1' : 'opacity-0 scale-105 pointer-events-none z-0'
+            }`}
+          />
+        );
+      })}
+
+      <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/50 via-luxury-black/10 to-transparent opacity-80 z-2" />
+
+      {/* Active Work Title Pill */}
+      <div className="absolute bottom-5 left-5 md:bottom-8 md:left-10 z-10">
+        <span className="inline-block px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white font-display text-xs md:text-sm font-semibold tracking-wider shadow-lg">
+          {currentWork.title}
+        </span>
+      </div>
+
       {/* Dynamic Desktop Pointer Follow Play Badge */}
       <div
-        className="absolute -translate-x-1/2 -translate-y-1/2 hidden md:block transition-all duration-75"
+        className="absolute -translate-x-1/2 -translate-y-1/2 hidden md:block transition-all duration-75 z-10"
         style={{ left: `${position.x}%`, top: `${position.y}%` }}
       >
         <PlayIconBadge sizeClassName="h-8 w-8" containerClassName="h-16 w-16 group-hover:scale-110 group-hover:bg-white/22" />
       </div>
 
       {/* Static Mobile Centered Play Badge */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:hidden">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:hidden z-10">
         <PlayIconBadge sizeClassName="h-6 w-6" containerClassName="h-13 w-13" />
       </div>
     </button>
@@ -220,72 +237,52 @@ const VideoModal = memo(({ media, onClose }) => {
   );
 });
 
-const AutoplayReelVideo = memo(({ src, isInView }) => {
+// Continuous Autoplay Reel Card
+const ReelCard = memo(({ reel, onPlay }) => {
   const videoRef = useRef(null);
-  const [isCardVisible, setIsCardVisible] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsCardVisible(entry.isIntersecting);
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(video);
-    return () => observer.disconnect();
+    const promise = video.play();
+    if (promise !== undefined) {
+      promise.catch(() => {});
+    }
   }, []);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (isInView && isCardVisible) {
-      const promise = video.play();
-      if (promise !== undefined) {
-        promise.catch(() => {});
-      }
-    } else {
-      video.pause();
-    }
-  }, [isInView, isCardVisible]);
-
   return (
-    <video
-      ref={videoRef}
-      src={src}
-      muted
-      loop
-      playsInline
-      preload="none"
-      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-    />
+    <button
+      type="button"
+      onClick={() => onPlay(reel)}
+      className="group relative w-[145px] sm:w-[170px] md:w-[200px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-md bg-black border border-luxury-black/10 shrink-0 select-none cursor-pointer transition-transform duration-300 hover:scale-[1.02] text-left"
+      aria-label={`Play ${reel.title}`}
+    >
+      {/* Continuous Autoplay Reel Video */}
+      <video
+        ref={videoRef}
+        src={reel.src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+
+      {/* Reel Number Badge */}
+      <div className="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-md border border-white/20 text-luxury-gold font-mono text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+        {reel.number}
+      </div>
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+    </button>
   );
 });
 
-const ReelCard = memo(({ reel, isInView }) => (
-  <div
-    className="group relative w-[145px] sm:w-[170px] md:w-[200px] aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden shadow-md bg-black border border-luxury-black/10 shrink-0 select-none transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.02]"
-  >
-    <AutoplayReelVideo src={reel.src} isInView={isInView} />
-
-    {/* Reel Number Badge */}
-    <div className="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-md border border-white/20 text-luxury-gold font-mono text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-      {reel.number}
-    </div>
-
-    {/* Gradient Overlay */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-  </div>
-));
-
-// Glitch-Free GPU Infinite Marquee Component
-const ResponsiveReelsMarquee = memo(({ isInView }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
+// Continuous Unstoppable Infinite Marquee Loop for 8 Unique Reels
+const ResponsiveReelsMarquee = memo(({ onPlay }) => {
   const infiniteReels = useMemo(() => [...REEL_VIDEOS, ...REEL_VIDEOS], []);
 
   return (
@@ -296,10 +293,7 @@ const ResponsiveReelsMarquee = memo(({ isInView }) => {
           100% { transform: translate3d(-50%, 0, 0); }
         }
         .animate-reels-marquee {
-          animation: reelsMarqueeLoop 30s linear infinite;
-        }
-        .animate-reels-marquee-paused {
-          animation-play-state: paused;
+          animation: reelsMarqueeLoop 28s linear infinite;
         }
       `}</style>
 
@@ -307,23 +301,17 @@ const ResponsiveReelsMarquee = memo(({ isInView }) => {
       <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 md:w-24 bg-gradient-to-r from-luxury-cream to-transparent z-10" />
       <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 md:w-24 bg-gradient-to-l from-luxury-cream to-transparent z-10" />
 
-      {/* Hardware-Accelerated 60FPS Marquee Loop */}
-      <div
-        className="overflow-hidden w-full py-2"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onTouchStart={() => setIsHovered(true)}
-        onTouchEnd={() => setIsHovered(false)}
-      >
+      {/* Continuous Marquee Stream */}
+      <div className="overflow-hidden w-full py-2">
         <div
-          className={`flex gap-4 md:gap-5 px-4 animate-reels-marquee ${isHovered ? 'animate-reels-marquee-paused' : ''}`}
+          className="flex gap-4 md:gap-5 px-4 animate-reels-marquee"
           style={{ width: 'max-content', willChange: 'transform' }}
         >
           {infiniteReels.map((reel, idx) => (
             <ReelCard
               key={`${reel.id}-${idx}`}
               reel={reel}
-              isInView={isInView}
+              onPlay={onPlay}
             />
           ))}
         </div>
@@ -337,11 +325,8 @@ const ResponsiveReelsMarquee = memo(({ isInView }) => {
  * ========================================================================== */
 const ReelsShowcase = () => {
   const containerRef = useRef(null);
-  const [isInView, setIsInView] = useState(false);
   const [activeMedia, setActiveMedia] = useState(null);
   const [featuredIndex, setFeaturedIndex] = useState(0);
-
-  const currentFeaturedWork = FEATURED_WORKS[featuredIndex];
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -349,21 +334,6 @@ const ReelsShowcase = () => {
     }, 3000);
 
     return () => window.clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const element = containerRef.current;
-    if (!element) return undefined;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsInView(entry.isIntersecting);
-      },
-      { rootMargin: '200px' }
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
   }, []);
 
   return (
@@ -384,7 +354,7 @@ const ReelsShowcase = () => {
             Featured Content
           </span>
         </div>
-        <FeaturedWorkStage work={currentFeaturedWork} onPlay={setActiveMedia} />
+        <FeaturedWorkStage works={FEATURED_WORKS} activeIndex={featuredIndex} onPlay={setActiveMedia} />
       </div>
 
       {/* Short-Form Visuals Header */}
@@ -400,8 +370,8 @@ const ReelsShowcase = () => {
         </div>
       </div>
 
-      {/* Auto-Sliding Reels Showcase */}
-      <ResponsiveReelsMarquee isInView={isInView} />
+      {/* Continuous Autoplay Marquee Stream */}
+      <ResponsiveReelsMarquee onPlay={setActiveMedia} />
     </section>
   );
 };

@@ -47,7 +47,7 @@ export default function FloatingBrandShowcase() {
   }, []);
 
   return (
-    <section className="relative min-h-[900px] sm:min-h-[1050px] w-full flex items-center justify-center overflow-hidden bg-[#FAF9F5] select-none py-24 sm:py-36">
+    <section className="relative min-h-[600px] sm:min-h-[900px] md:min-h-[1050px] w-full flex items-center justify-center overflow-hidden bg-[#FAF9F5] select-none py-16 sm:py-24 md:py-36">
       <style>{`
         @keyframes floatUpwardAesthetic {
           0% {

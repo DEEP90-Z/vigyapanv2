@@ -162,7 +162,7 @@ const CreativeSolutions = () => {
         >
           <div
             style={{ transform: `translate3d(${card1X}, ${card1Y}, 0px)`, willChange: 'transform' }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10 transition-transform duration-75 ease-out"
+            className="w-full max-w-[90rem] h-[82vh] lg:h-[75vh] min-h-[460px] sm:min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10 transition-transform duration-75 ease-out"
           >
             <div className="lg:w-[55%] h-[40%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="360 marketing" />
@@ -206,7 +206,7 @@ const CreativeSolutions = () => {
         >
           <div
             style={{ transform: `translate3d(${card2X}, 0px, 0px)`, willChange: 'transform' }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10 transition-transform duration-75 ease-out"
+            className="w-full max-w-[90rem] h-[82vh] lg:h-[75vh] min-h-[460px] sm:min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row-reverse overflow-hidden border border-luxury-black/10 transition-transform duration-75 ease-out"
           >
             <div className="lg:w-[55%] h-[40%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="branding" />
@@ -250,7 +250,7 @@ const CreativeSolutions = () => {
         >
           <div
             style={{ transform: `translate3d(${card3X}, 0px, 0px)`, willChange: 'transform' }}
-            className="w-full max-w-[90rem] h-[75vh] min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10 transition-transform duration-75 ease-out"
+            className="w-full max-w-[90rem] h-[82vh] lg:h-[75vh] min-h-[460px] sm:min-h-[550px] rounded-[2rem] bg-luxury-white shadow-[0_20px_50px_rgba(26,26,26,0.08)] flex flex-col lg:flex-row overflow-hidden border border-luxury-black/10 transition-transform duration-75 ease-out"
           >
             <div className="lg:w-[55%] h-[40%] lg:h-full relative overflow-hidden bg-luxury-black">
               <SolutionVideo baseName="audio-video-production" />
