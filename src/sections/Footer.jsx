@@ -63,22 +63,26 @@ const Footer = () => {
   const { ref: topBtnRef, style: topBtnStyle, handleMouseMove: topBtnMove, handleMouseLeave: topBtnLeave } = useMagnetic(60, 0.4);
 
   return (
-    <div className="relative w-full bg-[#FAF9F5] select-none text-neutral-900 overflow-hidden border-t border-neutral-300/50">
-      
+    <div className="relative w-full bg-[#FAF9F5] select-none text-neutral-900 overflow-hidden">
+      {/* Creative Background Continuation matching Contact section */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.025)_1px,transparent_1px)] bg-[size:50px_50px] opacity-90" />
+        <div className="absolute top-0 left-1/3 w-[600px] h-[400px] bg-gradient-to-br from-amber-200/20 via-purple-100/15 to-transparent rounded-full blur-[130px] pointer-events-none" />
+      </div>
 
       {/* 2. Light Ticker Marquee Bar */}
-      <div className="w-full overflow-hidden py-5 bg-[#EFECE6] border-b border-neutral-300/50 select-none relative z-10 font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-neutral-700">
+      <div className="w-full overflow-hidden py-5 bg-[#EFECE6]/90 backdrop-blur-md border-y border-neutral-300/40 select-none relative z-10 font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-neutral-700">
         <div 
           className="flex gap-16 whitespace-nowrap animate-marquee-right font-bold"
           style={{ width: 'max-content' }}
         >
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2, 3].map((i) => (
             <span key={i} className="flex items-center gap-14">
-              <span>REAL ESTATE BRAND SYSTEMS</span>
+              <span>MARKET DOMINANCE</span>
               <span className="text-luxury-gold">&bull;</span>
-              <span>ARCHITECTURAL FILM & VISUALS</span>
+              <span>HIGH-CONVERTING CAMPAIGNS</span>
               <span className="text-luxury-gold">&bull;</span>
-              <span>HIGH-INTENT BUYER ACQUISITION</span>
+              <span>QUALIFIED LEAD GENERATION</span>
               <span className="text-luxury-gold">&bull;</span>
             </span>
           ))}
@@ -86,8 +90,8 @@ const Footer = () => {
       </div>
 
       {/* 3. Main Footer Body */}
-      <footer className="pt-16 pb-12 bg-[#FAF9F5] text-neutral-900 relative z-10">
-        <div className="max-w-[1360px] mx-auto px-6 md:px-12 w-full">
+      <footer className="pt-16 pb-12 bg-transparent text-neutral-900 relative z-10">
+        <div className="max-w-[1360px] mx-auto px-6 md:px-12 lg:px-16 w-full">
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 mb-16 items-start">
             
@@ -97,11 +101,11 @@ const Footer = () => {
                 href="#home" 
                 onClick={(e) => handleScroll(e, '#home')}
                 className="block w-[160px] md:w-[190px] cursor-pointer"
-                aria-label="Vigyapan 360 Home"
+                aria-label="Vigyapan Estate Home"
               >
                 <img 
                   src="/vigyapan-estate-navbar-cropped.webp" 
-                  alt="Vigyapan 360 Real Estate Marketing" 
+                  alt="Vigyapan Estate Real Estate Marketing" 
                   className="block h-auto w-full object-contain mix-blend-multiply"
                 />
               </a>
@@ -180,7 +184,7 @@ const Footer = () => {
               <span>JHANSI, IN [{currentTime || '19:13 IST'}]</span>
             </div>
 
-            <p>&copy; 2026 VIGYAPAN 360. ALL RIGHTS RESERVED.</p>
+            <p>&copy; 2026 VIGYAPAN ESTATE. ALL RIGHTS RESERVED.</p>
             
             <div className="flex items-center gap-6">
               <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="hover:text-black transition-colors duration-300">Privacy Policy</a>

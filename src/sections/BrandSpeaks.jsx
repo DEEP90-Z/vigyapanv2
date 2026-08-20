@@ -240,8 +240,8 @@ const BrandSpeaks = () => {
             BRAND SPEAKS
           </h2>
           <div className="w-12 h-[2px] bg-luxury-gold mb-5 origin-center" />
-          <p className="text-sm md:text-base font-sans font-light tracking-wide text-luxury-black/60 max-w-xl mx-auto">
-            Real feedback from our partner brands who scaled their business digitally with Vigyapan 360.
+          <p className="text-sm md:text-base font-sans font-light tracking-wide text-luxury-black/60 max-w-4xl mx-auto md:whitespace-nowrap">
+            Real feedback from our partner brands who scaled their business digitally with Vigyapan Estate.
           </p>
         </div>
 

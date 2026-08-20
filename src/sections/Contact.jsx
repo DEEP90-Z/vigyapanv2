@@ -15,7 +15,7 @@ const Contact = () => {
 
   const copyEmail = (e) => {
     e.preventDefault();
-    navigator.clipboard.writeText('contact@vigyapan360.com');
+    navigator.clipboard.writeText('vigyapanestate@gmail.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
@@ -24,41 +24,32 @@ const Contact = () => {
     <section 
       ref={containerRef}
       id="contact" 
-      className="relative w-full py-24 md:py-36 bg-[#FAF9F5] text-neutral-900 overflow-hidden select-none border-t border-neutral-300/40"
+      className="relative w-full pt-24 md:pt-36 pb-12 bg-[#FAF9F5] text-neutral-900 overflow-hidden select-none"
     >
-      {/* Subtle Architectural Grid Background */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div 
-          className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:60px_60px] opacity-80"
-        />
-        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.07)_0%,transparent_70%)] rounded-full blur-3xl pointer-events-none" />
+      {/* Creative Luxury Ambient Background */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Fine Architectural Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.025)_1px,transparent_1px)] bg-[size:50px_50px] opacity-90" />
+        
+        {/* Soft Luxury Glowing Orbs */}
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-tr from-amber-200/30 via-purple-200/20 to-transparent rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-0 right-10 w-[550px] h-[550px] bg-gradient-to-bl from-amber-300/25 via-yellow-100/30 to-transparent rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute bottom-[-100px] left-10 w-[600px] h-[600px] bg-gradient-to-tr from-purple-300/15 via-indigo-100/20 to-transparent rounded-full blur-[150px] pointer-events-none" />
       </div>
 
       <div className="max-w-[1360px] mx-auto px-6 md:px-12 lg:px-16 relative z-10">
         
-        {/* Top Editorial Eyebrow & Status */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 mb-12 border-b border-neutral-300/60 font-mono text-[10px] uppercase tracking-[0.25em]">
-          <div className="flex items-center gap-3 text-neutral-600 font-bold">
-            <span className="w-2 h-2 rounded-full bg-luxury-gold animate-ping" />
-            <span>07 // INITIATE COLLABORATION</span>
-          </div>
-          <div className="flex items-center gap-2 text-neutral-600">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span>ACCEPTING REAL ESTATE CAMPAIGNS FOR 2026</span>
-          </div>
-        </div>
-
-        {/* Hero Display Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-end mb-16">
-          <div className="lg:col-span-8">
+        {/* Hero Display Header - Perfectly Aligned Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center mb-16">
+          <div className="lg:col-span-7">
             <h2 className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-display font-black leading-[0.98] tracking-tight text-neutral-900">
               Let's Build <br />
               <span className="italic font-serif font-normal text-neutral-800">Something Iconic.</span>
             </h2>
           </div>
-          <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-end">
-            <p className="text-xs sm:text-sm text-neutral-600 font-sans leading-relaxed max-w-sm lg:text-right mb-6">
-              Partner with Jhansi's premier real estate marketing & architectural film agency to elevate your next development.
+          <div className="lg:col-span-5 flex flex-col items-start lg:items-end justify-center">
+            <p className="text-sm sm:text-base text-neutral-600 font-sans leading-relaxed max-w-md lg:text-right mb-6">
+              Let’s turn your ambitious developments into iconic brands.
             </p>
             {/* Magnetic Strategy Call Button */}
             <div
@@ -81,67 +72,67 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Sleek Combined Contact Bar */}
-        <div className="bg-[#FAF9F5] p-5 sm:p-6 rounded-3xl border border-neutral-300/60 shadow-[0_15px_45px_rgba(0,0,0,0.03)] mb-12 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-          {/* Quick Contact Actions: Email & Phone */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
-            {/* Email Pill */}
-            <button 
-              type="button"
-              onClick={copyEmail}
-              className="flex-1 px-5 py-3.5 rounded-2xl bg-white hover:bg-neutral-900 hover:text-white transition-all duration-300 flex items-center justify-between gap-4 border border-neutral-200/80 cursor-pointer shadow-2xs group/btn"
-            >
-              <div className="flex flex-col text-left">
-                <span className="text-[8.5px] uppercase tracking-[0.2em] font-mono text-neutral-500 group-hover/btn:text-neutral-300">
-                  {copied ? "COPIED TO CLIPBOARD ✓" : "DIRECT MAIL"}
-                </span>
-                <span className="text-xs sm:text-sm font-semibold font-mono text-neutral-900 group-hover/btn:text-white transition-colors">
-                  contact@vigyapan360.com
-                </span>
-              </div>
-              <span className="text-xs font-mono text-neutral-400 group-hover/btn:text-white">📋</span>
-            </button>
+        {/* Sleek Perfectly Aligned 3-Column Contact Bar */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-12">
+          {/* Email Pill */}
+          <button 
+            type="button"
+            onClick={copyEmail}
+            className="p-5 sm:p-6 rounded-3xl bg-white/90 backdrop-blur-md border border-neutral-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-neutral-400 hover:bg-neutral-900 hover:text-white transition-all duration-300 flex items-center justify-between gap-4 cursor-pointer group/btn"
+          >
+            <div className="flex flex-col text-left overflow-hidden">
+              <span className="text-[8.5px] uppercase tracking-[0.2em] font-mono text-neutral-500 group-hover/btn:text-neutral-300 mb-1">
+                {copied ? "COPIED TO CLIPBOARD ✓" : "DIRECT MAIL"}
+              </span>
+              <span className="text-xs sm:text-sm font-semibold font-mono text-neutral-900 group-hover/btn:text-white transition-colors truncate">
+                vigyapanestate@gmail.com
+              </span>
+            </div>
+            <span className="text-sm font-mono text-neutral-400 group-hover/btn:text-white shrink-0">📋</span>
+          </button>
 
-            {/* Phone Pill */}
-            <a 
-              href="tel:+918114172501"
-              className="flex-1 px-5 py-3.5 rounded-2xl bg-white hover:bg-neutral-900 hover:text-white transition-all duration-300 flex items-center justify-between gap-4 border border-neutral-200/80 cursor-pointer shadow-2xs group/phone"
-            >
-              <div className="flex flex-col text-left">
-                <span className="text-[8.5px] uppercase tracking-[0.2em] font-mono text-neutral-500 group-hover/phone:text-neutral-300">
-                  DIRECT LINE
-                </span>
-                <span className="text-xs sm:text-sm font-semibold font-mono text-neutral-900 group-hover/phone:text-white transition-colors">
-                  +91 81141 72501
-                </span>
-              </div>
-              <span className="text-xs uppercase font-mono text-neutral-400 group-hover/phone:text-white">↗</span>
-            </a>
-          </div>
+          {/* Phone Pill */}
+          <a 
+            href="tel:+918114172501"
+            className="p-5 sm:p-6 rounded-3xl bg-white/90 backdrop-blur-md border border-neutral-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-neutral-400 hover:bg-neutral-900 hover:text-white transition-all duration-300 flex items-center justify-between gap-4 cursor-pointer group/phone"
+          >
+            <div className="flex flex-col text-left">
+              <span className="text-[8.5px] uppercase tracking-[0.2em] font-mono text-neutral-500 group-hover/phone:text-neutral-300 mb-1">
+                DIRECT LINE
+              </span>
+              <span className="text-xs sm:text-sm font-semibold font-mono text-neutral-900 group-hover/phone:text-white transition-colors">
+                +91 81141 72501
+              </span>
+            </div>
+            <span className="text-sm uppercase font-mono text-neutral-400 group-hover/phone:text-white shrink-0">↗</span>
+          </a>
 
-          {/* Location Summary Pill */}
-          <div className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white border border-neutral-200/80 text-xs font-mono text-neutral-700 shrink-0 shadow-2xs">
-            <MapPin className="w-4 h-4 text-luxury-gold shrink-0" />
-            <div>
-              <span className="font-bold text-neutral-900 block leading-tight">Vigyapan Estate, 2nd Floor</span>
+          {/* Location Summary Card */}
+          <div className="p-5 sm:p-6 rounded-3xl bg-white/90 backdrop-blur-md border border-neutral-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0 text-luxury-gold">
+              <MapPin className="w-5 h-5 text-luxury-gold" />
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="text-[8.5px] uppercase tracking-[0.2em] font-mono text-neutral-500 mb-0.5">HEADQUARTERS</span>
+              <span className="text-xs sm:text-sm font-bold text-neutral-900 leading-tight">Vigyapan Estate, 2nd Floor</span>
               <span className="text-[11px] text-neutral-600 font-sans">Shivaji Nagar, Jhansi, UP 284002</span>
             </div>
           </div>
         </div>
 
-        {/* Minimalist Architectural Map Window */}
-        <div className="relative w-full rounded-3xl overflow-hidden border border-neutral-300/60 bg-white p-3 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+        {/* Minimalist Architectural Map Window - Perfectly Aligned */}
+        <div className="relative w-full rounded-3xl overflow-hidden border border-neutral-300/60 bg-white/90 backdrop-blur-md p-3 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
           {/* Map Top Bar */}
-          <div className="flex items-center justify-between px-4 py-3 bg-neutral-50 rounded-2xl mb-3 border border-neutral-200/60 text-[10px] uppercase font-mono tracking-widest text-neutral-600">
+          <div className="flex items-center justify-between px-4 py-3 bg-neutral-50/90 rounded-2xl mb-3 border border-neutral-200/60 text-[10px] uppercase font-mono tracking-widest text-neutral-600">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-neutral-900" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="font-bold text-neutral-900">VIGYAPAN ESTATE GOOGLE MAP LOCATION</span>
             </div>
             <a 
               href="https://www.google.com/maps?cid=12882255745778887593"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900 text-white hover:bg-black transition-colors text-[9px] font-bold"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-neutral-900 text-white hover:bg-black transition-colors text-[9px] font-bold tracking-wider"
             >
               <span>OPEN MAPS</span>
               <span>↗</span>

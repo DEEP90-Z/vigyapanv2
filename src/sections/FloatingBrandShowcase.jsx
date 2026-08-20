@@ -93,19 +93,14 @@ export default function FloatingBrandShowcase() {
             Our Process &amp; Market Impact
           </div>
 
-          {/* Big Bold Stat Text */}
-          <h2 className="text-6xl sm:text-8xl md:text-[9.5rem] font-black text-stone-900 tracking-tight leading-none mb-4 bg-gradient-to-r from-stone-950 via-purple-950 via-amber-950 to-stone-900 bg-clip-text text-transparent drop-shadow-sm select-none">
-            350,000+
+          {/* Big Bold Title Text */}
+          <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-stone-900 tracking-tight leading-[1.05] mb-6 bg-gradient-to-r from-stone-950 via-purple-950 via-amber-950 to-stone-900 bg-clip-text text-transparent drop-shadow-sm select-none max-w-3xl">
+            Trusted by Industry Leaders
           </h2>
 
-          {/* Subheading */}
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 tracking-wide mb-4 max-w-2xl leading-snug">
-            High-Converting Touchpoints &amp; Audience Reach
-          </h3>
-
-          {/* Supporting Description */}
-          <p className="text-base sm:text-lg text-stone-600 leading-relaxed max-w-xl mx-auto font-normal mb-8">
-            Connecting industry-leading brands with high-intent audiences through tailored visual narratives, strategic placement, and measurable engagement.
+          {/* Supporting Bio Line */}
+          <p className="text-base sm:text-xl text-stone-600 leading-relaxed max-w-2xl mx-auto font-normal mb-8">
+            Empowering the best in the business to scale faster. We deliver scroll-stopping content and strategic ad campaigns that turn passive audiences into active buyers
           </p>
 
           {/* Impact Highlights Chips */}

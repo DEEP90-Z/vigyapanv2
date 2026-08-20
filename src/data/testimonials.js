@@ -3,7 +3,7 @@ export const testimonials = [
     id: 1,
     brand: "Rashal Infra",
     time: "11 months ago",
-    text: "Working with Vigyapan 360 has been a game-changer for our branding and lead acquisition. Their campaigns are data-driven, conversion-focused, and executed with absolute precision.",
+    text: "Working with Vigyapan Estate has been a game-changer for our branding and lead acquisition. Their campaigns are data-driven, conversion-focused, and executed with absolute precision.",
     logo: "/logos/rashail infra.webp"
   },
   {
@@ -17,7 +17,7 @@ export const testimonials = [
     id: 3,
     brand: "Jhansi Empire",
     time: "6 months ago",
-    text: "Vigyapan 360 delivered exceptional real estate lead generation campaigns. Their targeted Meta Ads campaigns brought in high-quality buyers for our premium property projects. Extremely professional execution.",
+    text: "Vigyapan Estate delivered exceptional real estate lead generation campaigns. Their targeted Meta Ads campaigns brought in high-quality buyers for our premium property projects. Extremely professional execution.",
     logo: "/logos/jhansiempire.webp"
   },
   {
