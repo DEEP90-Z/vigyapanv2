@@ -4,7 +4,9 @@ import React, { useMemo } from 'react';
 const LOGO_ITEMS = [
   { name: 'Dev Ashok', src: '/logos/Dev ashok.webp' },
   { name: 'Ganesh Enclave', src: '/logos/Ganesh Enclave.webp' },
+  { name: 'JD Property', src: '/logos/JD.webp' },
   { name: 'Jhansi Empire', src: '/logos/jhansiempire.webp' },
+  { name: 'AB Property', src: '/logos/ab.webp' },
   { name: 'Neelam Dresses', src: '/logos/neelam dresses.webp' },
   { name: 'Rashail Infra', src: '/logos/rashail infra.webp' },
 ];
@@ -17,8 +19,8 @@ const IMPACT_HIGHLIGHTS = [
 
 export default function FloatingBrandShowcase() {
   const bubbles = useMemo(() => {
-    const TOTAL_BUBBLES = 10;
-    const horizontalLanes = [8, 22, 36, 48, 60, 72, 85, 14, 42, 68];
+    const TOTAL_BUBBLES = 14;
+    const horizontalLanes = [6, 18, 30, 42, 54, 66, 78, 90, 12, 36, 60, 82, 24, 72];
     const sizes = [
       'w-20 h-20 sm:w-28 sm:h-28',
       'w-24 h-24 sm:w-36 sm:h-36',

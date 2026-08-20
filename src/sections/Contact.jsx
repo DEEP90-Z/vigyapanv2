@@ -15,7 +15,17 @@ const Contact = () => {
 
   const copyEmail = (e) => {
     e.preventDefault();
-    navigator.clipboard.writeText('vigyapanestate@gmail.com');
+    const emailStr = 'vigyapanestate@gmail.com';
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(emailStr).catch(() => {});
+    } else {
+      const textArea = document.createElement('textarea');
+      textArea.value = emailStr;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      document.body.removeChild(textArea);
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };

@@ -137,37 +137,38 @@ const Hero = () => {
     isMutedRef.current = false;
     setIsMuted(false);
 
+    const enableAudioOnGesture = () => {
+      const v = videoRef.current;
+      if (v) {
+        v.muted = false;
+        isMutedRef.current = false;
+        setIsMuted(false);
+        if (v.paused) {
+          v.play().catch(() => {});
+        }
+      }
+      cleanupListeners();
+    };
+
+    const cleanupListeners = () => {
+      window.removeEventListener('pointerdown', enableAudioOnGesture);
+      window.removeEventListener('click', enableAudioOnGesture);
+      window.removeEventListener('touchstart', enableAudioOnGesture);
+      window.removeEventListener('scroll', enableAudioOnGesture);
+      window.removeEventListener('keydown', enableAudioOnGesture);
+    };
+
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
           setVideoLoaded(true);
         })
-        .catch(() => {
+        .catch((err) => {
+          if (err?.name === 'AbortError') return;
           // If browser restricts unmuted autoplay, play muted first then unmute on first gesture
           video.muted = true;
           video.play().then(() => setVideoLoaded(true)).catch(() => {});
-
-          const enableAudioOnGesture = () => {
-            const v = videoRef.current;
-            if (v) {
-              v.muted = false;
-              isMutedRef.current = false;
-              setIsMuted(false);
-              if (v.paused) {
-                v.play().catch(() => {});
-              }
-            }
-            cleanupListeners();
-          };
-
-          const cleanupListeners = () => {
-            window.removeEventListener('pointerdown', enableAudioOnGesture);
-            window.removeEventListener('click', enableAudioOnGesture);
-            window.removeEventListener('touchstart', enableAudioOnGesture);
-            window.removeEventListener('scroll', enableAudioOnGesture);
-            window.removeEventListener('keydown', enableAudioOnGesture);
-          };
 
           window.addEventListener('pointerdown', enableAudioOnGesture, { once: true });
           window.addEventListener('click', enableAudioOnGesture, { once: true });
@@ -183,6 +184,7 @@ const Hero = () => {
 
     return () => {
       clearTimeout(timer);
+      cleanupListeners();
     };
   }, []);
 

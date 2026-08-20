@@ -73,7 +73,7 @@ const Footer = () => {
       {/* 2. Light Ticker Marquee Bar */}
       <div className="w-full overflow-hidden py-5 bg-[#EFECE6]/90 backdrop-blur-md border-y border-neutral-300/40 select-none relative z-10 font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-neutral-700">
         <div 
-          className="flex gap-16 whitespace-nowrap animate-marquee-right font-bold"
+          className="flex gap-16 whitespace-nowrap animate-marquee-left font-bold"
           style={{ width: 'max-content' }}
         >
           {[0, 1, 2, 3].map((i) => (
